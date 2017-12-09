@@ -1,6 +1,7 @@
 package stream.vispar.server.engine;
 
 import java.util.Collection;
+import java.util.Objects;
 
 import com.sun.org.apache.xalan.internal.xsltc.compiler.Pattern;
 
@@ -14,8 +15,20 @@ import stream.vispar.server.core.entities.Event;
  */
 public class SiddhiEngine implements IEngine {
     
+    /**
+     * Server instance the engine belongs to.
+     */
+    private final ServerInstance instance;
+    
+    
+    /**
+     * Constructs a new {@link SiddhiEngine}.
+     * 
+     * @param instance
+     *          the {@link ServerInstance} the engine belongs to.
+     */
     public SiddhiEngine(ServerInstance instance) {
-        
+        this.instance = Objects.requireNonNull(instance);
     }
 
     @Override

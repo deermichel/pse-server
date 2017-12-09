@@ -1,7 +1,7 @@
 package stream.vispar.server.core;
 
 /**
- * Defines functionality of a handler for API requests.
+ * Defines functionality of a handler for websockets.
  * 
  * @author Micha Hanselmann
  */

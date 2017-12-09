@@ -21,7 +21,7 @@ public class Event {
     /**
      * Attributes and their values of the event.
      */
-    private final Map<Attribute, String> attr;
+    private final Map<Attribute, String> data;
     
     /**
      * Sensor responsible for the event.
@@ -41,7 +41,7 @@ public class Event {
      */
     public Event(String timestamp, Map<Attribute, String> attr, Sensor sensor) {
         this.timestamp = timestamp;
-        this.attr = new HashMap<>(Objects.requireNonNull(attr));
+        this.data = new HashMap<>(Objects.requireNonNull(attr));
         this.sensor = Objects.requireNonNull(sensor);
     }
     
@@ -52,6 +52,6 @@ public class Event {
      *          map of attributes and their values.
      */
     public Map<Attribute, String> getData() {
-        return new HashMap<>(attr);
+        return new HashMap<>(data);
     }
 }

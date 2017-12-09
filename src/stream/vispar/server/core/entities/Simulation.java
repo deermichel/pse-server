@@ -1,5 +1,8 @@
 package stream.vispar.server.core.entities;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import stream.vispar.server.engine.IEngine;
 
 /**
@@ -12,7 +15,7 @@ public class Simulation {
     /**
      * Events of the simulation.
      */
-    
+    private final Collection<Event> events;
     
     
     /**
@@ -24,7 +27,7 @@ public class Simulation {
      *          if the simFile does not exist or is invalid.
      */
     public Simulation(String simFile) {
-        
+        this.events = new ArrayList<>();
     }
     
     /**
