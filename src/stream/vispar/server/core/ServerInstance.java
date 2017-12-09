@@ -76,7 +76,7 @@ public class ServerInstance {
         engine = new SiddhiEngine(this);
         userCtrl = new UserController(this);
         patternCtrl = new PatternController(this);
-        sensorCtrl = new SensorController(this);
+        sensorCtrl = new SensorController(this, "");
         authManager = new AuthManager(this);
         reqHandler = new SparkServer(this);
         sockHandler = new WebbitSocket(this);

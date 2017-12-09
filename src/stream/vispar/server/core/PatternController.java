@@ -33,6 +33,8 @@ public class PatternController {
      * 
      * @param pattern
      *          the {@link Pattern} to be added.
+     * @throws IllegalArgumentException
+     *          if a pattern with the same id exists.
      */
     public void add(Pattern pattern) {
         
