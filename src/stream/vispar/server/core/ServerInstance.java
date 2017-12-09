@@ -2,9 +2,6 @@ package stream.vispar.server.core;
 
 import java.util.Objects;
 
-import stream.vispar.server.cli.Command;
-import stream.vispar.server.cli.CommandParser;
-import stream.vispar.server.cli.CommandResult;
 import stream.vispar.server.engine.IEngine;
 import stream.vispar.server.engine.SiddhiEngine;
 import stream.vispar.server.logger.ILogger;

@@ -11,7 +11,21 @@ public class Attribute {
      * Attribute types.
      */
     public enum AttributeType {
-        DOUBLE, INTEGER, STRING
+        
+        /**
+         * Double
+         */
+        DOUBLE, 
+        
+        /**
+         * Integer
+         */
+        INTEGER, 
+        
+        /**
+         * String
+         */
+        STRING
     }
     
 }

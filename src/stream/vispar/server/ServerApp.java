@@ -2,7 +2,6 @@ package stream.vispar.server;
 
 import stream.vispar.server.cli.Command;
 import stream.vispar.server.cli.CommandParser;
-import stream.vispar.server.cli.CommandResult;
 import stream.vispar.server.cli.DefaultConsole;
 import stream.vispar.server.cli.IConsole;
 import stream.vispar.server.core.ServerInstance;
@@ -16,7 +15,7 @@ import stream.vispar.server.logger.MultiLogger;
  * @author Micha Hanselmann
  * @version 1.0.0
  */
-class ServerApp {
+final class ServerApp {
     
     /**
      * Console used for user interaction and output.
