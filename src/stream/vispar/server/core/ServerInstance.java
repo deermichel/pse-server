@@ -1,5 +1,7 @@
 package stream.vispar.server.core;
 
+import java.util.Objects;
+
 import stream.vispar.server.cli.Command;
 import stream.vispar.server.cli.CommandParser;
 import stream.vispar.server.cli.CommandResult;
@@ -67,7 +69,7 @@ public class ServerInstance {
      *          the {@link ILogger logger} used for the instance.
      */
     public ServerInstance(ILogger logger) {
-        this.logger = logger;
+        this.logger = Objects.requireNonNull(logger);
         
         // init server components
         dbConn = new MongoDBConnector(this, "");

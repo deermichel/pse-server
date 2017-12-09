@@ -1,5 +1,7 @@
 package stream.vispar.server.logger;
 
+import java.util.Objects;
+
 /**
  * Logger implementation that logs to a file.
  * 
@@ -22,6 +24,7 @@ public class FileLogger implements ILogger {
      *          determines whether log should contain timestamps.
      */
     public FileLogger(String file, boolean timestamps) {
+        Objects.requireNonNull(file);
         this.timestamps = timestamps;
     }
 

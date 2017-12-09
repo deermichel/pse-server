@@ -1,5 +1,7 @@
 package stream.vispar.server.core;
 
+import java.util.Objects;
+
 import stream.vispar.server.core.entities.User;
 
 /**
@@ -18,10 +20,11 @@ class AuthManager {
     /**
      * Constructs a new {@link AuthManager}.
      * 
-     * @param instance the {@link ServerInstance} the manager belongs to.
+     * @param instance 
+     *          the {@link ServerInstance} the manager belongs to.
      */
     AuthManager(ServerInstance instance) {
-        this.instance = instance;
+        this.instance = Objects.requireNonNull(instance);
     }
     
     /**
