@@ -3,6 +3,8 @@ package stream.vispar.server.core;
 import stream.vispar.server.cli.Command;
 import stream.vispar.server.cli.CommandParser;
 import stream.vispar.server.cli.CommandResult;
+import stream.vispar.server.engine.IEngine;
+import stream.vispar.server.engine.SiddhiEngine;
 import stream.vispar.server.logger.ILogger;
 
 /**
@@ -17,21 +19,71 @@ public class ServerInstance {
      */
     private final ILogger logger;
     
+    /**
+     * Database connector used by the instance.
+     */
+    private final IDatabaseConnector dbConn;
+    
+    /**
+     * Engine used by the instance.
+     */
+    private final IEngine engine;
+    
+    /**
+     * User controller used by the instance.
+     */
+    private final UserController userCtrl;
+    
+    /**
+     * Pattern controller used by the instance.
+     */
+    private final PatternController patternCtrl;
+    
+    /**
+     * Sensor controller used by the instance.
+     */
+    private final SensorController sensorCtrl;
+    
+    /**
+     * Authentication manager used by the instance.
+     */
+    private final AuthManager authManager;
+    
+    /**
+     * Request handler used by the instance.
+     */
+    private final IRequestHandler reqHandler;
+    
+    /**
+     * Socket handler used by the instance.
+     */
+    private final ISocketHandler sockHandler;
+    
     
     /**
      * Constructs a new {@link ServerInstance}.
      * 
      * @param logger
-     *          the {@link ILogger logger} used for this instance.
+     *          the {@link ILogger logger} used for the instance.
      */
     public ServerInstance(ILogger logger) {
         this.logger = logger;
+        
+        // init server components
+        dbConn = new MongoDBConnector(this, "");
+        engine = new SiddhiEngine(this);
+        userCtrl = new UserController(this);
+        patternCtrl = new PatternController(this);
+        sensorCtrl = new SensorController(this);
+        authManager = new AuthManager(this);
+        reqHandler = new SparkServer(this);
+        sockHandler = new WebbitSocket(this);
     }
     
     /**
-     * Prepares and starts all components of the server.
+     * Starts all components of the server.
      */
-    private void init() {
+    private void start() {
         
     }
     
@@ -43,19 +95,7 @@ public class ServerInstance {
     }
     
     /**
-     * Executes a command on this {@link ServerInstance}.
-     * 
-     * @param instance
-     *          the {@link ServerInstance} to be used.
-     * @return
-     *          the {@link CommandResult result} of the execution.
-     */
-    public CommandResult execute(Command command) {
-        return command.execute(this);
-    }
-    
-    /**
-     * Returns the logger used by this {@link ServerInstance}.
+     * Returns the logger used by the instance.
      * 
      * @return
      *          the {@link ILogger logger}.

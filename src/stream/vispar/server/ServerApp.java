@@ -2,6 +2,7 @@ package stream.vispar.server;
 
 import stream.vispar.server.cli.Command;
 import stream.vispar.server.cli.CommandParser;
+import stream.vispar.server.cli.CommandResult;
 import stream.vispar.server.cli.DefaultConsole;
 import stream.vispar.server.cli.IConsole;
 import stream.vispar.server.core.ServerInstance;
@@ -79,7 +80,7 @@ class ServerApp {
             // try to parse and execute command (else log error)
             try {
                 Command command = parser.parse(userInput);
-                instance.execute(command);
+                command.execute(instance);
             } catch (IllegalArgumentException e) {
                 instance.getLogger().logError(e.getMessage());
             }
