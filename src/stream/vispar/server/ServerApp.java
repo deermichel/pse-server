@@ -62,6 +62,7 @@ class ServerApp {
         
         // setup server instance
         instance = new ServerInstance(logger);
+        instance.start();
         
         // command REPL
         commandREPL();
@@ -71,10 +72,8 @@ class ServerApp {
      * REPL loop handling user input / commands.
      */
     private void commandREPL() {
-        
         // loop
-        boolean keepRunning = true;
-        while (keepRunning) {
+        while (instance.isRunning()) {
             String userInput = console.read();
             
             // try to parse and execute command (else log error)
