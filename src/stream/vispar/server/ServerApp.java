@@ -78,7 +78,7 @@ final class ServerApp {
             // try to parse and execute command (else log error)
             try {
                 Command command = parser.parse(userInput);
-                command.execute(instance);
+                command.execute();
             } catch (IllegalArgumentException e) {
                 instance.getLogger().logError(e.getMessage());
             }

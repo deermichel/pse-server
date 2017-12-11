@@ -188,16 +188,6 @@ public class ServerInstance {
     }
     
     /**
-     * Returns the request handler used by the instance.
-     * 
-     * @return
-     *          the {@link IRequestHandler}.
-     */
-    public IRequestHandler getReqHandler() {
-        return reqHandler;
-    }
-    
-    /**
      * Returns the socket handler used by the instance.
      * 
      * @return

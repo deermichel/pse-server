@@ -10,12 +10,10 @@ import stream.vispar.server.core.ServerInstance;
 public abstract class Command {
     
     /**
-     * Executes the command on a given server instance.
+     * Executes the command.
      * 
-     * @param instance
-     *          the {@link ServerInstance} to be used.
      * @return
      *          the {@link CommandResult result} of the execution.
      */
-    public abstract CommandResult execute(ServerInstance instance);
+    public abstract CommandResult execute();
 }

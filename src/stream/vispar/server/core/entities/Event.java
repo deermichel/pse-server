@@ -39,9 +39,9 @@ public class Event {
      * @param sensor
      *          the sensor responsible for the event.
      */
-    public Event(String timestamp, Map<Attribute, String> attr, Sensor sensor) {
+    public Event(String timestamp, Map<Attribute, String> data, Sensor sensor) {
         this.timestamp = timestamp;
-        this.data = new HashMap<>(Objects.requireNonNull(attr));
+        this.data = new HashMap<>(Objects.requireNonNull(data));
         this.sensor = Objects.requireNonNull(sensor);
     }
     
