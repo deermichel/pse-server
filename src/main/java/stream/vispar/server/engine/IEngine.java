@@ -2,9 +2,8 @@ package stream.vispar.server.engine;
 
 import java.util.Collection;
 
-import com.sun.org.apache.xalan.internal.xsltc.compiler.Pattern;
-
 import stream.vispar.server.core.entities.Event;
+import stream.vispar.server.core.entities.Pattern;
 
 /**
  * Defines functionality of a CEP engine.
