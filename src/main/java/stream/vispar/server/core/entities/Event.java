@@ -34,7 +34,7 @@ public class Event {
      * 
      * @param timestamp
      *          the timestamp of the event (ISO-6801).
-     * @param attr
+     * @param data
      *          the attributes and their values of the event.
      * @param sensor
      *          the sensor responsible for the event.
