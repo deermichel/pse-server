@@ -15,7 +15,7 @@ import stream.vispar.server.logger.MultiLogger;
  * @author Micha Hanselmann
  * @version 1.0.0
  */
-final class ServerApp {
+public final class ServerApp {
     
     /**
      * Console used for user interaction and output.

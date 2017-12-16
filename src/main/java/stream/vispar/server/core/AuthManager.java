@@ -9,7 +9,7 @@ import stream.vispar.server.core.entities.User;
  * 
  * @author Micha Hanselmann
  */
-class AuthManager {
+public class AuthManager {
     
     /**
      * Server instance the manager belongs to.
@@ -23,7 +23,7 @@ class AuthManager {
      * @param instance 
      *          the {@link ServerInstance} the manager belongs to.
      */
-    AuthManager(ServerInstance instance) {
+    public AuthManager(ServerInstance instance) {
         this.instance = Objects.requireNonNull(instance);
     }
     

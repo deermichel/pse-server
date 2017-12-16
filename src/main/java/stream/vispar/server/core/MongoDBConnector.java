@@ -10,7 +10,7 @@ import todo.Json;
  * 
  * @author Micha Hanselmann
  */
-class MongoDBConnector implements IDatabaseConnector {
+public class MongoDBConnector implements IDatabaseConnector {
     
     /**
      * Server instance the connector belongs to.
@@ -31,7 +31,7 @@ class MongoDBConnector implements IDatabaseConnector {
      * @param url
      *          the url of the MongoDB database to connect to.
      */
-    MongoDBConnector(ServerInstance instance, String url) {
+    public MongoDBConnector(ServerInstance instance, String url) {
         this.instance = Objects.requireNonNull(instance);
         this.url = Objects.requireNonNull(url);
     }

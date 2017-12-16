@@ -7,7 +7,7 @@ import java.util.Objects;
  * 
  * @author Micha Hanselmann
  */
-class SparkServer implements IRequestHandler {
+public class SparkServer implements IRequestHandler {
     
     /**
      * Server instance the handler belongs to.
@@ -23,7 +23,7 @@ class SparkServer implements IRequestHandler {
      * @param port
      *              the (network) port the server should use.
      */
-    SparkServer(ServerInstance instance, int port) {
+    public SparkServer(ServerInstance instance, int port) {
         this.instance = Objects.requireNonNull(instance);
     }
 

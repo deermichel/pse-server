@@ -7,7 +7,7 @@ import java.util.Objects;
  * 
  * @author Micha Hanselmann
  */
-class WebbitSocket implements ISocketHandler {
+public class WebbitSocket implements ISocketHandler {
     
     /**
      * Server instance the handler belongs to.
@@ -23,7 +23,7 @@ class WebbitSocket implements ISocketHandler {
      * @param port
      *          the (network) port the server should use.
      */
-    WebbitSocket(ServerInstance instance, int port) {
+    public WebbitSocket(ServerInstance instance, int port) {
         this.instance = Objects.requireNonNull(instance);
     }
 
