@@ -30,9 +30,16 @@ Logs an user out.
 ### Patterns
 
 #### GET `/patterns`
-Returns a list of all patterns existing on the server.
+Returns a list of all patterns existing on the server (using proxy objects).
 ```json
 // no request parameters needed
+// response (if succeeded, status = 200)
+```
+
+#### GET `/patterns`
+Returns the (complete) pattern from the server.
+```json
+// request parameters
 // response (if succeeded, status = 200)
 ```
 
@@ -43,31 +50,31 @@ Creates a new pattern on the server.
 // response (if succeeded, status = 201)
 ```
 
-#### PUT `/patterns/<patternId>`
-Updates pattern with id <patternId> on the server.
+#### PUT `/patterns`
+Updates the pattern on the server.
 ```json
 // request parameters
 // response (if succeeded, status = 200)
 ```
 
-#### DELETE `/patterns/<patternId>`
-Deletes pattern with id <patternId> from the server.
+#### DELETE `/patterns`
+Deletes the pattern from the server.
 ```json
-// no request parameters needed
+// request parameters
 // empty response (if succeeded, status = 204)
 ```
 
-#### POST `/patterns/<patternId>/deploy`
-Deploys pattern with id <patternId> on the server.
+#### POST `/patterns/deploy`
+Deploys the pattern on the server.
 ```json
-// no request parameters needed
+// request parameters
 // response (if succeeded, status = 200)
 ```
 
-#### POST `/patterns/<patternId>/undeploy`
-Undeploys pattern with id <patternId> on the server.
+#### POST `/patterns/undeploy`
+Undeploys the pattern on the server.
 ```json
-// no request parameters needed
+// request parameters
 // response (if succeeded, status = 200)
 ```
 
