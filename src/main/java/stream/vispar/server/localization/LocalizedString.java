@@ -29,7 +29,7 @@ public enum LocalizedString {
     }
     
     /**
-     * Returns the key of the localized string.
+     * Returns the unique key of the localized string.
      * 
      * @return
      *          the key.
