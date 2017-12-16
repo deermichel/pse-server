@@ -4,6 +4,7 @@ import java.util.Objects;
 
 import stream.vispar.server.engine.IEngine;
 import stream.vispar.server.engine.SiddhiEngine;
+import stream.vispar.server.localization.Localizer;
 import stream.vispar.server.logger.ILogger;
 
 /**
@@ -17,6 +18,11 @@ public class ServerInstance {
      * Logger used by the instance.
      */
     private final ILogger logger;
+    
+    /**
+     * Localizer used for the instance.
+     */
+    private final Localizer localizer;
     
     /**
      * Database connector used by the instance.
@@ -67,22 +73,24 @@ public class ServerInstance {
     /**
      * Constructs a new {@link ServerInstance}.
      * 
-     * @param logger
-     *          the {@link ILogger logger} used for the instance.
+     * @param config
+     *          the {@link ServerConfig} used for the instance.
      */
-    public ServerInstance(ILogger logger) {
+    public ServerInstance(ServerConfig config) {
         this.running = false;
-        this.logger = Objects.requireNonNull(logger);
+        Objects.requireNonNull(config);
         
         // init server components
-        dbConn = new MongoDBConnector(this, "");
+        logger = config.getLogger();
+        localizer = new Localizer(config.getLocale());
+        dbConn = new MongoDBConnector(this, config.getDatabaseUrl());
         engine = new SiddhiEngine(this);
         userCtrl = new UserController(this);
         patternCtrl = new PatternController(this);
-        sensorCtrl = new SensorController(this, "");
+        sensorCtrl = new SensorController(this, config.getSensorsConfigPath());
         authMgr = new AuthManager(this);
-        reqHandler = new SparkServer(this, 0);
-        sockHandler = new WebbitSocket(this, 0);
+        reqHandler = new SparkServer(this, config.getApiPort());
+        sockHandler = new WebbitSocket(this, config.getSocketPort());
     }
     
     /**
@@ -125,6 +133,16 @@ public class ServerInstance {
      */
     public ILogger getLogger() {
         return logger;
+    }
+    
+    /**
+     * Returns the localizer used for the instance.
+     * 
+     * @return
+     *          the {@link Localizer}.
+     */
+    public Localizer getLocalizer() {
+        return localizer;
     }
     
     /**

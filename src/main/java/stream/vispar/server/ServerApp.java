@@ -60,7 +60,7 @@ public final class ServerApp {
         parser = new CommandParser();
         
         // setup server instance
-        instance = new ServerInstance(logger);
+        instance = new ServerInstance(null);
         instance.start();
         
         // command REPL
