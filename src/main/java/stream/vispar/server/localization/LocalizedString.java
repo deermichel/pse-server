@@ -18,13 +18,14 @@ public enum LocalizedString {
      */
     private final String key;
     
+    
     /**
      * Constructs a new {@link LocalizedString}.
      * 
      * @param key
      *          the key for the localized string.
      */
-    LocalizedString(String key) {
+    private LocalizedString(String key) {
         this.key = key;
     }
     

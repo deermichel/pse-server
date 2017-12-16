@@ -7,12 +7,12 @@ import todo.Json;
  * 
  * @author Micha Hanselmann
  */
-public enum ApiRoutes {
+public enum ApiRoute {
 
     /**
      * POST route to log in an user.
      */
-    POST_LOGIN {
+    POST_LOGIN("/login") {
         @Override
         public Json execute(ServerInstance instance, Json request) {
             return null;
@@ -22,7 +22,7 @@ public enum ApiRoutes {
     /**
      * POST route to log out an user.
      */
-    POST_LOGOUT {
+    POST_LOGOUT("/logout") {
         @Override
         public Json execute(ServerInstance instance, Json request) {
             return null;
@@ -32,7 +32,7 @@ public enum ApiRoutes {
     /**
      * GET route to list all patterns or get a specific one.
      */
-    GET_PATTERNS {
+    GET_PATTERNS("/patterns") {
         @Override
         public Json execute(ServerInstance instance, Json request) {
             return null;
@@ -42,7 +42,7 @@ public enum ApiRoutes {
     /**
      * POST route to create a new pattern.
      */
-    POST_PATTERNS {
+    POST_PATTERNS("/patterns") {
         @Override
         public Json execute(ServerInstance instance, Json request) {
             return null;
@@ -52,7 +52,7 @@ public enum ApiRoutes {
     /**
      * PUT route to modify a pattern.
      */
-    PUT_PATTERNS {
+    PUT_PATTERNS("/patterns") {
         @Override
         public Json execute(ServerInstance instance, Json request) {
             return null;
@@ -62,7 +62,7 @@ public enum ApiRoutes {
     /**
      * DELETE route to delete a pattern.
      */
-    DELETE_PATTERNS {
+    DELETE_PATTERNS("/patterns") {
         @Override
         public Json execute(ServerInstance instance, Json request) {
             return null;
@@ -72,7 +72,7 @@ public enum ApiRoutes {
     /**
      * POST route to deploy a pattern.
      */
-    POST_PATTERNS_DEPLOY {
+    POST_PATTERNS_DEPLOY("/patterns/deploy") {
         @Override
         public Json execute(ServerInstance instance, Json request) {
             return null;
@@ -82,7 +82,7 @@ public enum ApiRoutes {
     /**
      * POST route to undeploy a pattern.
      */
-    POST_PATTERNS_UNDEPLOY {
+    POST_PATTERNS_UNDEPLOY("/patterns/deploy") {
         @Override
         public Json execute(ServerInstance instance, Json request) {
             return null;
@@ -92,13 +92,39 @@ public enum ApiRoutes {
     /**
      * GET route to list all sensors.
      */
-    GET_SENSORS {
+    GET_SENSORS("/sensors") {
         @Override
         public Json execute(ServerInstance instance, Json request) {
             return null;
         }
     };
     
+    
+    /**
+     * Endpoint of the route.
+     */
+    private final String endpoint;
+    
+    
+    /**
+     * Constructs a new {@link ApiRoute}.
+     * 
+     * @param endpoint
+     *          the endpoint of the route.
+     */
+    private ApiRoute(String endpoint) {
+        this.endpoint = endpoint;
+    }
+    
+    /**
+     * Returns the endpoint of the route.
+     * 
+     * @return
+     *          the endpoint.
+     */
+    public String getEndpoint() {
+        return endpoint;
+    }
     
     /**
      * Executes the route.

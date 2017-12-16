@@ -1,7 +1,11 @@
 package stream.vispar.server;
 
+import java.util.Arrays;
+import java.util.Optional;
+import java.util.Objects;
+
 import stream.vispar.server.cli.Command;
-import stream.vispar.server.cli.CommandParser;
+import stream.vispar.server.cli.CommandResult;
 import stream.vispar.server.cli.DefaultConsole;
 import stream.vispar.server.cli.IConsole;
 import stream.vispar.server.core.ServerInstance;
@@ -21,11 +25,6 @@ public final class ServerApp {
      * Console used for user interaction and output.
      */
     private final IConsole console;
-    
-    /**
-     * Parser used to parse user commands.
-     */
-    private final CommandParser parser;
     
     /**
      * Server instance held by the program.
@@ -56,9 +55,6 @@ public final class ServerApp {
         logger.addLogger(new ConsoleLogger(console, true));
         logger.addLogger(new FileLogger("log.log", true));
         
-        // setup parser
-        parser = new CommandParser();
-        
         // setup server instance
         instance = new ServerInstance(null);
         instance.start();
@@ -77,8 +73,15 @@ public final class ServerApp {
             
             // try to parse and execute command (else log error)
             try {
-                Command command = parser.parse(userInput);
-                command.execute();
+                Optional<CommandResult> result = Arrays.stream(Command.values())
+                        .map((command) -> command.handle(instance, userInput))
+                        .filter(Objects::nonNull)
+                        .findFirst();
+                if (result.isPresent()) {
+                    // executed -> print result
+                } else {
+                    // no command matched
+                }
             } catch (IllegalArgumentException e) {
                 instance.getLogger().logError(e.getMessage());
             }
