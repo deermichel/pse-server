@@ -1,7 +1,5 @@
 package stream.vispar.server.cli;
 
-import java.util.List;
-
 import stream.vispar.server.core.ServerInstance;
 
 /**
@@ -33,7 +31,7 @@ public class CommandFactory {
      * @return
      *          the {@link Command}.
      */
-    public Command cmdAddUser(List<String> params) {
+    public Command cmdAddUser() {
         return null;
     }
     

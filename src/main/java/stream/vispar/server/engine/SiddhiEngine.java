@@ -1,6 +1,4 @@
 package stream.vispar.server.engine;
-
-import java.util.Collection;
 import java.util.Objects;
 
 import stream.vispar.server.core.ServerInstance;
@@ -53,10 +51,5 @@ public class SiddhiEngine implements IEngine {
     @Override
     public void sendEvent(Event event) {
         
-    }
-
-    @Override
-    public Collection<IAction> getActions() {
-        return null;
     }
 }

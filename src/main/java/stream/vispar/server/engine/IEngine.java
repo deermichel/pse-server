@@ -1,7 +1,5 @@
 package stream.vispar.server.engine;
 
-import java.util.Collection;
-
 import stream.vispar.server.core.entities.Event;
 import stream.vispar.server.core.entities.Pattern;
 
@@ -45,12 +43,4 @@ public interface IEngine {
      *          the {@link Event} to be sent.
      */
     void sendEvent(Event event);
-    
-    /**
-     * Returns the actions supported by the engine.
-     * 
-     * @return
-     *          collection of {@link IAction actions}.
-     */
-    Collection<IAction> getActions();
 }

@@ -61,7 +61,8 @@ public class ServerConfig {
      * @param sensorsConfigPath
      *          the path to the config files of the sensors.
      */
-    public ServerConfig(int apiPort, int socketPort, Locale locale, ILogger logger, String databaseUrl, String sensorsConfigPath) {
+    public ServerConfig(int apiPort, int socketPort, Locale locale, ILogger logger, String databaseUrl, 
+            String sensorsConfigPath) {
         this.apiPort = apiPort;
         this.socketPort = socketPort;
         this.locale = Objects.requireNonNull(locale);
