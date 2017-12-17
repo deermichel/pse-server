@@ -1,9 +1,9 @@
 package stream.vispar.server.engine;
 import java.util.Objects;
 
+import foreign.Pattern;
 import stream.vispar.server.core.ServerInstance;
 import stream.vispar.server.core.entities.Event;
-import stream.vispar.server.core.entities.Pattern;
 
 /**
  * Engine implementation using the WSO2 Siddhi library.

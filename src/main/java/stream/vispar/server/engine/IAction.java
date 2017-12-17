@@ -1,6 +1,6 @@
 package stream.vispar.server.engine;
 
-import stream.vispar.server.core.entities.Pattern;
+import foreign.Pattern;
 
 /**
  * Defines functionality of an action used in a {@link Pattern}.

@@ -3,7 +3,7 @@ package stream.vispar.server.core;
 import java.util.Collection;
 import java.util.Objects;
 
-import stream.vispar.server.core.entities.Pattern;
+import foreign.Pattern;
 
 /**
  * Controls the patterns in the system.
@@ -33,11 +33,13 @@ public class PatternController {
      * 
      * @param pattern
      *          the {@link Pattern} to be added.
+     * @return
+     *          the added {@link Pattern}.         
      * @throws IllegalArgumentException
      *          if a pattern with the same id exists.
      */
-    public void add(Pattern pattern) {
-        
+    public Pattern add(Pattern pattern) {
+        return null;
     }
     
     /**
@@ -45,11 +47,13 @@ public class PatternController {
      * 
      * @param pattern
      *          the {@link Pattern} to be updated.
+     * @return
+     *          the updated {@link Pattern}.   
      * @throws IllegalArgumentException
      *          if the pattern did not exist before.
      */
-    public void update(Pattern pattern) {
-        
+    public Pattern update(Pattern pattern) {
+        return null;
     }
     
     /**
@@ -62,6 +66,34 @@ public class PatternController {
      */
     public void remove(Pattern pattern) {
         
+    }
+    
+    /**
+     * Deploys a pattern.
+     * 
+     * @param pattern
+     *          the {@link Pattern} to be deployed.
+     * @return
+     *          the deployed {@link Pattern}.   
+     * @throws IllegalArgumentException
+     *          if the pattern did not exist before.
+     */
+    public Pattern deploy(Pattern pattern) {
+        return null;
+    }
+    
+    /**
+     * Undeploys a pattern.
+     * 
+     * @param pattern
+     *          the {@link Pattern} to be undeployed.
+     * @return
+     *          the undeployed {@link Pattern}.   
+     * @throws IllegalArgumentException
+     *          if the pattern did not exist before.
+     */
+    public Pattern undeploy(Pattern pattern) {
+        return null;
     }
     
     /**

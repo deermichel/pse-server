@@ -1,4 +1,6 @@
-package stream.vispar.server.core.entities;
+package foreign;
+
+import stream.vispar.server.core.entities.Event;
 
 /**
  * Attributes are contained in {@link Event events} and consist of a name and a type.

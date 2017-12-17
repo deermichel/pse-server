@@ -1,4 +1,4 @@
-package stream.vispar.server.core.entities;
+package foreign;
 
 /**
  * Pattern

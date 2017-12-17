@@ -1,7 +1,7 @@
 package stream.vispar.server.engine;
 
+import foreign.Pattern;
 import stream.vispar.server.core.entities.Event;
-import stream.vispar.server.core.entities.Pattern;
 
 /**
  * Defines functionality of a CEP engine.

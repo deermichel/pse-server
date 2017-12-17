@@ -1,6 +1,6 @@
 package stream.vispar.server.core;
 
-import todo.Json;
+import foreign.Json;
 
 /**
  * Defines the routes for the api server provided by a {@link IRequestHandler}.

@@ -2,7 +2,7 @@ package stream.vispar.server.core;
 
 import java.util.Collection;
 
-import todo.Json;
+import foreign.Json;
 
 /**
  * Defines functionality to connect to a (NoSQL) database.

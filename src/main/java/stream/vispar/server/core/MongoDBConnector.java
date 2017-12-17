@@ -3,7 +3,7 @@ package stream.vispar.server.core;
 import java.util.Collection;
 import java.util.Objects;
 
-import todo.Json;
+import foreign.Json;
 
 /**
  * Database connector implementation for MongoDB.

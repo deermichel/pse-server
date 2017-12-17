@@ -3,6 +3,7 @@ package stream.vispar.server.core;
 import java.util.Collection;
 import java.util.Objects;
 
+import foreign.Pattern;
 import stream.vispar.server.core.entities.User;
 
 /**
@@ -33,11 +34,13 @@ public class UserController {
      * 
      * @param user
      *          the {@link User} to be added.
+     * @return
+     *          the added {@link User}. 
      * @throws IllegalArgumentException
      *          if a user with the same name exists.
      */
-    public void add(User user) {
-        
+    public User add(User user) {
+        return null;
     }
     
     /**
