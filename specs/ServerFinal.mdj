@@ -46535,7 +46535,7 @@
 													},
 													"edgePosition": 1,
 													"underline": false,
-													"text": "1 : receive POST request via  HTTP on /patterns/deploy",
+													"text": "1 : receive api POST request via  HTTP on /patterns/deploy",
 													"horizontalAlignment": 2,
 													"verticalAlignment": 5,
 													"wordWrap": true
@@ -52677,7 +52677,7 @@
 									"_parent": {
 										"$ref": "AAAAAAFgYR7PJdPP3ek="
 									},
-									"name": "receive POST request via  HTTP on /patterns/deploy",
+									"name": "receive api POST request via  HTTP on /patterns/deploy",
 									"source": {
 										"$ref": "AAAAAAFgYSEyidRUUQw="
 									},
