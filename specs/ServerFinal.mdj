@@ -46282,12 +46282,12 @@
 													"containerChangeable": false,
 													"containerExtending": false,
 													"left": 24,
-													"top": 88,
-													"width": 129,
-													"height": 39,
+													"top": 112,
+													"width": 347,
+													"height": 13,
 													"autoResize": false,
-													"alpha": 1.5019394942985937,
-													"distance": 29.068883707497267,
+													"alpha": 0.1607627263909605,
+													"distance": 112.44998888394787,
 													"hostEdge": {
 														"$ref": "AAAAAAFgYSEyi9RXRWU="
 													},
@@ -46296,7 +46296,7 @@
 													"text": "1 : receive api POST request via  HTTP on /patterns/deploy",
 													"horizontalAlignment": 2,
 													"verticalAlignment": 5,
-													"wordWrap": true
+													"wordWrap": false
 												},
 												{
 													"_type": "EdgeLabelView",
@@ -53639,13 +53639,13 @@
 													"showShadow": true,
 													"containerChangeable": false,
 													"containerExtending": false,
-													"left": 12,
-													"top": 89,
-													"width": 156,
-													"height": 39,
+													"left": 22,
+													"top": 104,
+													"width": 364,
+													"height": 13,
 													"autoResize": false,
-													"alpha": 1.5707958267948967,
-													"distance": 20,
+													"alpha": 0.156601863468503,
+													"distance": 115.41230437002807,
 													"hostEdge": {
 														"$ref": "AAAAAAFgZhMFTCIZVJM="
 													},
@@ -53654,7 +53654,7 @@
 													"text": "1 : receive event POST request via HTTP on sensors endpoint",
 													"horizontalAlignment": 2,
 													"verticalAlignment": 5,
-													"wordWrap": true
+													"wordWrap": false
 												},
 												{
 													"_type": "EdgeLabelView",

@@ -5,7 +5,7 @@
     <artifactId>server</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>server</name>
-    <description>Server for Vispar.</description>
+    <description>Server module for Vispar.</description>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -90,6 +90,9 @@
                         </additionalOption>
                         <additionalOption>
                             -include
+                        </additionalOption>
+                        <additionalOption>
+                            -texintro ${basedir}/tex/server-intro.tex
                         </additionalOption>
                         <additionalOption>
                             -shortinherited
