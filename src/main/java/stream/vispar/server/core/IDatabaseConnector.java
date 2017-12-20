@@ -2,7 +2,7 @@ package stream.vispar.server.core;
 
 import java.util.Collection;
 
-import foreign.Json;
+import stream.vispar.jsonconverter.types.IJsonElement;
 
 /**
  * Defines functionality to connect to a (NoSQL) database.
@@ -45,13 +45,13 @@ public interface IDatabaseConnector {
      * @param collection
      *          the name of the collection.
      * @param data
-     *          a {@link Json} representation of the data.
+     *          a {@link IJsonElement} representation of the data.
      * @return
-     *          a {@link Json} representation of the inserted database entry.
+     *          a {@link IJsonElement} representation of the inserted database entry.
      * @throws IllegalArgumentException
      *          if collection does not exist.
      */
-    Json insert(String collection, Json data);
+    IJsonElement insert(String collection, IJsonElement data);
 
     /**
      * Finds data by its identifier in a collection.
@@ -61,11 +61,11 @@ public interface IDatabaseConnector {
      * @param id
      *          the id of the requested data.
      * @return
-     *          a {@link Json} representation of the data or null if not found.
+     *          a {@link IJsonElement} representation of the data or null if not found.
      * @throws IllegalArgumentException
      *          if collection does not exist.
      */
-    Json findById(String collection, String id);
+    IJsonElement findById(String collection, String id);
     
     /**
      * Returns all entries of a collection.
@@ -73,11 +73,11 @@ public interface IDatabaseConnector {
      * @param collection
      *          the name of the collection.
      * @return
-     *          (Java) collection of {@link Json} representations of the data.
+     *          (Java) collection of {@link IJsonElement} representations of the data.
      * @throws IllegalArgumentException
      *          if collection does not exist.
      */
-    Collection<Json> getAll(String collection);
+    Collection<IJsonElement> getAll(String collection);
 
     /**
      * Updates data by its identifier in a collection.
@@ -87,13 +87,13 @@ public interface IDatabaseConnector {
      * @param id
      *          the id of the data which should be updated.
      * @param data
-     *          a {@link Json} representation of the new data.
+     *          a {@link IJsonElement} representation of the new data.
      * @return
-     *          a {@link Json} representation of the updated database entry.
+     *          a {@link IJsonElement} representation of the updated database entry.
      * @throws IllegalArgumentException
      *          if collection or id does not exist.
      */
-    Json update(String collection, String id, Json data);
+    IJsonElement update(String collection, String id, IJsonElement data);
     
     /**
      * Deletes data by its identifier in a collection.

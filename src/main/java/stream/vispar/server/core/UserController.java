@@ -3,7 +3,6 @@ package stream.vispar.server.core;
 import java.util.Collection;
 import java.util.Objects;
 
-import foreign.Pattern;
 import stream.vispar.server.core.entities.User;
 
 /**

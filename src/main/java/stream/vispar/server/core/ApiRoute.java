@@ -1,6 +1,6 @@
 package stream.vispar.server.core;
 
-import foreign.Json;
+import stream.vispar.jsonconverter.types.IJsonElement;
 
 /**
  * Defines the routes for the api server provided by a {@link IRequestHandler}.
@@ -14,7 +14,7 @@ public enum ApiRoute {
      */
     POST_LOGIN("/login") {
         @Override
-        public Json execute(ServerInstance instance, Json request) {
+        public IJsonElement execute(ServerInstance instance, IJsonElement request) {
             return null;
         }
     },
@@ -24,7 +24,7 @@ public enum ApiRoute {
      */
     POST_LOGOUT("/logout") {
         @Override
-        public Json execute(ServerInstance instance, Json request) {
+        public IJsonElement execute(ServerInstance instance, IJsonElement request) {
             return null;
         }
     },
@@ -34,7 +34,7 @@ public enum ApiRoute {
      */
     GET_PATTERNS("/patterns") {
         @Override
-        public Json execute(ServerInstance instance, Json request) {
+        public IJsonElement execute(ServerInstance instance, IJsonElement request) {
             return null;
         }
     },
@@ -44,7 +44,7 @@ public enum ApiRoute {
      */
     POST_PATTERNS("/patterns") {
         @Override
-        public Json execute(ServerInstance instance, Json request) {
+        public IJsonElement execute(ServerInstance instance, IJsonElement request) {
             return null;
         }
     },
@@ -54,7 +54,7 @@ public enum ApiRoute {
      */
     PUT_PATTERNS("/patterns") {
         @Override
-        public Json execute(ServerInstance instance, Json request) {
+        public IJsonElement execute(ServerInstance instance, IJsonElement request) {
             return null;
         }
     },
@@ -64,7 +64,7 @@ public enum ApiRoute {
      */
     DELETE_PATTERNS("/patterns") {
         @Override
-        public Json execute(ServerInstance instance, Json request) {
+        public IJsonElement execute(ServerInstance instance, IJsonElement request) {
             return null;
         }
     },
@@ -74,7 +74,7 @@ public enum ApiRoute {
      */
     POST_PATTERNS_DEPLOY("/patterns/deploy") {
         @Override
-        public Json execute(ServerInstance instance, Json request) {
+        public IJsonElement execute(ServerInstance instance, IJsonElement request) {
             return null;
         }
     },
@@ -84,7 +84,7 @@ public enum ApiRoute {
      */
     POST_PATTERNS_UNDEPLOY("/patterns/deploy") {
         @Override
-        public Json execute(ServerInstance instance, Json request) {
+        public IJsonElement execute(ServerInstance instance, IJsonElement request) {
             return null;
         }
     },
@@ -94,7 +94,7 @@ public enum ApiRoute {
      */
     GET_SENSORS("/sensors") {
         @Override
-        public Json execute(ServerInstance instance, Json request) {
+        public IJsonElement execute(ServerInstance instance, IJsonElement request) {
             return null;
         }
     };
@@ -132,9 +132,9 @@ public enum ApiRoute {
      * @param instance
      *          the target {@link ServerInstance} used for execution.
      * @param request
-     *          the request to be processed by the route.
+     *          the request to be processed by the route wrapped as {@link IJsonElement}.
      * @return
-     *          the response of the route.
+     *          the response of the route wrapped as {@link IJsonElement}.
      */
-    public abstract Json execute(ServerInstance instance, Json request);
+    public abstract IJsonElement execute(ServerInstance instance, IJsonElement request);
 }

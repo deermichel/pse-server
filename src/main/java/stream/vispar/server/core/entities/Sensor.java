@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import stream.vispar.jsonconverter.types.IJsonElement;
 import stream.vispar.model.nodes.Attribute;
 import stream.vispar.server.engine.IEngine;
 
@@ -95,13 +96,13 @@ public class Sensor {
      * Parses an event from raw data based on the sensors attribute mappings.
      * 
      * @param data 
-     *          raw {@link Json} data sent from the sensor.
+     *          raw {@link IJsonElement} sent from the sensor.
      * @return
      *          the parsed {@link Event}.
      * @throws IllegalArgumentException
      *          if the data could not be parsed.
      */
-    public Event parseEvent(Json data) {
+    public Event parseEvent(IJsonElement data) {
         return null;
     }
 }

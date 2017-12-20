@@ -3,7 +3,7 @@ package stream.vispar.server.core;
 import java.util.Collection;
 import java.util.Objects;
 
-import foreign.Json;
+import stream.vispar.jsonconverter.types.IJsonElement;
 
 /**
  * Database connector implementation for MongoDB.
@@ -57,22 +57,22 @@ public class MongoDBConnector implements IDatabaseConnector {
     }
 
     @Override
-    public Json insert(String collection, Json data) {
+    public IJsonElement insert(String collection, IJsonElement data) {
         return null;
     }
 
     @Override
-    public Json findById(String collection, String id) {
+    public IJsonElement findById(String collection, String id) {
         return null;
     }
 
     @Override
-    public Collection<Json> getAll(String collection) {
+    public Collection<IJsonElement> getAll(String collection) {
         return null;
     }
 
     @Override
-    public Json update(String collection, String id, Json data) {
+    public IJsonElement update(String collection, String id, IJsonElement data) {
         return null;
     }
 
