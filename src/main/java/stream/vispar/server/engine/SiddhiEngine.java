@@ -1,7 +1,7 @@
 package stream.vispar.server.engine;
 import java.util.Objects;
 
-import foreign.Pattern;
+import stream.vispar.model.Pattern;
 import stream.vispar.server.core.ServerInstance;
 import stream.vispar.server.core.entities.Event;
 

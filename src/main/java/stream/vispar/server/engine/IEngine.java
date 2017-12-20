@@ -1,6 +1,6 @@
 package stream.vispar.server.engine;
 
-import foreign.Pattern;
+import stream.vispar.model.Pattern;
 import stream.vispar.server.core.entities.Event;
 
 /**

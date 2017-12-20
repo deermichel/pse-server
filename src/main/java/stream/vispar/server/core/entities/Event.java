@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import foreign.Attribute;
+import stream.vispar.model.nodes.Attribute;
 import stream.vispar.server.engine.IEngine;
 
 /**

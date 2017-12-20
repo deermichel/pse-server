@@ -5,8 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import foreign.Attribute;
-import foreign.Json;
+import stream.vispar.model.nodes.Attribute;
 import stream.vispar.server.engine.IEngine;
 
 /**

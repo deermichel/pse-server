@@ -5,6 +5,7 @@
     <artifactId>server</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>server</name>
+    <description>Server for Vispar.</description>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -13,7 +14,25 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
-
+    
+    <dependencies>
+        <dependency>
+            <groupId>stream.vispar</groupId>
+            <artifactId>model</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>stream.vispar</groupId>
+            <artifactId>compiler</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>stream.vispar</groupId>
+            <artifactId>jsonconverter</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+    
     <build>
         <plugins>
             <!-- source plugin necessary to aggregate dependency javadoc 
