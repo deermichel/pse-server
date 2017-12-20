@@ -32,7 +32,6 @@ within this module for typcial use cases like
 \emph{(Notice: Logging operations were omitted for clarity).}
 
 \FloatBarrier
-
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth]{../module_res/server-sd-addusercmd.pdf}
@@ -54,8 +53,25 @@ within this module for typcial use cases like
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth]{../module_res/server-sd-sendevent.pdf}
-    \caption{Sequence Diagram: 
+    \caption{Sequence Diagram:
+        The server receives an event from a sensor and passes it to the Siddhi
+        engine.
     \label{fig:server-sd-sendevent}}
 \end{figure}
+\FloatBarrier
 
+
+\section{Activity Diagram}
+The following UML activity diagram specifies the procedure runned during the
+\enquote{Server startup} (\autoref{fig:server-act-start}).
+
+\FloatBarrier
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{../module_res/server-act-start.pdf}
+    \caption{Activity Diagram:
+        Actions happening after invoking the main method till the server is
+        fully initialized and started.
+    \label{fig:server-act-start}}
+\end{figure}
 \FloatBarrier
