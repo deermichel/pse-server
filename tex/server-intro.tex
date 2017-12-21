@@ -55,8 +55,12 @@ and a \texttt{MultiLogger} (compound of multiple loggers). Latter makes use
 of the \emph{composite} pattern and therefore, a \texttt{MultiLogger} can be used
 like any other logger or even nested into another \texttt{MultiLogger}.
 
-// TODO: MVC console - core
-// TODO: client/server - this is the server part
+Furthermore, the operating part of the server is separated from the command-line-interface
+and therefore follows the principles of the \emph{model-view-controller} pattern.
+The model is separated as well due to its encapsulation in an external module.
+This approach allows us to transition smoothly from the command-line-interface
+to a graphical one.
+
 
 \section{Class Diagram}
 The following UML class diagram (\autoref{fig:server-class}) specifies all
