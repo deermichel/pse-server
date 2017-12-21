@@ -28,14 +28,14 @@ The important goal of delivering most-possible independence from other libraries
 involved several \emph{wrappers} for the core tasks of the server.
 For handling incoming HTTP requests (e.g. from the client or sensors), there is
 the \texttt{IRequestHandler} interface. Our specific implementation uses
-the "Spark" library which is wrapped in the \texttt{SparkServer} class.
+the \enquote{Spark} library which is wrapped in the \texttt{SparkServer} class.
 The socket actions used in patterns need a socket server whose functionality is
 defined in the \texttt{ISocketHandler} interface. Our implementation uses the
-"Webbit" library which is wrapped in the \texttt{WebbitSocket} class.
+\enquote{Webbit} library which is wrapped in the \texttt{WebbitSocket} class.
 This approach was also used for database interaction (\texttt{IDatabaseConnector}
-realized by \texttt{MongoDBConnector} wrapping the "MongoDB Java driver") as well as
+realized by \texttt{MongoDBConnector} wrapping the \enquote{MongoDB Java driver}) as well as
 the CEP engine (\texttt{IEngine} realized by \texttt{SiddhiEngine} wrapping the
-"WSO2 Siddhi" library). If we change our library decisions at a later state,
+\enquote{WSO2 Siddhi} library). If we change our library decisions at a later state,
 it is only necessary to create one new wrapper class realizing the desired interface.
 
 To be able to handle commands and routes flexbile, they are organized using
@@ -49,7 +49,7 @@ of the command.
 
 The situation of several server instances using different logging mechanisms
 led to a \emph{strategy} pattern. The \texttt{ILogger} interface defines
-various logging methods. The specific "strategies" in our case are a
+various logging methods. The specific \enquote{strategies} in our case are a
 \texttt{ConsoleLogger} (logs to a console), \texttt{FileLogger} (logs to a file)
 and a \texttt{MultiLogger} (compound of multiple loggers). Latter makes use
 of the \emph{composite} pattern and therefore, a \texttt{MultiLogger} can be used
