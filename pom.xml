@@ -14,7 +14,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
-    
+
     <dependencies>
         <dependency>
             <groupId>stream.vispar</groupId>
@@ -32,10 +32,10 @@
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
-    
+
     <build>
         <plugins>
-            <!-- source plugin necessary to aggregate dependency javadoc 
+            <!-- source plugin necessary to aggregate dependency javadoc
                 from this module -->
             <plugin>
                 <artifactId>maven-source-plugin</artifactId>
@@ -45,11 +45,11 @@
                         <id>bundle-sources</id>
                         <phase>package</phase>
                         <goals>
-                            <!-- produce source artifact for main project 
+                            <!-- produce source artifact for main project
                                 sources -->
                             <goal>jar-no-fork</goal>
 
-                            <!-- produce source artifact for project test 
+                            <!-- produce source artifact for project test
                                 sources -->
                             <goal>test-jar-no-fork</goal>
                         </goals>
@@ -73,7 +73,7 @@
                     <!-- important ! -->
                     <useStandardDocletOptions>false</useStandardDocletOptions>
 
-                    <!-- we have to use additionalOptions, since additionalparam 
+                    <!-- we have to use additionalOptions, since additionalparam
                         was removed. See https://issues.apache.org/jira/browse/MJAVADOC-475. -->
                     <additionalOptions>
                         <additionalOption>
@@ -96,6 +96,9 @@
                         </additionalOption>
                         <additionalOption>
                             -shortinherited
+                        </additionalOption>
+                        <additionalOption>
+                            -nosummaries
                         </additionalOption>
                         <additionalOption>
                             -title "VISPAR: Modul Server"
