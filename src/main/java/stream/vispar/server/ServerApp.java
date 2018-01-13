@@ -1,6 +1,7 @@
 package stream.vispar.server;
 
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.Objects;
 
@@ -8,7 +9,9 @@ import stream.vispar.server.cli.Command;
 import stream.vispar.server.cli.CommandResult;
 import stream.vispar.server.cli.DefaultConsole;
 import stream.vispar.server.cli.IConsole;
+import stream.vispar.server.core.ServerConfig;
 import stream.vispar.server.core.ServerInstance;
+import stream.vispar.server.localization.LocalizedString;
 import stream.vispar.server.logger.ConsoleLogger;
 import stream.vispar.server.logger.FileLogger;
 import stream.vispar.server.logger.MultiLogger;
@@ -55,8 +58,11 @@ public final class ServerApp {
         logger.addLogger(new ConsoleLogger(console, true));
         logger.addLogger(new FileLogger("log.log", true));
         
+        // create server config
+        ServerConfig config = new ServerConfig(80, 81, Locale.US, logger, "", "");
+        
         // setup server instance
-        instance = new ServerInstance(null);
+        instance = new ServerInstance(config);
         instance.start();
         
         // command REPL
@@ -79,8 +85,10 @@ public final class ServerApp {
                         .findFirst();
                 if (result.isPresent()) {
                     // executed -> print result
+                    console.println(result.get().getMessage());
                 } else {
-                    // no command matched
+                    // no command matched -> print help
+                    console.println(instance.getLocalizer().get(LocalizedString.ENTER_VALID_COMMAND));
                 }
             } catch (IllegalArgumentException e) {
                 instance.getLogger().logError(e.getMessage());

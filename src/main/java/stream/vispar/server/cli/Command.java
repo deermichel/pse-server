@@ -4,6 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import stream.vispar.server.core.ServerInstance;
+import stream.vispar.server.localization.LocalizedString;
 
 /**
  * Defines the commands for the cli that can perform a specific execution on a {@link ServerInstance}.
@@ -69,6 +70,21 @@ public enum Command {
         @Override
         protected CommandResult execute(ServerInstance instance, String input) {
             return null;
+        }
+    },
+    
+    /**
+     * Command to print all available commands.
+     */
+    HELP("help", "help") {
+        @Override
+        protected CommandResult execute(ServerInstance instance, String input) {
+            return new CommandResult() {
+                @Override
+                public String getMessage() {
+                    return instance.getLocalizer().get(LocalizedString.AVAILABLE_COMMANDS);
+                }
+            };
         }
     };
 

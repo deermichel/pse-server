@@ -13,5 +13,5 @@ public abstract class CommandResult {
      * @return
      *          a stringual representation of the result.
      */
-    protected abstract String getMessage();
+    public abstract String getMessage();
 }

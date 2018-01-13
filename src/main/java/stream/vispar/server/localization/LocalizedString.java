@@ -8,9 +8,19 @@ package stream.vispar.server.localization;
 public enum LocalizedString {
     
     /**
-     * A string.
+     * TEST
      */
-    STRING1("string1");
+    TEST("test"),
+    
+    /**
+     * ENTER_VALID_COMMAND
+     */
+    ENTER_VALID_COMMAND("enter_valid_command"),
+    
+    /**
+     * AVAILABLE_COMMANDS
+     */
+    AVAILABLE_COMMANDS("available_commands");
     
     
     /**

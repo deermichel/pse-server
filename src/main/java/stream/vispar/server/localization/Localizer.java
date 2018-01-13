@@ -2,6 +2,7 @@ package stream.vispar.server.localization;
 
 import java.util.Locale;
 import java.util.MissingResourceException;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 /**
@@ -33,7 +34,7 @@ public class Localizer {
      *             if the locale is not available.
      */
     public Localizer(Locale locale) {
-        strings = ResourceBundle.getBundle("Strings", locale);
+        strings = ResourceBundle.getBundle("Strings", Objects.requireNonNull(locale));
     }
 
     /**
@@ -44,6 +45,6 @@ public class Localizer {
      * @return the resulting localized string.
      */
     public String get(LocalizedString string) {
-        return strings.getString(string.getKey());
+        return strings.getString(Objects.requireNonNull(string).getKey());
     }
 }
