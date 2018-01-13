@@ -10,6 +10,8 @@ import java.util.Locale;
 import org.junit.Test;
 
 /**
+ * Tests for {@link Localizer}.
+ * 
  * @author Micha Hanselmann
  */
 public class LocalizerTest {
