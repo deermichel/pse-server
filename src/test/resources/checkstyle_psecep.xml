@@ -3,13 +3,11 @@
 
 <!--
     This configuration file was written by the eclipse-cs plugin configuration editor
--->
-<!--
-    Checkstyle-Configuration: Checkstyle SWT1
-    Description: none
+    for PSE-CEP 2017/2018
 -->
 <module name="Checker">
   <property name="severity" value="warning"/>
+  <property name="fileExtensions" value="java"/>
   <module name="TreeWalker">
     <property name="tabWidth" value="4"/>
     <module name="JavadocType">
@@ -30,7 +28,9 @@
     <module name="MethodName"/>
     <module name="ParameterName"/>
     <module name="StaticVariableName"/>
-    <module name="TypeName"/>
+    <module name="TypeName">
+      <property name="tokens" value="CLASS_DEF,ENUM_DEF,ANNOTATION_DEF,INTERFACE_DEF"/>
+    </module>
     <module name="AvoidStarImport"/>
     <module name="IllegalImport"/>
     <module name="RedundantImport"/>
@@ -47,7 +47,9 @@
     <module name="AnonInnerLength">
       <property name="max" value="60"/>
     </module>
-    <module name="ParameterNumber"/>
+    <module name="ParameterNumber">
+      <property name="max" value="10"/>
+    </module>
     <module name="EmptyForIteratorPad"/>
     <module name="NoWhitespaceAfter">
       <property name="tokens" value="BNOT, DEC, DOT, INC, LNOT, UNARY_MINUS, UNARY_PLUS"/>
@@ -69,15 +71,10 @@
     <module name="HideUtilityClassConstructor"/>
     <module name="InterfaceIsType"/>
     <module name="VisibilityModifier">
-      <property name="packageAllowed" value="true"/>
-      <property name="protectedAllowed" value="true"/>
+      <property name="allowPublicImmutableFields" value="true"/>
     </module>
     <module name="UpperEll"/>
     <module name="ArrayTypeStyle"/>
-    <!--<module name="DoubleCheckedLocking">
-      <property name="severity" value="ignore"/>
-      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
-    </module>-->
     <module name="EmptyStatement"/>
     <module name="IllegalCatch"/>
     <module name="IllegalThrows"/>
@@ -104,10 +101,9 @@
       <property name="max" value="120"/>
       <property name="tabWidth" value="4"/>
     </module>
+    <module name="EqualsHashCode"/>
   </module>
   <module name="Translation"/>
   <module name="FileLength"/>
-  <!-- <module name="StrictDuplicateCode">
-    <property name="min" value="10"/>
-  </module> -->
+  <module name="FileTabCharacter"/>
 </module>
