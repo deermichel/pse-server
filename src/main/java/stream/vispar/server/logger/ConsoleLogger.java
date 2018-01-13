@@ -1,5 +1,7 @@
 package stream.vispar.server.logger;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Objects;
 
 import stream.vispar.server.cli.IConsole;
@@ -21,6 +23,11 @@ public class ConsoleLogger implements ILogger {
      */
     private final boolean timestamps;
     
+    /**
+     * Date formatter
+     */
+    private final SimpleDateFormat dateFormat;
+    
     
     /**
      * Constructs a new {@link ConsoleLogger} instance.
@@ -33,16 +40,17 @@ public class ConsoleLogger implements ILogger {
     public ConsoleLogger(IConsole console, boolean timestamps) {
         this.console = Objects.requireNonNull(console);
         this.timestamps = timestamps;
+        this.dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
     }
 
     @Override
     public void log(String message) {
-        console.println(generateTimestamp() + "[INFO] " + message);
+        console.println(generateTimestamp() + message);
     }
 
     @Override
     public void logError(String error) {
-        console.println(generateTimestamp() + "[ERROR] " + error);
+        log("[ERROR] " + error);
     }
     
     /**
@@ -52,6 +60,6 @@ public class ConsoleLogger implements ILogger {
      *          the timestamp string.
      */
     private String generateTimestamp() {
-        return (timestamps) ? "[todo] " : "";
+        return (timestamps) ? "[" + dateFormat.format(new Date()) + "] " : "";
     }
 }

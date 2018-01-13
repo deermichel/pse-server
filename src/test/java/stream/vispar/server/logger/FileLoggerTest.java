@@ -1,6 +1,3 @@
-/**
- * 
- */
 package stream.vispar.server.logger;
 
 import org.junit.After;
