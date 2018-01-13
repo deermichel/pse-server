@@ -92,7 +92,7 @@ public enum Command {
      * @param regex
      *          the regular expression for parsing the command.
      */
-    private Command(String keyword, String regex) {
+    Command(String keyword, String regex) {
         this.keyword = keyword;
         this.pattern = Pattern.compile(regex);
     }

@@ -25,7 +25,7 @@ public enum LocalizedString {
      * @param key
      *          the key for the localized string.
      */
-    private LocalizedString(String key) {
+    LocalizedString(String key) {
         this.key = key;
     }
     

@@ -112,7 +112,7 @@ public enum ApiRoute {
      * @param endpoint
      *          the endpoint of the route.
      */
-    private ApiRoute(String endpoint) {
+    ApiRoute(String endpoint) {
         this.endpoint = endpoint;
     }
     
