@@ -66,10 +66,16 @@ public enum Command {
     /**
      * Command to stop the server.
      */
-    STOP_SERVER("stop", "") {
+    STOP_SERVER("stop", "stop") {
         @Override
         protected CommandResult execute(ServerInstance instance, String input) {
-            return null;
+            instance.stop();
+            return new CommandResult() {
+                @Override
+                public String getMessage() {
+                    return instance.getLocalizer().get(LocalizedString.SERVER_STOPPED);
+                }
+            };
         }
     },
     

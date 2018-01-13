@@ -20,7 +20,12 @@ public enum LocalizedString {
     /**
      * AVAILABLE_COMMANDS
      */
-    AVAILABLE_COMMANDS("available_commands");
+    AVAILABLE_COMMANDS("available_commands"),
+    
+    /**
+     * SERVER_STOPPED
+     */
+    SERVER_STOPPED("server_stopped");
     
     
     /**
