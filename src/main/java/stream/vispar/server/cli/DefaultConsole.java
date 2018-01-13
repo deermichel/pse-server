@@ -1,5 +1,6 @@
 package stream.vispar.server.cli;
 
+import java.util.Objects;
 import java.util.Scanner;
 
 /**
@@ -24,7 +25,7 @@ public class DefaultConsole implements IConsole {
 
     @Override
     public void println(String input) {
-        System.out.println(input);
+        System.out.println(Objects.requireNonNull(input));
     }
 
     @Override
