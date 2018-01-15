@@ -98,6 +98,9 @@ public class ServerInstance {
      * Starts all components of the server.
      */
     public void start() {
+        if (isRunning()) {
+            return;
+        }
         logger.log(localizer.get(LocalizedString.STARTING_SERVER));
         dbConn.connect();
         engine.start();
@@ -110,6 +113,9 @@ public class ServerInstance {
      * Stops all components of the server.
      */
     public void stop() {
+        if (!isRunning()) {
+            return;
+        }
         logger.log(localizer.get(LocalizedString.STOPPING_SERVER));
         dbConn.disconnect();
         engine.stop();

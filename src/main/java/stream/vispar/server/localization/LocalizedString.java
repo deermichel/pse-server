@@ -35,7 +35,17 @@ public enum LocalizedString {
     /**
      * STOPPING_SERVER
      */
-    STOPPING_SERVER("stopping_server");
+    STOPPING_SERVER("stopping_server"),
+
+    /**
+     * CANNOT_START_SPARK
+     */
+    CANNOT_START_SPARK("cannot_start_spark"),
+    
+    /**
+     * LISTENING_FOR_API_REQUESTS
+     */
+    LISTENING_FOR_API_REQUESTS("listening_for_api_requests");
     
     
     /**

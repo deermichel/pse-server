@@ -7,3 +7,6 @@ bin/
 # mac
 .DS_Store
 /target/
+
+# log
+*.log

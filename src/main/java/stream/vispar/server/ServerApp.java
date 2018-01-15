@@ -56,10 +56,10 @@ public final class ServerApp {
         // setup logging
         MultiLogger logger = new MultiLogger();
         logger.addLogger(new ConsoleLogger(console, true));
-        //logger.addLogger(new FileLogger("log.log", true));
+        logger.addLogger(new FileLogger("log.log", true));
         
         // create server config
-        ServerConfig config = new ServerConfig(80, 81, Locale.US, logger, "", "");
+        ServerConfig config = new ServerConfig(8080, 8081, Locale.US, logger, "", "");
         
         // setup server instance
         instance = new ServerInstance(config);
