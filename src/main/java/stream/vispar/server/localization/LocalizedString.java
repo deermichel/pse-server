@@ -25,7 +25,17 @@ public enum LocalizedString {
     /**
      * SERVER_STOPPED
      */
-    SERVER_STOPPED("server_stopped");
+    SERVER_STOPPED("server_stopped"),
+    
+    /**
+     * STARTING_SERVER
+     */
+    STARTING_SERVER("starting_server"),
+    
+    /**
+     * STOPPING_SERVER
+     */
+    STOPPING_SERVER("stopping_server");
     
     
     /**

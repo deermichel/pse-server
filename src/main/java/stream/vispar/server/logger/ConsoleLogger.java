@@ -45,11 +45,13 @@ public class ConsoleLogger implements ILogger {
 
     @Override
     public void log(String message) {
+        Objects.requireNonNull(message);
         console.println(generateTimestamp() + message);
     }
 
     @Override
     public void logError(String error) {
+        Objects.requireNonNull(error);
         log("[ERROR] " + error);
     }
     

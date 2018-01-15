@@ -26,11 +26,13 @@ public class MultiLogger implements ILogger {
 
     @Override
     public void log(String message) {
+        Objects.requireNonNull(message);
         loggers.forEach(logger -> logger.log(message));
     }
 
     @Override
     public void logError(String error) {
+        Objects.requireNonNull(error);
         loggers.forEach(logger -> logger.logError(error));
     }
     

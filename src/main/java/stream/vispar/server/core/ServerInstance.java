@@ -4,6 +4,7 @@ import java.util.Objects;
 
 import stream.vispar.server.engine.IEngine;
 import stream.vispar.server.engine.SiddhiEngine;
+import stream.vispar.server.localization.LocalizedString;
 import stream.vispar.server.localization.Localizer;
 import stream.vispar.server.logger.ILogger;
 
@@ -97,6 +98,7 @@ public class ServerInstance {
      * Starts all components of the server.
      */
     public void start() {
+        logger.log(localizer.get(LocalizedString.STARTING_SERVER));
         dbConn.connect();
         engine.start();
         reqHandler.start();
@@ -108,6 +110,7 @@ public class ServerInstance {
      * Stops all components of the server.
      */
     public void stop() {
+        logger.log(localizer.get(LocalizedString.STOPPING_SERVER));
         dbConn.disconnect();
         engine.stop();
         reqHandler.stop();

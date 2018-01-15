@@ -59,6 +59,7 @@ public class FileLogger implements ILogger {
 
     @Override
     public void log(String message) {
+        Objects.requireNonNull(message);
         String entry = generateTimestamp() + message + "\n";
         try {
             Files.write(filePath, entry.getBytes(), StandardOpenOption.APPEND);
@@ -69,6 +70,7 @@ public class FileLogger implements ILogger {
 
     @Override
     public void logError(String error) {
+        Objects.requireNonNull(error);
         log("[ERROR] " + error);
     }
     
