@@ -54,6 +54,7 @@ public class SparkServer implements IRequestHandler {
         http.initExceptionHandler((exception) -> {
             instance.getLogger().logError(instance.getLocalizer().get(LocalizedString.CANNOT_START_SPARK)
                     + exception.toString());
+            instance.stop();
         });
         
         // register routes
@@ -66,6 +67,8 @@ public class SparkServer implements IRequestHandler {
 
     @Override
     public void stop() {
-        http.stop();
+        if (http != null) {
+            http.stop();
+        }
     }
 }

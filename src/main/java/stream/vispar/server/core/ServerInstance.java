@@ -101,12 +101,12 @@ public class ServerInstance {
         if (isRunning()) {
             return;
         }
+        this.running = true;
         logger.log(localizer.get(LocalizedString.STARTING_SERVER));
         dbConn.connect();
         engine.start();
         reqHandler.start();
         sockHandler.start();
-        this.running = true;
     }
     
     /**
@@ -116,12 +116,12 @@ public class ServerInstance {
         if (!isRunning()) {
             return;
         }
+        this.running = false;
         logger.log(localizer.get(LocalizedString.STOPPING_SERVER));
         dbConn.disconnect();
         engine.stop();
         reqHandler.stop();
         sockHandler.stop();
-        this.running = false;
     }
     
     /**
