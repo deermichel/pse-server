@@ -3,7 +3,18 @@ package stream.vispar.server.core;
 import java.util.Collection;
 import java.util.Objects;
 
+import org.bson.Document;
+
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientOptions;
+import com.mongodb.MongoClientURI;
+import com.mongodb.MongoException;
+import com.mongodb.MongoTimeoutException;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.MongoDriverInformation;
+
 import stream.vispar.jsonconverter.types.IJsonElement;
+import stream.vispar.server.localization.LocalizedString;
 
 /**
  * Database connector implementation for MongoDB.
@@ -20,7 +31,17 @@ public class MongoDBConnector implements IDatabaseConnector {
     /**
      * Url of the MongoDB database.
      */
-    private final String url;
+    private final MongoClientURI url;
+    
+    /**
+     * MongoDB connection driver.
+     */
+    private MongoClient client;
+    
+    /**
+     * MongoDB database.
+     */
+    private MongoDatabase database;
     
 
     /**
@@ -33,27 +54,40 @@ public class MongoDBConnector implements IDatabaseConnector {
      */
     public MongoDBConnector(ServerInstance instance, String url) {
         this.instance = Objects.requireNonNull(instance);
-        this.url = Objects.requireNonNull(url);
+        this.url = new MongoClientURI("mongodb://" + Objects.requireNonNull(url));
     }
 
     @Override
     public void connect() {
-        
+        client = new MongoClient(url);
+        database = client.getDatabase("vispar");
+
+        try {
+            client.getAddress();
+            instance.getLogger().log(
+                    String.format(instance.getLocalizer().get(LocalizedString.CONNECTED_TO_DATABASE), 
+                            url));
+        } catch (MongoException e) {
+            instance.getLogger().log(
+                    String.format(instance.getLocalizer().get(LocalizedString.CANNOT_CONNECT_DATABASE), 
+                            e.toString()));
+            instance.stop();
+        }
     }
 
     @Override
     public void disconnect() {
-        
+        client.close();
     }
 
     @Override
     public void createCollection(String name) {
-        
+        database.createCollection(Objects.requireNonNull(name));
     }
 
     @Override
     public void dropCollection(String name) {
-        
+        database.getCollection(Objects.requireNonNull(name)).drop();
     }
 
     @Override
@@ -78,6 +112,6 @@ public class MongoDBConnector implements IDatabaseConnector {
 
     @Override
     public void delete(String collection, String id) {
-        
+        // database.getCollection(Objects.requireNonNull(collection));
     }
 }

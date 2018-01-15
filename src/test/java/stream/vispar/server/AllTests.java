@@ -5,8 +5,10 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 import stream.vispar.server.cli.DefaultConsoleTest;
+import stream.vispar.server.core.MongoDBConnectorTest;
 import stream.vispar.server.core.ServerConfigTest;
-import stream.vispar.server.core.ServerInstance;
+import stream.vispar.server.core.ServerInstanceTest;
+import stream.vispar.server.core.SparkServerTest;
 import stream.vispar.server.localization.LocalizerTest;
 import stream.vispar.server.logger.ConsoleLoggerTest;
 import stream.vispar.server.logger.FileLoggerTest;
@@ -24,8 +26,10 @@ import stream.vispar.server.logger.MultiLoggerTest;
     DefaultConsoleTest.class,
     
     // core
+    MongoDBConnectorTest.class,
     ServerConfigTest.class,
-    ServerInstance.class,
+    ServerInstanceTest.class,
+    SparkServerTest.class,
     
     // localization
     LocalizerTest.class,

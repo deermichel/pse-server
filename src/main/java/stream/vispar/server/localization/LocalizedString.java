@@ -43,6 +43,16 @@ public enum LocalizedString {
     CANNOT_START_SPARK("cannot_start_spark"),
     
     /**
+     * CONNECTED_TO_DATABASE
+     */
+    CONNECTED_TO_DATABASE("connected_to_database"),
+    
+    /**
+     * CANNOT_CONNECT_DATABASE
+     */
+    CANNOT_CONNECT_DATABASE("cannot_connect_database"),
+    
+    /**
      * LISTENING_FOR_API_REQUESTS
      */
     LISTENING_FOR_API_REQUESTS("listening_for_api_requests");

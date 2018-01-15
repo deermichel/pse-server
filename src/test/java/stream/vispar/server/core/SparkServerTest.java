@@ -35,16 +35,8 @@ public class SparkServerTest {
     @Before
     public void setUp() {
         ILogger logger = new ConsoleLogger(new DefaultConsole(), false);
-        ServerConfig config = new ServerConfig(8888, 8889, Locale.US, logger, "", "");
+        ServerConfig config = new ServerConfig(8888, 8889, Locale.US, logger, "db", "");
         instance = new ServerInstance(config);
-    }
-
-    /**
-     * Cleanup.
-     */
-    @After
-    public void tearDown() {
-        instance.stop();
     }
 
     /**
