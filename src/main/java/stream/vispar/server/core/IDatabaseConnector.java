@@ -68,6 +68,22 @@ public interface IDatabaseConnector {
     IJsonElement findById(String collection, String id);
     
     /**
+     * Finds data by a key/value pair in a collection.
+     * 
+     * @param collection
+     *          the name of the collection.
+     * @param key
+     *          the key of the requested data.
+     * @param value
+     *          the value for the key of the requested data.
+     * @return
+     *          a {@link IJsonElement} representation of the data or null if not found.
+     * @throws IllegalArgumentException
+     *          if collection does not exist.
+     */
+    IJsonElement find(String collection, String key, String value);
+    
+    /**
      * Returns all entries of a collection.
      * 
      * @param collection

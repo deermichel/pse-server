@@ -3,14 +3,29 @@ package stream.vispar.server;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.Optional;
+
+import org.bson.Document;
+
+import com.mongodb.MongoClient;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Filters;
+
 import java.util.Objects;
 
+import stream.vispar.jsonconverter.exceptions.JsonException;
+import stream.vispar.jsonconverter.exceptions.JsonParseException;
+import stream.vispar.jsonconverter.exceptions.JsonSyntaxException;
+import stream.vispar.jsonconverter.gson.GsonConverter;
+import stream.vispar.jsonconverter.types.IJsonElement;
 import stream.vispar.server.cli.Command;
 import stream.vispar.server.cli.CommandResult;
 import stream.vispar.server.cli.DefaultConsole;
 import stream.vispar.server.cli.IConsole;
+import stream.vispar.server.core.MongoDBConnector;
 import stream.vispar.server.core.ServerConfig;
 import stream.vispar.server.core.ServerInstance;
+import stream.vispar.server.core.entities.User;
 import stream.vispar.server.localization.LocalizedString;
 import stream.vispar.server.logger.ConsoleLogger;
 import stream.vispar.server.logger.FileLogger;
@@ -49,6 +64,23 @@ public final class ServerApp {
      * Constructs a new {@link ServerApp} instance.
      */
     private ServerApp() {
+       
+//        console = new DefaultConsole();
+//        MultiLogger logger = new MultiLogger();
+//        ServerConfig config = new ServerConfig(8080, 8081, Locale.US, logger, "localhost", "mo");
+//        instance = new ServerInstance(config);
+//        MongoDBConnector conn = new MongoDBConnector(instance, "localhost");
+//        conn.connect();
+//        IJsonElement el = conn.find("users", "name", "Nico");
+//        try {
+//            User user = new GsonConverter().fromJson(el, User.class);
+//            System.out.println(el);
+//            System.out.println(user.getName());
+//        } catch (JsonException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }
+//        System.exit(1);
         
         // use system default console
         console = new DefaultConsole();

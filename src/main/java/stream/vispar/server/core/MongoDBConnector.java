@@ -12,7 +12,11 @@ import com.mongodb.MongoException;
 import com.mongodb.MongoTimeoutException;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoDriverInformation;
+import com.mongodb.client.model.Filters;
 
+import stream.vispar.jsonconverter.exceptions.JsonParseException;
+import stream.vispar.jsonconverter.exceptions.JsonSyntaxException;
+import stream.vispar.jsonconverter.gson.GsonConverter;
 import stream.vispar.jsonconverter.types.IJsonElement;
 import stream.vispar.server.localization.LocalizedString;
 
@@ -43,6 +47,11 @@ public class MongoDBConnector implements IDatabaseConnector {
      */
     private MongoDatabase database;
     
+    /**
+     * Gson converter.
+     */
+    private final GsonConverter gsonConv;
+    
 
     /**
      * Constructs a new {@link MongoDBConnector}.
@@ -55,6 +64,7 @@ public class MongoDBConnector implements IDatabaseConnector {
     public MongoDBConnector(ServerInstance instance, String url) {
         this.instance = Objects.requireNonNull(instance);
         this.url = new MongoClientURI("mongodb://" + Objects.requireNonNull(url));
+        this.gsonConv = new GsonConverter();
     }
 
     @Override
@@ -92,11 +102,32 @@ public class MongoDBConnector implements IDatabaseConnector {
 
     @Override
     public IJsonElement insert(String collection, IJsonElement data) {
+        Document doc = Document.parse(data.toString());
+        database.getCollection(collection).insertOne(doc);
+        try {
+            return gsonConv.fromString(doc.toJson());
+        } catch (JsonParseException | JsonSyntaxException e) {
+            instance.getLogger().logError(e.toString());
+        }
         return null;
     }
 
     @Override
     public IJsonElement findById(String collection, String id) {
+        return null;
+    }
+
+    @Override
+    public IJsonElement find(String collection, String key, String value) {
+        Document doc = database.getCollection(collection).find(new Document(key, value)).first();
+        if (doc == null) {
+            return null;
+        }
+        try {
+            return gsonConv.fromString(doc.toJson());
+        } catch (JsonParseException | JsonSyntaxException e) {
+            instance.getLogger().logError(e.toString());
+        }
         return null;
     }
 

@@ -4,6 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import stream.vispar.server.core.ServerInstance;
+import stream.vispar.server.core.entities.User;
 import stream.vispar.server.localization.LocalizedString;
 
 /**
@@ -16,10 +17,24 @@ public enum Command {
     /**
      * Command to add new user.
      */
-    ADD_USER("adduser", "") {
+    ADD_USER("adduser", "adduser ([^ ]+) ([^ ]+)") {
         @Override
         protected CommandResult execute(ServerInstance instance, String input) {
-            return null;
+            Matcher matcher = getMatcher(input);
+            if (matcher.matches()) {
+                
+                User user = new User(matcher.group(1), matcher.group(2));
+                try {
+                    instance.getUserCtrl().add(user);
+                    return new StringCommandResult(instance.getLocalizer().get(LocalizedString.OK));
+                } catch (IllegalArgumentException e) {
+                    return new StringCommandResult(e.getMessage());
+                }
+                
+            } else {
+                return new StringCommandResult(
+                        instance.getLocalizer().get(LocalizedString.INV_ADDUSER_SYNTAX));
+            }
         }
     },
     
@@ -70,12 +85,7 @@ public enum Command {
         @Override
         protected CommandResult execute(ServerInstance instance, String input) {
             instance.stop();
-            return new CommandResult() {
-                @Override
-                public String getMessage() {
-                    return instance.getLocalizer().get(LocalizedString.SERVER_STOPPED);
-                }
-            };
+            return new StringCommandResult(instance.getLocalizer().get(LocalizedString.SERVER_STOPPED));
         }
     },
     
@@ -85,12 +95,7 @@ public enum Command {
     HELP("help", "help") {
         @Override
         protected CommandResult execute(ServerInstance instance, String input) {
-            return new CommandResult() {
-                @Override
-                public String getMessage() {
-                    return instance.getLocalizer().get(LocalizedString.AVAILABLE_COMMANDS);
-                }
-            };
+            return new StringCommandResult(instance.getLocalizer().get(LocalizedString.AVAILABLE_COMMANDS));
         }
     };
 

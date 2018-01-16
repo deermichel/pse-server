@@ -3,7 +3,11 @@ package stream.vispar.server.core;
 import java.util.Collection;
 import java.util.Objects;
 
+import stream.vispar.jsonconverter.exceptions.JsonException;
+import stream.vispar.jsonconverter.gson.GsonConverter;
+import stream.vispar.jsonconverter.types.IJsonElement;
 import stream.vispar.server.core.entities.User;
+import stream.vispar.server.localization.LocalizedString;
 
 /**
  * Controls the users in the system.
@@ -17,6 +21,11 @@ public class UserController {
      */
     private final ServerInstance instance;
     
+    /**
+     * Gson converter.
+     */
+    private final GsonConverter gsonConv;
+    
     
     /**
      * Constructs a new {@link UserController}.
@@ -26,6 +35,7 @@ public class UserController {
      */
     public UserController(ServerInstance instance) {
         this.instance = Objects.requireNonNull(instance);
+        this.gsonConv = new GsonConverter();
     }
     
     /**
@@ -39,6 +49,22 @@ public class UserController {
      *          if a user with the same name exists.
      */
     public User add(User user) {
+        IDatabaseConnector db = instance.getDBConn();
+        
+        if (db.find("users", "name", user.getName()) != null) {
+            throw new IllegalArgumentException(
+                    instance.getLocalizer().get(LocalizedString.USER_ALREADY_EXISTS));
+        }
+        
+        IJsonElement json = db.insert("users", gsonConv.toJson(user));
+        instance.getLogger().log(String.format(instance.getLocalizer().get(LocalizedString.USER_ADDED), 
+                user.getName()));
+        
+        try {
+            return gsonConv.fromJson(json, User.class);
+        } catch (JsonException e) {
+            instance.getLogger().logError(e.toString());
+        }
         return null;
     }
     
