@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import stream.vispar.server.core.entities.User;
+import stream.vispar.server.localization.LocalizedString;
 
 /**
  * Manages authentication of users using tokens.
@@ -48,6 +49,8 @@ public class AuthManager {
     public String login(User user) {
         String token = generateRandomHexToken(64); // 512 bit
         tokens.put(token, user);
+        instance.getLogger().log(String.format(instance.getLocalizer().get(LocalizedString.USER_LOGGED_IN), 
+                user.getName()));
         return token;
     }
     

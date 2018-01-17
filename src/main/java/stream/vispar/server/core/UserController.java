@@ -77,7 +77,16 @@ public class UserController {
      *          if the user did not exist before.
      */
     public void remove(User user) {
+        IDatabaseConnector db = instance.getDBConn();
         
+        if (getByName(user.getName()) == null) {
+            throw new IllegalArgumentException(
+                    instance.getLocalizer().get(LocalizedString.USER_NOT_EXISTS));
+        }
+        
+        db.delete("users", "name", user.getName());
+        instance.getLogger().log(String.format(instance.getLocalizer().get(LocalizedString.USER_REMOVED), 
+                user.getName()));
     }
     
     /**

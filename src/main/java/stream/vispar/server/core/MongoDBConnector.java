@@ -1,6 +1,8 @@
 package stream.vispar.server.core;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Objects;
 
 import org.bson.Document;
@@ -134,16 +136,25 @@ public class MongoDBConnector implements IDatabaseConnector {
 
     @Override
     public Collection<IJsonElement> getAll(String collection) {
+        HashSet<IJsonElement> result = new HashSet<>();
+        try {
+            for (Document doc : database.getCollection(collection).find()) {
+                result.add(gsonConv.fromString(doc.toJson()));
+            }
+            return result;
+        } catch (JsonParseException | JsonSyntaxException e) {
+            instance.getLogger().logError(e.toString());
+        }
         return null;
     }
 
     @Override
-    public IJsonElement update(String collection, String id, IJsonElement data) {
+    public IJsonElement update(String collection, String key, String value, IJsonElement data) {
         return null;
     }
 
     @Override
-    public void delete(String collection, String id) {
-        // database.getCollection(Objects.requireNonNull(collection));
+    public void delete(String collection, String key, String value) {
+        database.getCollection(collection).deleteOne(new Document(key, value));
     }
 }

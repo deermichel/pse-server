@@ -41,10 +41,24 @@ public enum Command {
     /**
      * Command to remove an user.
      */
-    REMOVE_USER("removeuser", "") {
+    REMOVE_USER("removeuser", "removeuser ([^ ]+)") {
         @Override
         protected CommandResult execute(ServerInstance instance, String input) {
-            return null;
+            Matcher matcher = getMatcher(input);
+            if (matcher.matches()) {
+                
+                User user = new User(matcher.group(1), "");
+                try {
+                    instance.getUserCtrl().remove(user);
+                    return new StringCommandResult(instance.getLocalizer().get(LocalizedString.OK));
+                } catch (IllegalArgumentException e) {
+                    return new StringCommandResult(e.getMessage());
+                }
+                
+            } else {
+                return new StringCommandResult(
+                        instance.getLocalizer().get(LocalizedString.INV_REMOVEUSER_SYNTAX));
+            }
         }
     },
     

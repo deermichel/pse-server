@@ -46,6 +46,21 @@ public enum LocalizedString {
     /** OK */
     OK("ok"),
     
+    /** USER_REMOVED */
+    USER_REMOVED("user_removed"),
+    
+    /** USER_NOT_EXISTS */
+    USER_NOT_EXISTS("user_not_exists"),
+    
+    /** INV_REMOVEUSER_SYNTAX */
+    INV_REMOVEUSER_SYNTAX("inv_removeuser_syntax"),
+    
+    /** USER_LOGGED_IN */
+    USER_LOGGED_IN("user_logged_in"),
+    
+    /** USER_LOGGED_OUT */
+    USER_LOGGED_OUT("user_logged_out"),
+    
     /** INV_ADDUSER_SYNTAX */
     INV_ADDUSER_SYNTAX("inv_adduser_syntax");
     

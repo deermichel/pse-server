@@ -100,26 +100,30 @@ public interface IDatabaseConnector {
      * 
      * @param collection
      *          the name of the collection.
-     * @param id
-     *          the id of the data which should be updated.
+     * @param key
+     *          the key of the data which should be updated.
+     * @param value
+     *          the value for the key of the data which should be updated.
      * @param data
      *          a {@link IJsonElement} representation of the new data.
      * @return
      *          a {@link IJsonElement} representation of the updated database entry.
      * @throws IllegalArgumentException
-     *          if collection or id does not exist.
+     *          if collection or entry does not exist.
      */
-    IJsonElement update(String collection, String id, IJsonElement data);
+    IJsonElement update(String collection, String key, String value, IJsonElement data);
     
     /**
      * Deletes data by its identifier in a collection.
      * 
      * @param collection
      *          the name of the collection.
-     * @param id
-     *          the id of the data which should be deleted.
+     * @param key
+     *          the key of the data which should be deleted.
+     * @param value
+     *          the value for the key of the data which should be deleted.
      * @throws IllegalArgumentException
-     *          if collection or id does not exist.
+     *          if collection or entry does not exist.
      */
-    void delete(String collection, String id);
+    void delete(String collection, String key, String value);
 }

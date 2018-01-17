@@ -7,6 +7,8 @@ import spark.Response;
 import spark.Route;
 import spark.RouteImpl;
 import spark.Service;
+import stream.vispar.jsonconverter.gson.GsonConverter;
+import stream.vispar.jsonconverter.types.IJsonElement;
 import stream.vispar.server.ServerApp;
 import stream.vispar.server.localization.LocalizedString;
 
@@ -32,6 +34,11 @@ public class SparkServer implements IRequestHandler {
      */
     private Service http;
     
+    /**
+     * Gson converter.
+     */
+    private final GsonConverter gsonConv;
+    
     
     /**
      * Constructs a new {@link SparkServer}.
@@ -49,6 +56,7 @@ public class SparkServer implements IRequestHandler {
         
         this.instance = Objects.requireNonNull(instance);
         this.port = port;
+        gsonConv = new GsonConverter();
     }
 
     @Override
@@ -64,26 +72,34 @@ public class SparkServer implements IRequestHandler {
         });
         
         // register routes
-        // TODO: auth!
+        // TODO: auth!, sensor routes
         http.get("/", (req, res) -> "Vispar Server " + ServerApp.VERSION);
-        for (ApiRoute route : ApiRoute.values()) {
-            switch (route.getType()) {
-            case GET:
-                http.get(route.getEndpoint(), createRoute(route));
-                break;
-            case POST:
-                http.post(route.getEndpoint(), createRoute(route));
-                break;
-            case PUT:
-                http.put(route.getEndpoint(), createRoute(route));
-                break;
-            case DELETE:
-                http.delete(route.getEndpoint(), createRoute(route));
-                break;
-            default:
-                throw new IllegalStateException("Unknown route type");
+        
+        // api routes
+        http.path("/api", () -> {
+            http.before("/*", (req, res) -> {
+                
+            });
+            for (ApiRoute route : ApiRoute.values()) {
+                switch (route.getType()) {
+                case GET:
+                    http.get(route.getEndpoint(), createRoute(route));
+                    break;
+                case POST:
+                    http.post(route.getEndpoint(), createRoute(route));
+                    break;
+                case PUT:
+                    http.put(route.getEndpoint(), createRoute(route));
+                    break;
+                case DELETE:
+                    http.delete(route.getEndpoint(), createRoute(route));
+                    break;
+                default:
+                    throw new IllegalStateException("Unknown route type");
+                }
             }
-        }
+        });
+        
         http.awaitInitialization();
         
         instance.getLogger().log(
@@ -110,11 +126,8 @@ public class SparkServer implements IRequestHandler {
         return new Route() {
             @Override
             public Object handle(Request req, Response res) throws Exception {
-                System.out.println("body:" + req.body());
-                System.out.println("params:" + req.params());
-                System.out.println("attrs:" + req.attributes());
-                System.out.println("query:" + req.queryParams());
-                return null;
+                IJsonElement jsonReq = gsonConv.fromString(req.body());
+                return route.execute(instance, jsonReq);
             }
         };
     }
