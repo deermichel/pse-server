@@ -110,7 +110,10 @@ public class SparkServer implements IRequestHandler {
         return new Route() {
             @Override
             public Object handle(Request req, Response res) throws Exception {
-                System.out.println(req.body());
+                System.out.println("body:" + req.body());
+                System.out.println("params:" + req.params());
+                System.out.println("attrs:" + req.attributes());
+                System.out.println("query:" + req.queryParams());
                 return null;
             }
         };

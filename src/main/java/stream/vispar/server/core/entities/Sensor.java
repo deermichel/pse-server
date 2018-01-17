@@ -7,6 +7,10 @@ import java.util.Map;
 
 import stream.vispar.jsonconverter.types.IJsonElement;
 import stream.vispar.model.nodes.Attribute;
+import stream.vispar.model.nodes.AttributeType;
+import stream.vispar.model.nodes.Operand;
+import stream.vispar.model.nodes.Point;
+import stream.vispar.model.nodes.inputs.SensorNode;
 import stream.vispar.server.engine.IEngine;
 
 /**
@@ -104,5 +108,15 @@ public class Sensor {
      */
     public Event parseEvent(IJsonElement data) {
         return null;
+    }
+    
+    /**
+     * Parses the {@link Sensor} to a {@link SensorNode} which can be used on the client.
+     * 
+     * @return
+     *          the {@link SensorNode}.
+     */
+    public SensorNode getSensorNode() {
+        return new SensorNode("", new Point(0, 0), name, desc, new Operand(new Attribute("todo", "", AttributeType.STRING)));
     }
 }
