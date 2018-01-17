@@ -1,6 +1,7 @@
 package stream.vispar.server.core;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Objects;
 
 import stream.vispar.jsonconverter.IJsonConverter;
@@ -117,6 +118,16 @@ public class UserController {
      *          collection of all {@link User users}.
      */
     public Collection<User> getAll() {
+        Collection<IJsonElement> jsonCol = instance.getDBConn().getAll("users");
+        Collection<User> users = new HashSet<>();
+        try {
+            for (IJsonElement json : jsonCol) {
+                users.add(jsonConv.fromJson(json, User.class));
+            }
+            return users;
+        } catch (JsonException e) {
+            instance.getLogger().logError(e.toString());
+        }
         return null;
     }
 }

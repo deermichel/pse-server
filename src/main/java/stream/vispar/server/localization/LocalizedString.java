@@ -61,6 +61,18 @@ public enum LocalizedString {
     /** USER_LOGGED_OUT */
     USER_LOGGED_OUT("user_logged_out"),
     
+    /** INV_STOP_SYNTAX */
+    INV_STOP_SYNTAX("inv_stop_syntax"),
+    
+    /** INV_HELP_SYNTAX */
+    INV_HELP_SYNTAX("inv_help_syntax"),
+    
+    /** INV_LISTUSERS_SYNTAX */
+    INV_LISTUSERS_SYNTAX("inv_listusers_syntax"),
+    
+    /** USERS **/
+    USERS("users"),
+    
     /** INV_ADDUSER_SYNTAX */
     INV_ADDUSER_SYNTAX("inv_adduser_syntax");
     

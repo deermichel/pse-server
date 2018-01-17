@@ -127,7 +127,7 @@ public class SparkServer implements IRequestHandler {
         return new Route() {
             @Override
             public Object handle(Request req, Response res) throws Exception {
-                IJsonElement jsonReq = gsonConv.fromString(req.body());
+                IJsonElement jsonReq = jsonConv.fromString(req.body());
                 return route.execute(instance, jsonReq);
             }
         };

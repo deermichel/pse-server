@@ -1,7 +1,11 @@
 package stream.vispar.server.cli;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import stream.vispar.server.core.ServerInstance;
 import stream.vispar.server.core.entities.User;
@@ -65,10 +69,19 @@ public enum Command {
     /**
      * Command to list all users.
      */
-    LIST_USERS("listusers", "") {
+    LIST_USERS("listusers", "listusers") {
         @Override
         protected CommandResult execute(ServerInstance instance, String input) {
-            return null;
+            if (getMatcher(input).matches()) {
+                List<String> usernames = instance.getUserCtrl().getAll()
+                        .stream().map(user -> user.getName()).collect(Collectors.toList());
+                String result = String.format(instance.getLocalizer().get(LocalizedString.USERS), 
+                        String.join(", ", usernames));
+                return new StringCommandResult(result);
+            } else {
+                return new StringCommandResult(
+                        instance.getLocalizer().get(LocalizedString.INV_LISTUSERS_SYNTAX));
+            }
         }
     },
     
@@ -98,8 +111,14 @@ public enum Command {
     STOP_SERVER("stop", "stop") {
         @Override
         protected CommandResult execute(ServerInstance instance, String input) {
-            instance.stop();
-            return new StringCommandResult(instance.getLocalizer().get(LocalizedString.SERVER_STOPPED));
+            if (getMatcher(input).matches()) {
+                instance.stop();
+                return new StringCommandResult(
+                        instance.getLocalizer().get(LocalizedString.SERVER_STOPPED));
+            } else {
+                return new StringCommandResult(
+                        instance.getLocalizer().get(LocalizedString.INV_STOP_SYNTAX));
+            }
         }
     },
     
@@ -109,7 +128,13 @@ public enum Command {
     HELP("help", "help") {
         @Override
         protected CommandResult execute(ServerInstance instance, String input) {
-            return new StringCommandResult(instance.getLocalizer().get(LocalizedString.AVAILABLE_COMMANDS));
+            if (getMatcher(input).matches()) {
+                return new StringCommandResult(
+                        instance.getLocalizer().get(LocalizedString.AVAILABLE_COMMANDS));
+            } else {
+                return new StringCommandResult(
+                        instance.getLocalizer().get(LocalizedString.INV_HELP_SYNTAX));
+            }
         }
     };
 

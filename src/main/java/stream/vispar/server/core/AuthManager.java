@@ -61,7 +61,9 @@ public class AuthManager {
      *          the access token of the user.
      */
     public void logout(String token) {
-        tokens.remove(token);
+        User user = tokens.remove(token);
+        instance.getLogger().log(String.format(instance.getLocalizer().get(LocalizedString.USER_LOGGED_OUT), 
+                user.getName()));
     }
     
     /**

@@ -57,8 +57,8 @@ public class User {
     
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof User &&
-                name.equals(((User) obj).name);
+        return obj instanceof User
+                && name.equals(((User) obj).name);
     }
     
     @Override
