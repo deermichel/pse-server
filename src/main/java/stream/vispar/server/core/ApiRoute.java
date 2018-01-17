@@ -132,11 +132,6 @@ public enum ApiRoute {
      */
     private final RouteType type;
     
-    /**
-     * Gson converter.
-     */
-    protected final IJsonConverter jsonConv;
-    
     
     /**
      * Constructs a new {@link ApiRoute}.
@@ -149,7 +144,6 @@ public enum ApiRoute {
     ApiRoute(RouteType type, String endpoint) {
         this.endpoint = endpoint;
         this.type = type;
-        jsonConv = new GsonConverter();
     }
     
     /**

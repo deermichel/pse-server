@@ -16,6 +16,7 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoDriverInformation;
 import com.mongodb.client.model.Filters;
 
+import stream.vispar.jsonconverter.IJsonConverter;
 import stream.vispar.jsonconverter.exceptions.JsonParseException;
 import stream.vispar.jsonconverter.exceptions.JsonSyntaxException;
 import stream.vispar.jsonconverter.gson.GsonConverter;
@@ -50,9 +51,9 @@ public class MongoDBConnector implements IDatabaseConnector {
     private MongoDatabase database;
     
     /**
-     * Gson converter.
+     * Json converter.
      */
-    private final GsonConverter gsonConv;
+    private final IJsonConverter jsonConv;
     
 
     /**
@@ -66,7 +67,7 @@ public class MongoDBConnector implements IDatabaseConnector {
     public MongoDBConnector(ServerInstance instance, String url) {
         this.instance = Objects.requireNonNull(instance);
         this.url = new MongoClientURI("mongodb://" + Objects.requireNonNull(url));
-        this.gsonConv = new GsonConverter();
+        this.jsonConv = new GsonConverter();
     }
 
     @Override
@@ -108,7 +109,7 @@ public class MongoDBConnector implements IDatabaseConnector {
         Document doc = Document.parse(data.toString());
         database.getCollection(collection).insertOne(doc);
         try {
-            return gsonConv.fromString(doc.toJson());
+            return jsonConv.fromString(doc.toJson());
         } catch (JsonParseException | JsonSyntaxException e) {
             instance.getLogger().logError(e.toString());
         }
@@ -127,7 +128,7 @@ public class MongoDBConnector implements IDatabaseConnector {
             return null;
         }
         try {
-            return gsonConv.fromString(doc.toJson());
+            return jsonConv.fromString(doc.toJson());
         } catch (JsonParseException | JsonSyntaxException e) {
             instance.getLogger().logError(e.toString());
         }
@@ -139,7 +140,7 @@ public class MongoDBConnector implements IDatabaseConnector {
         HashSet<IJsonElement> result = new HashSet<>();
         try {
             for (Document doc : database.getCollection(collection).find()) {
-                result.add(gsonConv.fromString(doc.toJson()));
+                result.add(jsonConv.fromString(doc.toJson()));
             }
             return result;
         } catch (JsonParseException | JsonSyntaxException e) {

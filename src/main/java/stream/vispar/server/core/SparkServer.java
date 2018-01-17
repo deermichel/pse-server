@@ -7,6 +7,7 @@ import spark.Response;
 import spark.Route;
 import spark.RouteImpl;
 import spark.Service;
+import stream.vispar.jsonconverter.IJsonConverter;
 import stream.vispar.jsonconverter.gson.GsonConverter;
 import stream.vispar.jsonconverter.types.IJsonElement;
 import stream.vispar.server.ServerApp;
@@ -35,9 +36,9 @@ public class SparkServer implements IRequestHandler {
     private Service http;
     
     /**
-     * Gson converter.
+     * Json converter.
      */
-    private final GsonConverter gsonConv;
+    private final IJsonConverter jsonConv;
     
     
     /**
@@ -56,7 +57,7 @@ public class SparkServer implements IRequestHandler {
         
         this.instance = Objects.requireNonNull(instance);
         this.port = port;
-        gsonConv = new GsonConverter();
+        jsonConv = new GsonConverter();
     }
 
     @Override

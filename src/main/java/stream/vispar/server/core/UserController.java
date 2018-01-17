@@ -3,6 +3,7 @@ package stream.vispar.server.core;
 import java.util.Collection;
 import java.util.Objects;
 
+import stream.vispar.jsonconverter.IJsonConverter;
 import stream.vispar.jsonconverter.exceptions.JsonException;
 import stream.vispar.jsonconverter.gson.GsonConverter;
 import stream.vispar.jsonconverter.types.IJsonElement;
@@ -22,9 +23,9 @@ public class UserController {
     private final ServerInstance instance;
     
     /**
-     * Gson converter.
+     * Json converter.
      */
-    private final GsonConverter gsonConv;
+    private final IJsonConverter jsonConv;
     
     
     /**
@@ -35,7 +36,7 @@ public class UserController {
      */
     public UserController(ServerInstance instance) {
         this.instance = Objects.requireNonNull(instance);
-        this.gsonConv = new GsonConverter();
+        this.jsonConv = new GsonConverter();
     }
     
     /**
@@ -56,12 +57,12 @@ public class UserController {
                     instance.getLocalizer().get(LocalizedString.USER_ALREADY_EXISTS));
         }
         
-        IJsonElement json = db.insert("users", gsonConv.toJson(user));
+        IJsonElement json = db.insert("users", jsonConv.toJson(user));
         instance.getLogger().log(String.format(instance.getLocalizer().get(LocalizedString.USER_ADDED), 
                 user.getName()));
         
         try {
-            return gsonConv.fromJson(json, User.class);
+            return jsonConv.fromJson(json, User.class);
         } catch (JsonException e) {
             instance.getLogger().logError(e.toString());
         }
@@ -101,7 +102,7 @@ public class UserController {
         IJsonElement json = instance.getDBConn().find("users", "name", name);
         if (json != null) {
             try {
-                return gsonConv.fromJson(json, User.class);
+                return jsonConv.fromJson(json, User.class);
             } catch (JsonException e) {
                 instance.getLogger().logError(e.toString());
             }
