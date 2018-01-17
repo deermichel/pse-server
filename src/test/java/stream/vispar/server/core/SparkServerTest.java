@@ -78,12 +78,6 @@ public class SparkServerTest {
     public void testStart() throws IOException {
         SparkServer server = new SparkServer(instance, 8080);
         server.start();
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        
         assertThat(new Socket("localhost", 8080), notNullValue());
         server.stop();
     }
@@ -97,13 +91,7 @@ public class SparkServerTest {
     public void testStop() throws IOException {
         SparkServer server = new SparkServer(instance, 8081);
         server.start();
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         server.stop();
-        
         new Socket("localhost", 8081).close();
     }
 }

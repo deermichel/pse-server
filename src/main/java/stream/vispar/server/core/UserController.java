@@ -51,7 +51,7 @@ public class UserController {
     public User add(User user) {
         IDatabaseConnector db = instance.getDBConn();
         
-        if (db.find("users", "name", user.getName()) != null) {
+        if (getByName(user.getName()) != null) {
             throw new IllegalArgumentException(
                     instance.getLocalizer().get(LocalizedString.USER_ALREADY_EXISTS));
         }
@@ -89,6 +89,14 @@ public class UserController {
      *          the {@link User} or null if not found.
      */
     public User getByName(String name) {
+        IJsonElement json = instance.getDBConn().find("users", "name", name);
+        if (json != null) {
+            try {
+                return gsonConv.fromJson(json, User.class);
+            } catch (JsonException e) {
+                instance.getLogger().logError(e.toString());
+            }
+        }
         return null;
     }
     

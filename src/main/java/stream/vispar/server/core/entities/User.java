@@ -54,4 +54,15 @@ public class User {
     public boolean checkPassword(String password) {
         return this.password.equals(password);
     }
+    
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof User &&
+                name.equals(((User) obj).name);
+    }
+    
+    @Override
+    public int hashCode() {
+        return name.hashCode();
+    }
 }

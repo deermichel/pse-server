@@ -1,5 +1,9 @@
 package stream.vispar.server.core;
 
+import java.math.BigInteger;
+import java.security.SecureRandom;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import stream.vispar.server.core.entities.User;
@@ -16,6 +20,11 @@ public class AuthManager {
      */
     private final ServerInstance instance;
     
+    /**
+     * User to token mapping.
+     */
+    private final Map<String, User> tokens;
+    
     
     /**
      * Constructs a new {@link AuthManager}.
@@ -25,6 +34,7 @@ public class AuthManager {
      */
     public AuthManager(ServerInstance instance) {
         this.instance = Objects.requireNonNull(instance);
+        tokens = new HashMap<>();
     }
     
     /**
@@ -36,7 +46,9 @@ public class AuthManager {
      *          the access token of the user.         
      */
     public String login(User user) {
-        return "";
+        String token = generateRandomHexToken(64); // 512 bit
+        tokens.put(token, user);
+        return token;
     }
     
     /**
@@ -46,7 +58,7 @@ public class AuthManager {
      *          the access token of the user.
      */
     public void logout(String token) {
-        
+        tokens.remove(token);
     }
     
     /**
@@ -58,6 +70,23 @@ public class AuthManager {
      *          the authenticated user or null if token is invalid.
      */
     public User authenticate(String token) {
-        return null;
+        return tokens.get(token);
+    }
+    
+    /**
+     * Generates a random token in hex format.
+     * 
+     * https://stackoverflow.com/questions/41107/how-to-generate-a-random-alpha-numeric-string/41156#41156
+     * 
+     * @param byteLength
+     *          byte length of the token.
+     * @return
+     *          the token.
+     */
+    private static String generateRandomHexToken(int byteLength) {
+        SecureRandom secureRandom = new SecureRandom();
+        byte[] token = new byte[byteLength];
+        secureRandom.nextBytes(token);
+        return new BigInteger(1, token).toString(16); // hex encoding
     }
 }

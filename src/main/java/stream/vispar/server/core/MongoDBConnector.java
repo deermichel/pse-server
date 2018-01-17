@@ -78,10 +78,11 @@ public class MongoDBConnector implements IDatabaseConnector {
                     String.format(instance.getLocalizer().get(LocalizedString.CONNECTED_TO_DATABASE), 
                             url));
         } catch (MongoException e) {
-            instance.getLogger().log(
+            instance.getLogger().logError(
                     String.format(instance.getLocalizer().get(LocalizedString.CANNOT_CONNECT_DATABASE), 
                             e.toString()));
             instance.stop();
+            System.exit(1);
         }
     }
 

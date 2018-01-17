@@ -2,7 +2,12 @@ package stream.vispar.server.core;
 
 import java.util.Objects;
 
+import spark.Request;
+import spark.Response;
+import spark.Route;
+import spark.RouteImpl;
 import spark.Service;
+import stream.vispar.server.ServerApp;
 import stream.vispar.server.localization.LocalizedString;
 
 /**
@@ -52,13 +57,34 @@ public class SparkServer implements IRequestHandler {
         
         // register error callback
         http.initExceptionHandler((exception) -> {
-            instance.getLogger().logError(instance.getLocalizer().get(LocalizedString.CANNOT_START_SPARK)
-                    + exception.toString());
+            instance.getLogger().logError(String.format(
+                    instance.getLocalizer().get(LocalizedString.CANNOT_START_SPARK), exception.toString()));
             instance.stop();
+            System.exit(1);
         });
         
         // register routes
-        http.get("/", (req, res) -> "Hi");
+        // TODO: auth!
+        http.get("/", (req, res) -> "Vispar Server " + ServerApp.VERSION);
+        for (ApiRoute route : ApiRoute.values()) {
+            switch (route.getType()) {
+            case GET:
+                http.get(route.getEndpoint(), createRoute(route));
+                break;
+            case POST:
+                http.post(route.getEndpoint(), createRoute(route));
+                break;
+            case PUT:
+                http.put(route.getEndpoint(), createRoute(route));
+                break;
+            case DELETE:
+                http.delete(route.getEndpoint(), createRoute(route));
+                break;
+            default:
+                throw new IllegalStateException("Unknown route type");
+            }
+        }
+        http.awaitInitialization();
         
         instance.getLogger().log(
                 String.format(instance.getLocalizer().get(LocalizedString.LISTENING_FOR_API_REQUESTS), 
@@ -70,5 +96,23 @@ public class SparkServer implements IRequestHandler {
         if (http != null) {
             http.stop();
         }
+    }
+    
+    /**
+     * Creates a Spark {@link Route} for an {@link ApiRoute}.
+     * 
+     * @param route
+     *              the {@link ApiRoute} to be transformed.
+     * @return
+     *              the Spark specific {@link Route}.
+     */
+    private Route createRoute(ApiRoute route) {
+        return new Route() {
+            @Override
+            public Object handle(Request req, Response res) throws Exception {
+                System.out.println(req.body());
+                return null;
+            }
+        };
     }
 }

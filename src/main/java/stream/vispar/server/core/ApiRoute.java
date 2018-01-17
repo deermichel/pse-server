@@ -12,7 +12,7 @@ public enum ApiRoute {
     /**
      * POST route to log in an user.
      */
-    POST_LOGIN("/login") {
+    POST_LOGIN(RouteType.POST, "/login") {
         @Override
         public IJsonElement execute(ServerInstance instance, IJsonElement request) {
             return null;
@@ -22,7 +22,7 @@ public enum ApiRoute {
     /**
      * POST route to log out an user.
      */
-    POST_LOGOUT("/logout") {
+    POST_LOGOUT(RouteType.POST, "/logout") {
         @Override
         public IJsonElement execute(ServerInstance instance, IJsonElement request) {
             return null;
@@ -32,7 +32,7 @@ public enum ApiRoute {
     /**
      * GET route to list all patterns or get a specific one.
      */
-    GET_PATTERNS("/patterns") {
+    GET_PATTERNS(RouteType.GET, "/patterns") {
         @Override
         public IJsonElement execute(ServerInstance instance, IJsonElement request) {
             return null;
@@ -42,7 +42,7 @@ public enum ApiRoute {
     /**
      * POST route to create a new pattern.
      */
-    POST_PATTERNS("/patterns") {
+    POST_PATTERNS(RouteType.POST, "/patterns") {
         @Override
         public IJsonElement execute(ServerInstance instance, IJsonElement request) {
             return null;
@@ -52,7 +52,7 @@ public enum ApiRoute {
     /**
      * PUT route to modify a pattern.
      */
-    PUT_PATTERNS("/patterns") {
+    PUT_PATTERNS(RouteType.PUT, "/patterns") {
         @Override
         public IJsonElement execute(ServerInstance instance, IJsonElement request) {
             return null;
@@ -62,7 +62,7 @@ public enum ApiRoute {
     /**
      * DELETE route to delete a pattern.
      */
-    DELETE_PATTERNS("/patterns") {
+    DELETE_PATTERNS(RouteType.DELETE, "/patterns") {
         @Override
         public IJsonElement execute(ServerInstance instance, IJsonElement request) {
             return null;
@@ -72,7 +72,7 @@ public enum ApiRoute {
     /**
      * POST route to deploy a pattern.
      */
-    POST_PATTERNS_DEPLOY("/patterns/deploy") {
+    POST_PATTERNS_DEPLOY(RouteType.POST, "/patterns/deploy") {
         @Override
         public IJsonElement execute(ServerInstance instance, IJsonElement request) {
             return null;
@@ -82,7 +82,7 @@ public enum ApiRoute {
     /**
      * POST route to undeploy a pattern.
      */
-    POST_PATTERNS_UNDEPLOY("/patterns/deploy") {
+    POST_PATTERNS_UNDEPLOY(RouteType.POST, "/patterns/deploy") {
         @Override
         public IJsonElement execute(ServerInstance instance, IJsonElement request) {
             return null;
@@ -92,7 +92,7 @@ public enum ApiRoute {
     /**
      * GET route to list all sensors.
      */
-    GET_SENSORS("/sensors") {
+    GET_SENSORS(RouteType.GET, "/sensors") {
         @Override
         public IJsonElement execute(ServerInstance instance, IJsonElement request) {
             return null;
@@ -105,6 +105,11 @@ public enum ApiRoute {
      */
     private final String endpoint;
     
+    /**
+     * Type of the route.
+     */
+    private final RouteType type;
+    
     
     /**
      * Constructs a new {@link ApiRoute}.
@@ -112,8 +117,9 @@ public enum ApiRoute {
      * @param endpoint
      *          the endpoint of the route.
      */
-    ApiRoute(String endpoint) {
+    ApiRoute(RouteType type, String endpoint) {
         this.endpoint = endpoint;
+        this.type = type;
     }
     
     /**
@@ -124,6 +130,16 @@ public enum ApiRoute {
      */
     public String getEndpoint() {
         return endpoint;
+    }
+    
+    /**
+     * Returns the type of the route.
+     * 
+     * @return
+     *          the type.
+     */
+    public RouteType getType() {
+        return type;
     }
     
     /**
