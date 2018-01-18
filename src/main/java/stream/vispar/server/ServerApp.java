@@ -105,10 +105,6 @@ public final class ServerApp {
         instance = new ServerInstance(config);
         instance.start();
         
-        
-        Pattern pat = new Pattern("1473847", false, "Hello");
-        instance.getPatternCtrl().update(pat);
-        
         // command REPL
         if (repl) {
             commandREPL();

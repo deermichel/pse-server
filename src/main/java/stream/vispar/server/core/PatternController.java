@@ -1,5 +1,7 @@
 package stream.vispar.server.core;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -10,6 +12,7 @@ import stream.vispar.jsonconverter.exceptions.JsonException;
 import stream.vispar.jsonconverter.gson.GsonConverter;
 import stream.vispar.jsonconverter.types.IJsonElement;
 import stream.vispar.model.Pattern;
+import stream.vispar.server.localization.LocalizedString;
 
 /**
  * Controls the patterns in the system.
@@ -28,6 +31,11 @@ public class PatternController {
      */
     private final IJsonConverter jsonConv;
     
+    /**
+     * Timestamp formatter.
+     */
+    private final SimpleDateFormat dateFormat;
+    
     
     /**
      * Constructs a new {@link PatternController}.
@@ -38,6 +46,7 @@ public class PatternController {
     public PatternController(ServerInstance instance) {
         this.instance = Objects.requireNonNull(instance);
         this.jsonConv = new GsonConverter();
+        this.dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
     }
     
     /**
@@ -68,16 +77,46 @@ public class PatternController {
         IDatabaseConnector db = instance.getDBConn();
         
         // already exists?
-        if (getById(pattern.getId()) != null) {
+        Pattern existingPattern = getById(pattern.getId());
+        if (existingPattern != null) {
             
             // check timestamps
+            try {
+//         TODO:       if (dateFormat.parse(existingPattern.getLastUpdated())
+//                        .after(dateFormat.parse(pattern.getLastUpdated()))) {#
+                if (false) {
+                    dateFormat.parse("2014/09/12 00:00");
+                    throw new IllegalArgumentException("Newer version of pattern already saved");
+                }
+            } catch (ParseException e) {
+                instance.getLogger().logError(e.toString());
+            }
             
+            // update pattern
+            IJsonElement json = db.update("patterns", "id", pattern.getId(), jsonConv.toJson(pattern));
+            instance.getLogger().log(String.format(
+                    instance.getLocalizer().get(LocalizedString.PATTERN_UPDATED), pattern.getName()));
+            
+            // return updated pattern
+            try {
+                return jsonConv.fromJson(json);
+            } catch (JsonException e) {
+                instance.getLogger().logError(e.toString());
+            }
             
         } else {
             
-            // create new
+            // create pattern
             IJsonElement json = db.insert("patterns", jsonConv.toJson(pattern));
+            instance.getLogger().log(String.format(
+                    instance.getLocalizer().get(LocalizedString.PATTERN_CREATED), pattern.getName()));
             
+            // return created pattern
+            try {
+                return jsonConv.fromJson(json);
+            } catch (JsonException e) {
+                instance.getLogger().logError(e.toString());
+            }
         }
         return null;
     }

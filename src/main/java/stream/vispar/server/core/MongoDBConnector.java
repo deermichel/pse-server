@@ -151,6 +151,13 @@ public class MongoDBConnector implements IDatabaseConnector {
 
     @Override
     public IJsonElement update(String collection, String key, String value, IJsonElement data) {
+        Document doc = Document.parse(data.toString());
+        database.getCollection(collection).replaceOne(new Document(key, value),  doc);
+        try {
+            return jsonConv.fromString(doc.toJson());
+        } catch (JsonParseException | JsonSyntaxException e) {
+            instance.getLogger().logError(e.toString());
+        }
         return null;
     }
 

@@ -19,7 +19,7 @@ import java.util.Objects;
 public class FileLogger implements ILogger {
     
     /**
-     * File path
+     * File path.
      */
     private final Path filePath;
     
@@ -29,7 +29,7 @@ public class FileLogger implements ILogger {
     private final boolean timestamps;
     
     /**
-     * Date formatter
+     * Timestamp formatter.
      */
     private final SimpleDateFormat dateFormat;
     

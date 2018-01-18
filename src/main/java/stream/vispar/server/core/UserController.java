@@ -58,10 +58,12 @@ public class UserController {
                     instance.getLocalizer().get(LocalizedString.USER_ALREADY_EXISTS));
         }
         
+        // create user
         IJsonElement json = db.insert("users", jsonConv.toJson(user));
         instance.getLogger().log(String.format(instance.getLocalizer().get(LocalizedString.USER_ADDED), 
                 user.getName()));
         
+        // return created user
         try {
             return jsonConv.fromJson(json, User.class);
         } catch (JsonException e) {
