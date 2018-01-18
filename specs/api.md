@@ -2,7 +2,13 @@
 
 ## General
 API base URL: `http://<ipAddressOfServer>/api`  
-Request authorization header: `Authorization: Bearer <token>`
+Request authorization header: `Authorization: Bearer <token>`  
+Response on error:
+```json
+{
+    "error": "<code>"
+}
+```
 
 ## Overview
 * [Authentication](#authentication)
@@ -22,30 +28,37 @@ Logs an user in.
     "password": "<sha512-encrypted password>"
 }
 
-// response (if succeeded, status = 200)
+// response
 {
     "token": "<token>"
 }
+
+// errors
+1000 Invalid request format.
+2000 User not found or password incorrect.
 ```
 
 #### POST `/auth/logout`
 Logs an user out.
 ```json
 // no request parameters needed
-// empty response (if succeeded, status = 204)
+// empty response
 ```
 
 ### Patterns
 
-#### GET `/patterns`
+#### GET `/patterns/all`
 Returns a list of all patterns existing on the server (using proxy objects).
 ```json
 // no request parameters needed
-// response (if succeeded, status = 200)
+// response
 [
     "<patternProxyObject>",
     "..."
 ]
+
+// errors
+1001 Not authorized.
 ```
 
 #### GET `/patterns`
@@ -56,57 +69,80 @@ Returns the (complete) pattern from the server.
     "id": "<patternId>"
 }
 
-// response (if succeeded, status = 200)
+// response
 "<patternObject>"
+
+// errors
+1000 Invalid request format.
+1001 Not authorized.
+3000 Pattern not found.
 ```
 
 #### POST `/patterns`
-Creates a new pattern on the server.
+Creates or updates a pattern on the server.
 ```json
 // request parameters
 "<patternObject>"
 
-// response (if succeeded, status = 201)
+// response
 "<patternObject>"
+
+// errors
+1000 Invalid request format.
+1001 Not authorized.
+3001 Pattern previously edited by another user -> resend with new id.
 ```
 
-#### PUT `/patterns`
-Updates the pattern on the server.
-```json
-// request parameters
-"<patternObject>"
-
-// response (if succeeded, status = 200)
-"<patternObject>"
-```
-
-#### DELETE `/patterns`
+#### POST `/patterns/delete`
 Deletes the pattern from the server.
 ```json
 // request parameters
-"<patternObject>"
+{
+    "id": "<patternId>"
+}
 
-// empty response (if succeeded, status = 204)
+// empty response
+
+// errors
+1000 Invalid request format.
+1001 Not authorized.
+3000 Pattern not found.
 ```
 
 #### POST `/patterns/deploy`
 Deploys the pattern on the server.
 ```json
 // request parameters
+{
+    "id": "<patternId>"
+}
+
+// response
 "<patternObject>"
 
-// response (if succeeded, status = 200)
-"<patternObject>"
+// errors
+1000 Invalid request format.
+1001 Not authorized.
+3000 Pattern not found.
+3002 Pattern already deployed.
 ```
 
 #### POST `/patterns/undeploy`
 Undeploys the pattern on the server.
 ```json
 // request parameters
+{
+    "id": "<patternId>"
+}
+
+// response
 "<patternObject>"
 
-// response (if succeeded, status = 200)
-"<patternObject>"
+// errors
+1000 Invalid request format.
+1001 Not authorized.
+3000 Pattern not found.
+3003 Pattern not deployed.
 ```
 
 ### Sensors
@@ -115,9 +151,12 @@ Undeploys the pattern on the server.
 Returns a list of all sensors registered on the server.
 ```json
 // no request parameters needed
-// response (if succeeded, status = 200)
+// response
 [
     "<sensorObject - we have to agree on a commonly used class??>",
     "..."
 ]
+
+// errors
+1001 Not authorized.
 ```
