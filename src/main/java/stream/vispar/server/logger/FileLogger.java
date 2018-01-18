@@ -75,7 +75,7 @@ public class FileLogger implements ILogger {
     }
     
     /**
-     * Generates a (ISO-standard) timestamp for the current time.
+     * Generates a timestamp for the current time.
      * 
      * @return
      *          the timestamp string.

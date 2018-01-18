@@ -1,5 +1,7 @@
 package stream.vispar.server;
 
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -19,6 +21,7 @@ import stream.vispar.jsonconverter.exceptions.JsonParseException;
 import stream.vispar.jsonconverter.exceptions.JsonSyntaxException;
 import stream.vispar.jsonconverter.gson.GsonConverter;
 import stream.vispar.jsonconverter.types.IJsonElement;
+import stream.vispar.model.Pattern;
 import stream.vispar.model.nodes.inputs.SensorNode;
 import stream.vispar.server.cli.Command;
 import stream.vispar.server.cli.CommandResult;
@@ -83,15 +86,8 @@ public final class ServerApp {
 //        instance = new ServerInstance(config);
 //        MongoDBConnector conn = new MongoDBConnector(instance, "localhost");
 //        conn.connect();
-//        IJsonElement el = conn.find("users", "name", "Nico");
-//        try {
-//            User user = new GsonConverter().fromJson(el, User.class);
-//            System.out.println(el);
-//            System.out.println(user.getName());
-//        } catch (JsonException e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        }
+//        Pattern pat = new Pattern("1473847", false, "Hello");
+//        System.out.println(new GsonConverter().toJson(pat).toString());
 //        System.exit(1);
         
         // use system default console
@@ -108,6 +104,10 @@ public final class ServerApp {
         // setup server instance
         instance = new ServerInstance(config);
         instance.start();
+        
+        
+        Pattern pat = new Pattern("1473847", false, "Hello");
+        instance.getPatternCtrl().update(pat);
         
         // command REPL
         if (repl) {

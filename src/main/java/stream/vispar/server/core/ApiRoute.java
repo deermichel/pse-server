@@ -24,20 +24,27 @@ public enum ApiRoute {
     POST_LOGIN(RouteType.POST, "/auth/login") {
         @Override
         public IJsonElement execute(ServerInstance instance, IJsonElement request) {
+            IJsonObject response = new GsonJsonObject();
             try {
-                String password = request.getAsJsonObject().getAsJsonPrimitive("password").getAsString();
-                String username = request.getAsJsonObject().getAsJsonPrimitive("username").getAsString();
+                // parse json
+                String password = request.getAsJsonObject().get("data")
+                        .getAsJsonObject().getAsJsonPrimitive("password").getAsString();
+                String username = request.getAsJsonObject().get("data")
+                        .getAsJsonObject().getAsJsonPrimitive("username").getAsString();
+                
+                // get user and check password
                 User user = instance.getUserCtrl().getByName(username);
                 if (user != null && user.checkPassword(password)) {
                     String token = instance.getAuthMgr().login(user);
-                    IJsonObject response = new GsonJsonObject();
                     response.add("token", token);
-                    return response;
+                } else {
+                    response.add("error", RouteError.UNKNOWN_CREDENTIALS.getCode());
                 }
-            } catch (JsonParseException e) {
+            } catch (JsonParseException | NullPointerException e) {
                 instance.getLogger().logError(e.toString());
+                response.add("error", RouteError.INVALID_REQUEST.getCode());
             }
-            return null;
+            return response;
         }
     },
     
@@ -47,12 +54,33 @@ public enum ApiRoute {
     POST_LOGOUT(RouteType.POST, "/auth/logout") {
         @Override
         public IJsonElement execute(ServerInstance instance, IJsonElement request) {
+            System.out.println(request);
+            try {
+                // logout if user was logged in
+                if (request.getAsJsonObject().has("user")) {
+                    String token = request.getAsJsonObject().getAsJsonPrimitive("token").getAsString();
+                    instance.getAuthMgr().logout(token);
+                }
+            } catch (JsonParseException e) {
+                instance.getLogger().logError(e.toString()); // who cares?
+            }
+            return new GsonJsonObject();
+        }
+    },
+    
+    /**
+     * GET route to list all patterns (as proxies).
+     */
+    GET_PATTERNS_ALL(RouteType.GET, "/patterns/all") {
+        @Override
+        public IJsonElement execute(ServerInstance instance, IJsonElement request) {
+            System.out.println(request);
             return null;
         }
     },
     
     /**
-     * GET route to list all patterns or get a specific one.
+     * GET route to get a specific pattern.
      */
     GET_PATTERNS(RouteType.GET, "/patterns") {
         @Override
@@ -62,7 +90,7 @@ public enum ApiRoute {
     },
     
     /**
-     * POST route to create a new pattern.
+     * POST route to create or update a pattern.
      */
     POST_PATTERNS(RouteType.POST, "/patterns") {
         @Override
@@ -72,19 +100,9 @@ public enum ApiRoute {
     },
     
     /**
-     * PUT route to modify a pattern.
+     * POST route to delete a pattern.
      */
-    PUT_PATTERNS(RouteType.PUT, "/patterns") {
-        @Override
-        public IJsonElement execute(ServerInstance instance, IJsonElement request) {
-            return null;
-        }
-    },
-    
-    /**
-     * DELETE route to delete a pattern.
-     */
-    DELETE_PATTERNS(RouteType.DELETE, "/patterns") {
+    DELETE_PATTERNS(RouteType.POST, "/patterns/delete") {
         @Override
         public IJsonElement execute(ServerInstance instance, IJsonElement request) {
             return null;
@@ -104,7 +122,7 @@ public enum ApiRoute {
     /**
      * POST route to undeploy a pattern.
      */
-    POST_PATTERNS_UNDEPLOY(RouteType.POST, "/patterns/deploy") {
+    POST_PATTERNS_UNDEPLOY(RouteType.POST, "/patterns/undeploy") {
         @Override
         public IJsonElement execute(ServerInstance instance, IJsonElement request) {
             return null;

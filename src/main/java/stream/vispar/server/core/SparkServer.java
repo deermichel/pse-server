@@ -2,6 +2,8 @@ package stream.vispar.server.core;
 
 import java.util.Objects;
 
+import javax.swing.plaf.synth.SynthSeparatorUI;
+
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -9,8 +11,11 @@ import spark.RouteImpl;
 import spark.Service;
 import stream.vispar.jsonconverter.IJsonConverter;
 import stream.vispar.jsonconverter.gson.GsonConverter;
+import stream.vispar.jsonconverter.gson.typeadapters.GsonJsonObject;
 import stream.vispar.jsonconverter.types.IJsonElement;
+import stream.vispar.jsonconverter.types.IJsonObject;
 import stream.vispar.server.ServerApp;
+import stream.vispar.server.core.entities.User;
 import stream.vispar.server.localization.LocalizedString;
 
 /**
@@ -73,14 +78,11 @@ public class SparkServer implements IRequestHandler {
         });
         
         // register routes
-        // TODO: auth!, sensor routes
+        // TODO: sensor routes
         http.get("/", (req, res) -> "Vispar Server " + ServerApp.VERSION);
         
         // api routes
         http.path("/api", () -> {
-            http.before("/*", (req, res) -> {
-                
-            });
             for (ApiRoute route : ApiRoute.values()) {
                 switch (route.getType()) {
                 case GET:
@@ -88,12 +90,6 @@ public class SparkServer implements IRequestHandler {
                     break;
                 case POST:
                     http.post(route.getEndpoint(), createRoute(route));
-                    break;
-                case PUT:
-                    http.put(route.getEndpoint(), createRoute(route));
-                    break;
-                case DELETE:
-                    http.delete(route.getEndpoint(), createRoute(route));
                     break;
                 default:
                     throw new IllegalStateException("Unknown route type");
@@ -127,7 +123,23 @@ public class SparkServer implements IRequestHandler {
         return new Route() {
             @Override
             public Object handle(Request req, Response res) throws Exception {
-                IJsonElement jsonReq = jsonConv.fromString(req.body());
+                
+                // parse request to json
+                IJsonObject jsonReq = new GsonJsonObject();
+                jsonReq.add("data", jsonConv.fromString(req.body()));
+                
+                // inject authentificated user
+                String authHeader = req.headers("Authorization");
+                if (authHeader != null) {
+                    String token = authHeader.replace("Bearer ", "");
+                    User user = instance.getAuthMgr().authenticate(token);
+                    if (user != null) {
+                        jsonReq.add("user", user.getName());
+                        jsonReq.add("token", token);
+                    }
+                }
+                
+                // execute route and return (send) result
                 return route.execute(instance, jsonReq);
             }
         };

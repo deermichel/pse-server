@@ -36,6 +36,9 @@ public class AuthManager {
     public AuthManager(ServerInstance instance) {
         this.instance = Objects.requireNonNull(instance);
         tokens = new HashMap<>();
+        
+        // TODO: REMOVE______----!!!!
+        tokens.put("token", new User("deermichel", "123"));
     }
     
     /**

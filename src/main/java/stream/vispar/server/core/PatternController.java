@@ -1,8 +1,14 @@
 package stream.vispar.server.core;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Objects;
 
+import stream.vispar.jsonconverter.IJsonConverter;
+import stream.vispar.jsonconverter.exceptions.JsonException;
+import stream.vispar.jsonconverter.gson.GsonConverter;
+import stream.vispar.jsonconverter.types.IJsonElement;
 import stream.vispar.model.Pattern;
 
 /**
@@ -17,6 +23,11 @@ public class PatternController {
      */
     private final ServerInstance instance;
     
+    /**
+     * Json converter.
+     */
+    private final IJsonConverter jsonConv;
+    
     
     /**
      * Constructs a new {@link PatternController}.
@@ -26,6 +37,7 @@ public class PatternController {
      */
     public PatternController(ServerInstance instance) {
         this.instance = Objects.requireNonNull(instance);
+        this.jsonConv = new GsonConverter();
     }
     
     /**
@@ -50,9 +62,23 @@ public class PatternController {
      * @return
      *          the updated {@link Pattern}.   
      * @throws IllegalArgumentException
-     *          if the pattern did not exist before.
+     *          if the pattern (with same id) was edited and has a newer timestamp then the supplied.
      */
     public Pattern update(Pattern pattern) {
+        IDatabaseConnector db = instance.getDBConn();
+        
+        // already exists?
+        if (getById(pattern.getId()) != null) {
+            
+            // check timestamps
+            
+            
+        } else {
+            
+            // create new
+            IJsonElement json = db.insert("patterns", jsonConv.toJson(pattern));
+            
+        }
         return null;
     }
     
@@ -105,6 +131,14 @@ public class PatternController {
      *          the {@link Pattern} or null if not found.
      */
     public Pattern getById(String id) {
+        IJsonElement json = instance.getDBConn().find("patterns", "id", id);
+        if (json != null) {
+            try {
+                return jsonConv.fromJson(json);
+            } catch (JsonException e) {
+                instance.getLogger().logError(e.toString());
+            }
+        }
         return null;
     }
     
@@ -115,6 +149,16 @@ public class PatternController {
      *          collection of all {@link Pattern patterns}.
      */
     public Collection<Pattern> getAll() {
+        Collection<IJsonElement> jsonCol = instance.getDBConn().getAll("patterns");
+        Collection<Pattern> patterns = new ArrayList<>();
+        try {
+            for (IJsonElement json : jsonCol) {
+                patterns.add(jsonConv.fromJson(json));
+            }
+            return patterns;
+        } catch (JsonException e) {
+            instance.getLogger().logError(e.toString());
+        }
         return null;
     }
 }

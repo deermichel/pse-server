@@ -73,6 +73,21 @@ public enum LocalizedString {
     /** USERS **/
     USERS("users"),
     
+    /** PATTERN_CREATED */
+    PATTERN_CREATED("pattern_created"),
+    
+    /** PATTERN_UPDATED */
+    PATTERN_UPDATED("pattern_updated"),
+    
+    /** PATTERN_DELETED */
+    PATTERN_DELETED("pattern_deleted"),
+    
+    /** PATTERN_DEPLOYED */
+    PATTERN_DEPLOYED("pattern_deployed"),
+    
+    /** PATTERN_UNDEPLOYED */
+    PATTERN_UNDEPLOYED("pattern_undeployed"),
+    
     /** INV_ADDUSER_SYNTAX */
     INV_ADDUSER_SYNTAX("inv_adduser_syntax");
     

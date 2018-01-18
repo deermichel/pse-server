@@ -15,15 +15,5 @@ public enum RouteType {
     /**
      * POST route
      */
-    POST,
-    
-    /**
-     * PUT route
-     */
-    PUT,
-    
-    /**
-     * DELETE route
-     */
-    DELETE
+    POST
 }
