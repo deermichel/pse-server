@@ -1,6 +1,7 @@
 package stream.vispar.server;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -64,13 +65,17 @@ public final class ServerApp {
      *          the cli args.
      */
     public static void main(String[] args) {
-        new ServerApp();
+        List<String> argsList = Arrays.asList(args);
+        new ServerApp(!argsList.contains("-norepl"));
     }
     
     /**
      * Constructs a new {@link ServerApp} instance.
+     * 
+     * @param repl
+     *          if true, repl is enabled
      */
-    private ServerApp() {
+    private ServerApp(boolean repl) {
        
 //        console = new DefaultConsole();
 //        MultiLogger logger = new MultiLogger();
@@ -105,7 +110,9 @@ public final class ServerApp {
         instance.start();
         
         // command REPL
-        commandREPL();
+        if (repl) {
+            commandREPL();
+        }
     }
     
     /**
