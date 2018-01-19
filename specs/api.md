@@ -20,7 +20,7 @@ Response on error:
 ### Authentication
 
 #### POST `/auth/login`
-Logs an user in.
+Logs a user in.
 ```json
 // request parameters
 {
@@ -41,7 +41,7 @@ Logs an user in.
 ```
 
 #### POST `/auth/logout`
-Logs an user out.
+Logs a user out.
 ```json
 // no request parameters needed
 
