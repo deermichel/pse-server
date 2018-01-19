@@ -110,7 +110,30 @@ public enum ApiRoute {
     GET_PATTERNS(RouteType.GET, "/patterns") {
         @Override
         public IJsonElement execute(ServerInstance instance, IJsonElement request) {
-            return null;
+            IJsonObject response = new GsonJsonObject();
+            try {
+                // authenticated?
+                if (request.getAsJsonObject().has("user")) {
+                    
+                    // get pattern
+                    String patternId = request.getAsJsonObject().get("params")
+                            .getAsJsonObject().getAsJsonPrimitive("id").getAsString();
+                    Pattern pattern = instance.getPatternCtrl().getById(patternId);
+                    
+                    // does pattern exist?
+                    if (pattern != null) {
+                        response.add("data", new GsonConverter().toJson(pattern));
+                    } else {
+                        response.add("error", RouteError.UNKNOWN_PATTERN.getCode());
+                    }
+                } else {
+                    response.add("error", RouteError.NOT_AUTHORIZED.getCode());
+                }
+            } catch (JsonParseException | NullPointerException e) {
+                instance.getLogger().logError(e.toString());
+                response.add("error", RouteError.INVALID_REQUEST.getCode());
+            }
+            return response;
         }
     },
     
