@@ -28,9 +28,11 @@ Logs an user in.
     "password": "<sha512-encrypted password>"
 }
 
-// response
+// response on success
 {
-    "token": "<token>"
+    "data": {
+        "token": "<token>"
+    }
 }
 
 // errors
@@ -42,7 +44,9 @@ Logs an user in.
 Logs an user out.
 ```json
 // no request parameters needed
-// empty response
+
+// response on success
+{}
 ```
 
 ### Patterns
@@ -51,11 +55,14 @@ Logs an user out.
 Returns a list of all patterns existing on the server (using proxy objects).
 ```json
 // no request parameters needed
-// response
-[
-    "<patternProxyObject>",
-    "..."
-]
+
+// response on success
+{
+    "data": [
+        "<patternProxyObject>",
+        "..."
+    ]
+}
 
 // errors
 1001 Not authorized.
@@ -69,8 +76,10 @@ Returns the (complete) pattern from the server.
     "id": "<patternId>"
 }
 
-// response
-"<patternObject>"
+// response on success
+{
+    "data": "<patternObject>"
+}
 
 // errors
 1000 Invalid request format.
@@ -84,8 +93,10 @@ Creates or updates a pattern on the server.
 // request parameters
 "<patternObject>"
 
-// response
-"<patternObject>"
+// response on success
+{
+    "data": "<patternObject>"
+}
 
 // errors
 1000 Invalid request format.
@@ -101,7 +112,8 @@ Deletes the pattern from the server.
     "id": "<patternId>"
 }
 
-// empty response
+// response on success
+{}
 
 // errors
 1000 Invalid request format.
@@ -117,8 +129,10 @@ Deploys the pattern on the server.
     "id": "<patternId>"
 }
 
-// response
-"<patternObject>"
+// response on success
+{
+    "data": "<patternObject>"
+}
 
 // errors
 1000 Invalid request format.
@@ -135,8 +149,10 @@ Undeploys the pattern on the server.
     "id": "<patternId>"
 }
 
-// response
-"<patternObject>"
+// response on success
+{
+    "data": "<patternObject>"
+}
 
 // errors
 1000 Invalid request format.
@@ -151,11 +167,14 @@ Undeploys the pattern on the server.
 Returns a list of all sensors registered on the server.
 ```json
 // no request parameters needed
-// response
-[
-    "<sensorObject - we have to agree on a commonly used class??>",
-    "..."
-]
+
+// response on success
+{
+    "data": [
+        "<sensorObject>",
+        "..."
+    ]
+}
 
 // errors
 1001 Not authorized.
