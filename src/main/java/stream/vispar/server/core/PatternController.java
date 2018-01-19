@@ -130,7 +130,18 @@ public class PatternController {
      *          if the pattern did not exist before.
      */
     public void remove(Pattern pattern) {
+        IDatabaseConnector db = instance.getDBConn();
         
+        // does pattern exist?
+        if (getById(pattern.getId()) == null) {
+            throw new IllegalArgumentException(
+                    instance.getLocalizer().get(LocalizedString.PATTERN_NOT_EXISTS));
+        }
+        
+        // delete pattern
+        db.delete("patterns", "id", pattern.getId());
+        instance.getLogger().log(String.format(instance.getLocalizer().get(LocalizedString.PATTERN_DELETED),
+                pattern.getName()));
     }
     
     /**

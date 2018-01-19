@@ -52,6 +52,9 @@ public enum LocalizedString {
     /** USER_NOT_EXISTS */
     USER_NOT_EXISTS("user_not_exists"),
     
+    /** PATTERN_NOT_EXISTS */
+    PATTERN_NOT_EXISTS("pattern_not_exists"),
+    
     /** INV_REMOVEUSER_SYNTAX */
     INV_REMOVEUSER_SYNTAX("inv_removeuser_syntax"),
     

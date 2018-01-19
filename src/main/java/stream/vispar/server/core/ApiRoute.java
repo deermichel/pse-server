@@ -6,6 +6,7 @@ import java.util.Collection;
 import com.google.gson.JsonObject;
 
 import stream.vispar.jsonconverter.IJsonConverter;
+import stream.vispar.jsonconverter.exceptions.JsonException;
 import stream.vispar.jsonconverter.exceptions.JsonParseException;
 import stream.vispar.jsonconverter.exceptions.JsonSyntaxException;
 import stream.vispar.jsonconverter.gson.GsonConverter;
@@ -42,7 +43,9 @@ public enum ApiRoute {
                 User user = instance.getUserCtrl().getByName(username);
                 if (user != null && user.checkPassword(password)) {
                     String token = instance.getAuthMgr().login(user);
-                    response.add("token", token);
+                    IJsonObject data = new GsonJsonObject();
+                    data.add("token", token);
+                    response.add("data", data);
                 } else {
                     response.add("error", RouteError.UNKNOWN_CREDENTIALS.getCode());
                 }
@@ -66,7 +69,7 @@ public enum ApiRoute {
                     String token = request.getAsJsonObject().getAsJsonPrimitive("token").getAsString();
                     instance.getAuthMgr().logout(token);
                 }
-            } catch (JsonParseException e) {
+            } catch (JsonParseException | NullPointerException e) {
                 instance.getLogger().logError(e.toString()); // who cares?
             }
             return new GsonJsonObject();
@@ -96,7 +99,7 @@ public enum ApiRoute {
                 } else {
                     response.add("error", RouteError.NOT_AUTHORIZED.getCode());
                 }
-            } catch (JsonParseException e) {
+            } catch (JsonParseException | NullPointerException e) {
                 instance.getLogger().logError(e.toString());
                 response.add("error", RouteError.INVALID_REQUEST.getCode());
             }
@@ -143,7 +146,30 @@ public enum ApiRoute {
     POST_PATTERNS(RouteType.POST, "/patterns") {
         @Override
         public IJsonElement execute(ServerInstance instance, IJsonElement request) {
-            return null;
+            IJsonObject response = new GsonJsonObject();
+            try {
+                // authenticated?
+                if (request.getAsJsonObject().has("user")) {
+                    
+                    // get pattern
+                    IJsonConverter jsonConv = new GsonConverter();
+                    Pattern pattern = jsonConv.fromJson(request.getAsJsonObject().get("data"));
+                    
+                    // update pattern
+                    try {
+                        pattern = instance.getPatternCtrl().update(pattern);
+                        response.add("data", jsonConv.toJson(pattern));
+                    } catch (IllegalArgumentException e) {
+                        response.add("error", RouteError.PATTERN_EDITED.getCode());
+                    }
+                } else {
+                    response.add("error", RouteError.NOT_AUTHORIZED.getCode());
+                }
+            } catch (JsonException | NullPointerException e) {
+                instance.getLogger().logError(e.toString());
+                response.add("error", RouteError.INVALID_REQUEST.getCode());
+            }
+            return response;
         }
     },
     
@@ -153,7 +179,30 @@ public enum ApiRoute {
     DELETE_PATTERNS(RouteType.POST, "/patterns/delete") {
         @Override
         public IJsonElement execute(ServerInstance instance, IJsonElement request) {
-            return null;
+            IJsonObject response = new GsonJsonObject();
+            try {
+                // authenticated?
+                if (request.getAsJsonObject().has("user")) {
+                    
+                    // get pattern
+                    String patternId = request.getAsJsonObject().get("data")
+                            .getAsJsonObject().getAsJsonPrimitive("id").getAsString();
+                    Pattern pattern = instance.getPatternCtrl().getById(patternId);
+                    
+                    // does pattern exist?
+                    if (pattern != null) {
+                        instance.getPatternCtrl().remove(pattern);
+                    } else {
+                        response.add("error", RouteError.UNKNOWN_PATTERN.getCode());
+                    }
+                } else {
+                    response.add("error", RouteError.NOT_AUTHORIZED.getCode());
+                }
+            } catch (JsonException | NullPointerException e) {
+                instance.getLogger().logError(e.toString());
+                response.add("error", RouteError.INVALID_REQUEST.getCode());
+            }
+            return response;
         }
     },
     

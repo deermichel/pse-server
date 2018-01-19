@@ -83,11 +83,13 @@ public class UserController {
     public void remove(User user) {
         IDatabaseConnector db = instance.getDBConn();
         
+        // does user exist?
         if (getByName(user.getName()) == null) {
             throw new IllegalArgumentException(
                     instance.getLocalizer().get(LocalizedString.USER_NOT_EXISTS));
         }
         
+        // delete user
         db.delete("users", "name", user.getName());
         instance.getLogger().log(String.format(instance.getLocalizer().get(LocalizedString.USER_REMOVED), 
                 user.getName()));
