@@ -128,6 +128,15 @@ public class SparkServer implements IRequestHandler {
                 IJsonObject jsonReq = new GsonJsonObject();
                 jsonReq.add("data", jsonConv.fromString(req.body()));
                 
+                // parse query params (e.g. for GET requests)
+                if (!req.queryParams().isEmpty()) {
+                    IJsonObject queryParams = new GsonJsonObject();
+                    for (String param : req.queryParams()) {
+                        queryParams.add(param, req.queryParams(param));
+                    }
+                    jsonReq.add("params", queryParams);
+                }
+                
                 // inject authentificated user
                 String authHeader = req.headers("Authorization");
                 if (authHeader != null) {
