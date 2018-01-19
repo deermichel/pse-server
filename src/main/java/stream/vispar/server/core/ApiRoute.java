@@ -89,7 +89,7 @@ public enum ApiRoute {
                     Collection<Pattern> patterns = instance.getPatternCtrl().getAll();
                     IJsonArray json = new GsonJsonArray();
                     for (Pattern p : patterns) {
-                        json.add(jsonConv.toJson(p));
+                        json.add(jsonConv.toJson(p.getAsProxy()));
                     }
                     
                     response.add("data", json); // add to response
