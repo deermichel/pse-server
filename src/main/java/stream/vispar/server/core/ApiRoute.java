@@ -1,14 +1,20 @@
 package stream.vispar.server.core;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import com.google.gson.JsonObject;
 
 import stream.vispar.jsonconverter.IJsonConverter;
 import stream.vispar.jsonconverter.exceptions.JsonParseException;
 import stream.vispar.jsonconverter.exceptions.JsonSyntaxException;
 import stream.vispar.jsonconverter.gson.GsonConverter;
+import stream.vispar.jsonconverter.gson.typeadapters.GsonJsonArray;
 import stream.vispar.jsonconverter.gson.typeadapters.GsonJsonObject;
+import stream.vispar.jsonconverter.types.IJsonArray;
 import stream.vispar.jsonconverter.types.IJsonElement;
 import stream.vispar.jsonconverter.types.IJsonObject;
+import stream.vispar.model.Pattern;
 import stream.vispar.server.core.entities.User;
 
 /**
@@ -54,7 +60,6 @@ public enum ApiRoute {
     POST_LOGOUT(RouteType.POST, "/auth/logout") {
         @Override
         public IJsonElement execute(ServerInstance instance, IJsonElement request) {
-            System.out.println(request);
             try {
                 // logout if user was logged in
                 if (request.getAsJsonObject().has("user")) {
@@ -74,8 +79,28 @@ public enum ApiRoute {
     GET_PATTERNS_ALL(RouteType.GET, "/patterns/all") {
         @Override
         public IJsonElement execute(ServerInstance instance, IJsonElement request) {
-            System.out.println(request);
-            return null;
+            IJsonObject response = new GsonJsonObject();
+            try {
+                // authenticated?
+                if (request.getAsJsonObject().has("user")) {
+                    
+                    // get patterns and convert their proxies to json
+                    IJsonConverter jsonConv = new GsonConverter();
+                    Collection<Pattern> patterns = instance.getPatternCtrl().getAll();
+                    IJsonArray json = new GsonJsonArray();
+                    for (Pattern p : patterns) {
+                        json.add(jsonConv.toJson(p));
+                    }
+                    
+                    response.add("data", json); // add to response
+                } else {
+                    response.add("error", RouteError.NOT_AUTHORIZED.getCode());
+                }
+            } catch (JsonParseException e) {
+                instance.getLogger().logError(e.toString());
+                response.add("error", RouteError.INVALID_REQUEST.getCode());
+            }
+            return response;
         }
     },
     
