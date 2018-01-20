@@ -59,7 +59,7 @@ public class AuthManager {
         User user = instance.getUserCtrl().getByName(username);
         if (user == null) {
             throw new IllegalArgumentException("User does not exist");
-        } else if (user.checkPassword(password)) {
+        } else if (!user.checkPassword(password)) {
             throw new IllegalArgumentException("Password is incorrect");
         }
         
