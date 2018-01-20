@@ -99,7 +99,7 @@ public final class ServerApp {
         logger.addLogger(new FileLogger("log.log", true));
         
         // create server config
-        ServerConfig config = new ServerConfig(8080, 8081, Locale.US, logger, "localhost", "mo");
+        ServerConfig config = new ServerConfig(8080, 8081, Locale.US, logger, "localhost", "sensors");
         
         // setup server instance
         instance = new ServerInstance(config);

@@ -104,9 +104,10 @@ public class ServerInstance {
         this.running = true;
         logger.log(localizer.get(LocalizedString.STARTING_SERVER));
         dbConn.connect();
+        sensorCtrl.registerSensors();
         engine.start();
-        reqHandler.start();
         sockHandler.start();
+        reqHandler.start();
     }
     
     /**

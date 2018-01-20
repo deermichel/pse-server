@@ -97,6 +97,18 @@ public enum LocalizedString {
     /** PATTERN_UNDEPLOYED */
     PATTERN_UNDEPLOYED("pattern_undeployed"),
     
+    /** READING_SENSOR_CONFIGS */
+    READING_SENSOR_CONFIGS("reading_sensor_configs"),
+    
+    /** SENSOR_REGISTERED */
+    SENSOR_REGISTERED("sensor_registered"),
+    
+    /** CONFIG_PATH_NOT_VALID */
+    CONFIG_PATH_NOT_VALID("config_path_not_valid"),
+    
+    /** SKIP_INVALID_CONFIG */
+    SKIP_INVALID_CONFIG("skip_invalid_config"),
+    
     /** INV_ADDUSER_SYNTAX */
     INV_ADDUSER_SYNTAX("inv_adduser_syntax");
     
