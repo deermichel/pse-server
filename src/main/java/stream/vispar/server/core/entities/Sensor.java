@@ -28,7 +28,7 @@ public class Sensor {
     /**
      * Description of the sensor.
      */
-    private final String desc;
+    private final String description;
     
     /**
      * Endpoint of the sensor.
@@ -38,7 +38,7 @@ public class Sensor {
     /**
      * Attribute mappings of the sensor.
      */
-    private final Map<String, Attribute> attrMap;
+    private final Map<String, Attribute> attributes;
     
     
     /**
@@ -51,9 +51,10 @@ public class Sensor {
      */
     public Sensor(String configFile) {
         this.name = "";
-        this.desc = "";
+        this.description = "";
         this.endpoint = "";
-        this.attrMap = new HashMap<>();
+        this.attributes = new HashMap<>();
+        // TODO: forbid endpoint api and socket
     }
     
     /**
@@ -72,8 +73,8 @@ public class Sensor {
      * @return
      *          the description.
      */
-    public String getDesc() {
-        return desc;
+    public String getDescription() {
+        return description;
     }
     
     /**
@@ -107,6 +108,7 @@ public class Sensor {
      *          if the data could not be parsed.
      */
     public Event parseEvent(IJsonElement data) {
+        // for loop with going deeper for . and []
         return null;
     }
     
