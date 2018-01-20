@@ -18,7 +18,7 @@ import stream.vispar.server.engine.IEngine;
  * 
  * @author Micha Hanselmann
  */
-public class Sensor {
+public final class Sensor {
 
     /**
      * Name of the sensor.
@@ -42,19 +42,13 @@ public class Sensor {
     
     
     /**
-     * Constructs a new {@link Sensor}.
-     * 
-     * @param configFile
-     *          the path to the configuration file for the sensor.
-     * @throws IllegalArgumentException
-     *          if the config file does not exist or is invalid.
+     * Constructs a new {@link Sensor}. Called implicitly by json conversion.
      */
-    public Sensor(String configFile) {
+    private Sensor() {
         this.name = "";
         this.description = "";
         this.endpoint = "";
         this.attributes = new HashMap<>();
-        // TODO: forbid endpoint api and socket
     }
     
     /**
@@ -85,16 +79,6 @@ public class Sensor {
      */
     public String getEndpoint() {
         return endpoint;
-    }
-    
-    /**
-     * Returns the available attributes of the sensor.
-     * 
-     * @return
-     *          collection of the {@link Attribute attributes}.
-     */
-    public Collection<Attribute> getAttributes() {
-        return new ArrayList<>(attributes.values());
     }
     
     /**
