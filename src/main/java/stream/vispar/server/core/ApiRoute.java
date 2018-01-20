@@ -39,14 +39,13 @@ public enum ApiRoute {
                 String username = request.getAsJsonObject().get("data")
                         .getAsJsonObject().getAsJsonPrimitive("username").getAsString();
                 
-                // get user and check password
-                User user = instance.getUserCtrl().getByName(username);
-                if (user != null && user.checkPassword(password)) {
-                    String token = instance.getAuthMgr().login(user);
+                // login and return token if successful
+                try {
+                    String token = instance.getAuthMgr().login(username, password);
                     IJsonObject data = new GsonJsonObject();
                     data.add("token", token);
                     response.add("data", data);
-                } else {
+                } catch (IllegalArgumentException e) {
                     response.add("error", RouteError.UNKNOWN_CREDENTIALS.getCode());
                 }
             } catch (JsonParseException | NullPointerException e) {
@@ -123,7 +122,7 @@ public enum ApiRoute {
                             .getAsJsonObject().getAsJsonPrimitive("id").getAsString();
                     Pattern pattern = instance.getPatternCtrl().getById(patternId);
                     
-                    // does pattern exist?
+                    // return pattern if it exists
                     if (pattern != null) {
                         response.add("data", new GsonConverter().toJson(pattern));
                     } else {
@@ -184,15 +183,14 @@ public enum ApiRoute {
                 // authenticated?
                 if (request.getAsJsonObject().has("user")) {
                     
-                    // get pattern
+                    // get pattern id
                     String patternId = request.getAsJsonObject().get("data")
                             .getAsJsonObject().getAsJsonPrimitive("id").getAsString();
-                    Pattern pattern = instance.getPatternCtrl().getById(patternId);
                     
-                    // does pattern exist?
-                    if (pattern != null) {
-                        instance.getPatternCtrl().remove(pattern);
-                    } else {
+                    // remove pattern if exists
+                    try {
+                        instance.getPatternCtrl().remove(patternId);
+                    } catch (IllegalArgumentException e) {
                         response.add("error", RouteError.UNKNOWN_PATTERN.getCode());
                     }
                 } else {

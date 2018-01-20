@@ -30,9 +30,11 @@ public enum Command {
                 User user = new User(matcher.group(1), matcher.group(2));
                 try {
                     instance.getUserCtrl().add(user);
-                    return new StringCommandResult(instance.getLocalizer().get(LocalizedString.OK));
+                    return new StringCommandResult(
+                            instance.getLocalizer().get(LocalizedString.OK));
                 } catch (IllegalArgumentException e) {
-                    return new StringCommandResult(e.getMessage());
+                    return new StringCommandResult(
+                            instance.getLocalizer().get(LocalizedString.USER_ALREADY_EXISTS));
                 }
                 
             } else {
@@ -51,12 +53,13 @@ public enum Command {
             Matcher matcher = getMatcher(input);
             if (matcher.matches()) {
                 
-                User user = new User(matcher.group(1), "");
+                // remove user if exists
                 try {
-                    instance.getUserCtrl().remove(user);
+                    instance.getUserCtrl().remove(matcher.group(1));
                     return new StringCommandResult(instance.getLocalizer().get(LocalizedString.OK));
                 } catch (IllegalArgumentException e) {
-                    return new StringCommandResult(e.getMessage());
+                    return new StringCommandResult(
+                            instance.getLocalizer().get(LocalizedString.USER_NOT_EXISTS));
                 }
                 
             } else {

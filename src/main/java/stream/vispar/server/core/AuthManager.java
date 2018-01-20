@@ -44,12 +44,26 @@ public class AuthManager {
     /**
      * Logs an user in and returns the token.
      * 
-     * @param user
-     *          the {@link User} to be logged in.
+     * @param username
+     *          the username of the {@link User} to be logged in.
+     * @param password
+     *          the password of the {@link User} to be logged in.
      * @return
-     *          the access token of the user.         
+     *          the access token of the user.     
+     * @throws IllegalArgumentException
+     *          if user does not exist or password is incorrect
      */
-    public String login(User user) {
+    public String login(String username, String password) {
+        
+        // get user and check password
+        User user = instance.getUserCtrl().getByName(username);
+        if (user == null) {
+            throw new IllegalArgumentException("User does not exist");
+        } else if (user.checkPassword(password)) {
+            throw new IllegalArgumentException("Password is incorrect");
+        }
+        
+        // generate token
         String token = generateRandomHexToken(64); // 512 bit
         tokens.put(token, user);
         instance.getLogger().log(String.format(instance.getLocalizer().get(LocalizedString.USER_LOGGED_IN), 
@@ -64,6 +78,8 @@ public class AuthManager {
      *          the access token of the user.
      */
     public void logout(String token) {
+        
+        // remove token
         User user = tokens.remove(token);
         instance.getLogger().log(String.format(instance.getLocalizer().get(LocalizedString.USER_LOGGED_OUT), 
                 user.getName()));

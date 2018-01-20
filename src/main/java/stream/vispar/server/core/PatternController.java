@@ -50,20 +50,6 @@ public class PatternController {
     }
     
     /**
-     * Adds a pattern.
-     * 
-     * @param pattern
-     *          the {@link Pattern} to be added.
-     * @return
-     *          the added {@link Pattern}.         
-     * @throws IllegalArgumentException
-     *          if a pattern with the same id exists.
-     */
-    public Pattern add(Pattern pattern) {
-        return null;
-    }
-    
-    /**
      * Updates a pattern.
      * 
      * @param pattern
@@ -124,18 +110,18 @@ public class PatternController {
     /**
      * Removes a pattern.
      * 
-     * @param pattern
-     *          the {@link Pattern} to be removed.
+     * @param id
+     *          the id of the {@link Pattern} to be removed.
      * @throws IllegalArgumentException
      *          if the pattern did not exist before.
      */
-    public void remove(Pattern pattern) {
+    public void remove(String id) {
         IDatabaseConnector db = instance.getDBConn();
         
-        // does pattern exist?
-        if (getById(pattern.getId()) == null) {
-            throw new IllegalArgumentException(
-                    instance.getLocalizer().get(LocalizedString.PATTERN_NOT_EXISTS));
+        // get pattern
+        Pattern pattern = getById(id);
+        if (pattern == null) {
+            throw new IllegalArgumentException("Pattern does not exist");
         }
         
         // delete pattern
@@ -147,28 +133,28 @@ public class PatternController {
     /**
      * Deploys a pattern.
      * 
-     * @param pattern
-     *          the {@link Pattern} to be deployed.
+     * @param id
+     *          the id pf the {@link Pattern} to be deployed.
      * @return
      *          the deployed {@link Pattern}.   
      * @throws IllegalArgumentException
      *          if the pattern did not exist before.
      */
-    public Pattern deploy(Pattern pattern) {
+    public Pattern deploy(String id) {
         return null;
     }
     
     /**
      * Undeploys a pattern.
      * 
-     * @param pattern
-     *          the {@link Pattern} to be undeployed.
+     * @param id
+     *          the id of the {@link Pattern} to be undeployed.
      * @return
      *          the undeployed {@link Pattern}.   
      * @throws IllegalArgumentException
      *          if the pattern did not exist before.
      */
-    public Pattern undeploy(Pattern pattern) {
+    public Pattern undeploy(String id) {
         return null;
     }
     

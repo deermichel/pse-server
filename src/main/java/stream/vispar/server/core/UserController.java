@@ -53,9 +53,9 @@ public class UserController {
     public User add(User user) {
         IDatabaseConnector db = instance.getDBConn();
         
+        // does user already exist?
         if (getByName(user.getName()) != null) {
-            throw new IllegalArgumentException(
-                    instance.getLocalizer().get(LocalizedString.USER_ALREADY_EXISTS));
+            throw new IllegalArgumentException("User already exists");
         }
         
         // create user
@@ -75,18 +75,18 @@ public class UserController {
     /**
      * Removes an user.
      * 
-     * @param user
-     *          the {@link User} to be removed.
+     * @param username
+     *          the username of the {@link User} to be removed.
      * @throws IllegalArgumentException
      *          if the user did not exist before.
      */
-    public void remove(User user) {
+    public void remove(String username) {
         IDatabaseConnector db = instance.getDBConn();
         
-        // does user exist?
-        if (getByName(user.getName()) == null) {
-            throw new IllegalArgumentException(
-                    instance.getLocalizer().get(LocalizedString.USER_NOT_EXISTS));
+        // get user
+        User user = getByName(username);
+        if (user == null) {
+            throw new IllegalArgumentException("User does not exist");
         }
         
         // delete user
