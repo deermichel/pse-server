@@ -43,7 +43,7 @@ public class SparkSocket implements ISocketHandler {
     
     
     /**
-     * Constructs a new {@link WebbitSocket}.
+     * Constructs a new {@link SparkSocket}.
      * 
      * @param instance
      *          the {@link ServerInstance} the handler belongs to.
