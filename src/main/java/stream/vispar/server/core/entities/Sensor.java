@@ -94,7 +94,7 @@ public class Sensor {
      *          collection of the {@link Attribute attributes}.
      */
     public Collection<Attribute> getAttributes() {
-        return new ArrayList<>(attrMap.values());
+        return new ArrayList<>(attributes.values());
     }
     
     /**
@@ -119,6 +119,7 @@ public class Sensor {
      *          the {@link SensorNode}.
      */
     public SensorNode getSensorNode() {
-        return new SensorNode("", new Point(0, 0), name, desc, new Operand(new Attribute("todo", "", AttributeType.STRING)));
+        return new SensorNode("", new Point(0, 0), name, description, 
+                new Operand(new Attribute("todo", "", AttributeType.STRING)));
     }
 }

@@ -91,7 +91,7 @@ public class ServerInstance {
         sensorCtrl = new SensorController(this, config.getSensorsConfigPath());
         authMgr = new AuthManager(this);
         reqHandler = new SparkServer(this, config.getApiPort());
-        sockHandler = new WebbitSocket(this, config.getSocketPort());
+        sockHandler = new SparkSocket(this, config.getSocketPort());
     }
     
     /**

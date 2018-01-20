@@ -109,6 +109,15 @@ public enum LocalizedString {
     /** SKIP_INVALID_CONFIG */
     SKIP_INVALID_CONFIG("skip_invalid_config"),
     
+    /** SOCKET_OPENED */
+    SOCKET_OPENED("socket_opened"),
+    
+    /** CONNECTED_TO_SOCKET */
+    CONNECTED_TO_SOCKET("connected_to_socket"),
+    
+    /** DISCONNECTED_FROM_SOCKET */
+    DISCONNECTED_FROM_SOCKET("disconnected_from_socket"),
+    
     /** INV_ADDUSER_SYNTAX */
     INV_ADDUSER_SYNTAX("inv_adduser_syntax");
     

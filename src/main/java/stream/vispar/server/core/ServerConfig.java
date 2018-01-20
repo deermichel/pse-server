@@ -65,6 +65,8 @@ public class ServerConfig {
         
         if (apiPort < 0 || socketPort < 0 || apiPort > 65535 || socketPort > 65535) {
             throw new IllegalArgumentException("Port numbers have to be between 0 and 65535.");
+        } else if (apiPort == socketPort) {
+            throw new IllegalArgumentException("Api and socket port cannot be the same.");
         }
         
         this.apiPort = apiPort;
