@@ -52,20 +52,6 @@ public interface IDatabaseConnector {
      *          if collection does not exist.
      */
     IJsonElement insert(String collection, IJsonElement data);
-
-    /**
-     * Finds data by its identifier in a collection.
-     * 
-     * @param collection
-     *          the name of the collection.
-     * @param id
-     *          the id of the requested data.
-     * @return
-     *          a {@link IJsonElement} representation of the data or null if not found.
-     * @throws IllegalArgumentException
-     *          if collection does not exist.
-     */
-    IJsonElement findById(String collection, String id);
     
     /**
      * Finds data by a key/value pair in a collection.

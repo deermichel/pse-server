@@ -117,11 +117,6 @@ public class MongoDBConnector implements IDatabaseConnector {
     }
 
     @Override
-    public IJsonElement findById(String collection, String id) {
-        return null;
-    }
-
-    @Override
     public IJsonElement find(String collection, String key, String value) {
         Document doc = database.getCollection(collection).find(new Document(key, value)).first();
         if (doc == null) {
