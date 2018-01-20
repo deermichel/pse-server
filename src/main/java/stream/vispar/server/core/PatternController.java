@@ -9,6 +9,7 @@ import java.util.Objects;
 
 import stream.vispar.jsonconverter.IJsonConverter;
 import stream.vispar.jsonconverter.exceptions.JsonException;
+import stream.vispar.jsonconverter.exceptions.JsonParseException;
 import stream.vispar.jsonconverter.gson.GsonConverter;
 import stream.vispar.jsonconverter.types.IJsonElement;
 import stream.vispar.model.Pattern;
@@ -138,9 +139,38 @@ public class PatternController {
      * @return
      *          the deployed {@link Pattern}.   
      * @throws IllegalArgumentException
-     *          if the pattern did not exist before.
+     *          if the pattern does not exist.
+     * @throws IllegalStateException
+     *          if the pattern is already deployed.
      */
     public Pattern deploy(String id) {
+        IDatabaseConnector db = instance.getDBConn();
+        
+        // get pattern and check deployment status
+        Pattern pattern = getById(id);
+        if (pattern == null) {
+            throw new IllegalArgumentException("Pattern does not exist");
+        } else if (pattern.isDeployed()) {
+            throw new IllegalStateException("Pattern already deployed");
+        }
+        
+        // deploy pattern
+        IJsonElement json = db.find("patterns", "id", pattern.getId());
+        try {
+            json.getAsJsonObject().add("isDeployed", true);
+        } catch (JsonParseException e) {
+            instance.getLogger().logError(e.toString());
+        }
+        db.update("patterns", "id", pattern.getId(), json);
+        instance.getLogger().log(String.format(instance.getLocalizer().get(
+                LocalizedString.PATTERN_DEPLOYED), pattern.getName()));
+        
+        // return deployed pattern
+        try {
+            return jsonConv.fromJson(json);
+        } catch (JsonException e) {
+            instance.getLogger().logError(e.toString());
+        }
         return null;
     }
     
@@ -152,9 +182,38 @@ public class PatternController {
      * @return
      *          the undeployed {@link Pattern}.   
      * @throws IllegalArgumentException
-     *          if the pattern did not exist before.
+     *          if the pattern does not exist.
+     * @throws IllegalStateException
+     *          if the pattern is already undeployed.
      */
     public Pattern undeploy(String id) {
+        IDatabaseConnector db = instance.getDBConn();
+        
+        // get pattern and check deployment status
+        Pattern pattern = getById(id);
+        if (pattern == null) {
+            throw new IllegalArgumentException("Pattern does not exist");
+        } else if (!pattern.isDeployed()) {
+            throw new IllegalStateException("Pattern is already undeployed");
+        }
+        
+        // undeploy pattern
+        IJsonElement json = db.find("patterns", "id", pattern.getId());
+        try {
+            json.getAsJsonObject().add("isDeployed", false);
+        } catch (JsonParseException e) {
+            instance.getLogger().logError(e.toString());
+        }
+        db.update("patterns", "id", pattern.getId(), json);
+        instance.getLogger().log(String.format(instance.getLocalizer().get(
+                LocalizedString.PATTERN_UNDEPLOYED), pattern.getName()));
+        
+        // return undeployed pattern
+        try {
+            return jsonConv.fromJson(json);
+        } catch (JsonException e) {
+            instance.getLogger().logError(e.toString());
+        }
         return null;
     }
     

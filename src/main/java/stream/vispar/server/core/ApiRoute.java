@@ -210,7 +210,32 @@ public enum ApiRoute {
     POST_PATTERNS_DEPLOY(RouteType.POST, "/patterns/deploy") {
         @Override
         public IJsonElement execute(ServerInstance instance, IJsonElement request) {
-            return null;
+            IJsonObject response = new GsonJsonObject();
+            try {
+                // authenticated?
+                if (request.getAsJsonObject().has("user")) {
+                    
+                    // get pattern id
+                    String patternId = request.getAsJsonObject().get("data")
+                            .getAsJsonObject().getAsJsonPrimitive("id").getAsString();
+                    
+                    // deploy pattern
+                    try {
+                        Pattern pattern = instance.getPatternCtrl().deploy(patternId);
+                        response.add("data", new GsonConverter().toJson(pattern));
+                    } catch (IllegalArgumentException e) {
+                        response.add("error", RouteError.UNKNOWN_PATTERN.getCode());
+                    } catch (IllegalStateException e) {
+                        response.add("error", RouteError.PATTERN_ALREADY_DEPLOYED.getCode());
+                    }
+                } else {
+                    response.add("error", RouteError.NOT_AUTHORIZED.getCode());
+                }
+            } catch (JsonException | NullPointerException e) {
+                instance.getLogger().logError(e.toString());
+                response.add("error", RouteError.INVALID_REQUEST.getCode());
+            }
+            return response;
         }
     },
     
@@ -220,7 +245,32 @@ public enum ApiRoute {
     POST_PATTERNS_UNDEPLOY(RouteType.POST, "/patterns/undeploy") {
         @Override
         public IJsonElement execute(ServerInstance instance, IJsonElement request) {
-            return null;
+            IJsonObject response = new GsonJsonObject();
+            try {
+                // authenticated?
+                if (request.getAsJsonObject().has("user")) {
+                    
+                    // get pattern id
+                    String patternId = request.getAsJsonObject().get("data")
+                            .getAsJsonObject().getAsJsonPrimitive("id").getAsString();
+                    
+                    // undeploy pattern
+                    try {
+                        Pattern pattern = instance.getPatternCtrl().undeploy(patternId);
+                        response.add("data", new GsonConverter().toJson(pattern));
+                    } catch (IllegalArgumentException e) {
+                        response.add("error", RouteError.UNKNOWN_PATTERN.getCode());
+                    } catch (IllegalStateException e) {
+                        response.add("error", RouteError.PATTERN_NOT_DEPLOYED.getCode());
+                    }
+                } else {
+                    response.add("error", RouteError.NOT_AUTHORIZED.getCode());
+                }
+            } catch (JsonException | NullPointerException e) {
+                instance.getLogger().logError(e.toString());
+                response.add("error", RouteError.INVALID_REQUEST.getCode());
+            }
+            return response;
         }
     },
     
