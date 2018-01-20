@@ -52,9 +52,6 @@ public enum LocalizedString {
     /** USER_NOT_EXISTS */
     USER_NOT_EXISTS("user_not_exists"),
     
-    /** PATTERN_NOT_EXISTS */
-    PATTERN_NOT_EXISTS("pattern_not_exists"),
-    
     /** INV_REMOVEUSER_SYNTAX */
     INV_REMOVEUSER_SYNTAX("inv_removeuser_syntax"),
     
@@ -73,8 +70,17 @@ public enum LocalizedString {
     /** INV_LISTUSERS_SYNTAX */
     INV_LISTUSERS_SYNTAX("inv_listusers_syntax"),
     
+    /** INV_LISTPATTERNS_SYNTAX */
+    INV_LISTPATTERNS_SYNTAX("inv_listpatterns_syntax"),
+    
     /** USERS **/
     USERS("users"),
+    
+    /** PATTERNS **/
+    PATTERNS("patterns"),
+    
+    /** DEPLOYED **/
+    DEPLOYED("deployed"),
     
     /** PATTERN_CREATED */
     PATTERN_CREATED("pattern_created"),

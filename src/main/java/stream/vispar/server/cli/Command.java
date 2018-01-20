@@ -76,6 +76,8 @@ public enum Command {
         @Override
         protected CommandResult execute(ServerInstance instance, String input) {
             if (getMatcher(input).matches()) {
+                
+                // get and concat all usernames
                 List<String> usernames = instance.getUserCtrl().getAll()
                         .stream().map(user -> user.getName()).collect(Collectors.toList());
                 String result = String.format(instance.getLocalizer().get(LocalizedString.USERS), 
@@ -91,10 +93,32 @@ public enum Command {
     /**
      * Command to list all patterns.
      */
-    LIST_PATTERNS("listpatterns", "") {
+    LIST_PATTERNS("listpatterns", "listpatterns") {
         @Override
         protected CommandResult execute(ServerInstance instance, String input) {
-            return null;
+            if (getMatcher(input).matches()) {
+                
+                // get and concat all pattern names (with their deployment status)
+                List<String> patternnames = instance.getPatternCtrl().getAll().stream()
+                        .sorted((p1, p2) -> 
+                            p1.getName().toLowerCase().compareTo(p2.getName().toLowerCase()))
+                        .map(pattern -> {
+                            if (pattern.isDeployed()) {
+                                return pattern.getName() + " "
+                                        + instance.getLocalizer().get(LocalizedString.DEPLOYED);
+                            } else {
+                                return pattern.getName();
+                            }
+                        })
+                        .collect(Collectors.toList());
+                String result = String.format(instance.getLocalizer().get(LocalizedString.PATTERNS), 
+                        String.join(", ", patternnames));
+                
+                return new StringCommandResult(result);
+            } else {
+                return new StringCommandResult(
+                        instance.getLocalizer().get(LocalizedString.INV_LISTPATTERNS_SYNTAX));
+            }
         }
     },
     
