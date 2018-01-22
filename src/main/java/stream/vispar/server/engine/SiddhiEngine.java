@@ -4,6 +4,7 @@ import java.util.Objects;
 import stream.vispar.model.Pattern;
 import stream.vispar.server.core.ServerInstance;
 import stream.vispar.server.core.entities.Event;
+import stream.vispar.server.localization.LocalizedString;
 
 /**
  * Engine implementation using the WSO2 Siddhi library.
@@ -50,6 +51,7 @@ public class SiddhiEngine implements IEngine {
 
     @Override
     public void sendEvent(Event event) {
-        
+        instance.getLogger().log(String.format(instance.getLocalizer().get(LocalizedString.RECEIVED_EVENT), 
+                event.toString()));
     }
 }

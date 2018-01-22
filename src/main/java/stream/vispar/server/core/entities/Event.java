@@ -55,4 +55,13 @@ public class Event {
     public Map<Attribute, String> getData() {
         return new HashMap<>(data);
     }
+    
+    @Override
+    public String toString() {
+        Map<String, String> output = new HashMap<>();
+        output.put("sensor", sensor.getName());
+        output.put("timestamp", timestamp);
+        output.put("data", data.toString());
+        return output.toString();
+    }
 }

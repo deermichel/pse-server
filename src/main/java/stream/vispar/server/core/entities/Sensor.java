@@ -93,7 +93,7 @@ public final class Sensor {
      */
     public Event parseEvent(IJsonElement data) {
         // for loop with going deeper for . and []
-        return null;
+        return new Event("STAMPI", new HashMap<>(), this);
     }
     
     /**

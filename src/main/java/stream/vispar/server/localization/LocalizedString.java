@@ -118,6 +118,9 @@ public enum LocalizedString {
     /** DISCONNECTED_FROM_SOCKET */
     DISCONNECTED_FROM_SOCKET("disconnected_from_socket"),
     
+    /** RECEIVED_EVENT */
+    RECEIVED_EVENT("received_event"),
+    
     /** INV_ADDUSER_SYNTAX */
     INV_ADDUSER_SYNTAX("inv_adduser_syntax");
     

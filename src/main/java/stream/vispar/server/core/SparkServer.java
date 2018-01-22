@@ -1,5 +1,6 @@
 package stream.vispar.server.core;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 import javax.swing.plaf.synth.SynthSeparatorUI;
@@ -10,11 +11,14 @@ import spark.Route;
 import spark.RouteImpl;
 import spark.Service;
 import stream.vispar.jsonconverter.IJsonConverter;
+import stream.vispar.jsonconverter.exceptions.JsonException;
 import stream.vispar.jsonconverter.gson.GsonConverter;
 import stream.vispar.jsonconverter.gson.typeadapters.GsonJsonObject;
 import stream.vispar.jsonconverter.types.IJsonElement;
 import stream.vispar.jsonconverter.types.IJsonObject;
 import stream.vispar.server.ServerApp;
+import stream.vispar.server.core.entities.Event;
+import stream.vispar.server.core.entities.Sensor;
 import stream.vispar.server.core.entities.User;
 import stream.vispar.server.localization.LocalizedString;
 
@@ -78,18 +82,21 @@ public class SparkServer implements IRequestHandler {
         });
         
         // register routes
-        // TODO: sensor routes
-        http.get("/", (req, res) -> "Vispar Server " + ServerApp.VERSION);
+        http.get("/", (req, res) -> "Vispar Server " + ServerApp.VERSION); // version landing page
+        
+        // sensor routes
+        instance.getSensorCtrl().getAll().forEach(sensor ->
+            http.post("/sensor/" + sensor.getEndpoint(), createSensorRoute(sensor)));
         
         // api routes
         http.path("/api", () -> {
             for (ApiRoute route : ApiRoute.values()) {
                 switch (route.getType()) {
                 case GET:
-                    http.get(route.getEndpoint(), createRoute(route));
+                    http.get(route.getEndpoint(), createApiRoute(route));
                     break;
                 case POST:
-                    http.post(route.getEndpoint(), createRoute(route));
+                    http.post(route.getEndpoint(), createApiRoute(route));
                     break;
                 default:
                     throw new IllegalStateException("Unknown route type");
@@ -119,7 +126,7 @@ public class SparkServer implements IRequestHandler {
      * @return
      *              the Spark specific {@link Route}.
      */
-    private Route createRoute(ApiRoute route) {
+    private Route createApiRoute(ApiRoute route) {
         return new Route() {
             @Override
             public Object handle(Request req, Response res) throws Exception {
@@ -150,6 +157,37 @@ public class SparkServer implements IRequestHandler {
                 
                 // execute route and return (send) result
                 return route.execute(instance, jsonReq);
+            }
+        };
+    }
+    
+    /**
+     * Creates a Spark {@link Route} for a sensor route.
+     * 
+     * @param sensor
+     *              the {@link Sensor} which belongs to the route.
+     * @return
+     *              the Spark {@link Route}.
+     */
+    private Route createSensorRoute(Sensor sensor) {
+        return new Route() {
+            @Override
+            public Object handle(Request req, Response res) throws Exception {
+                IJsonObject response = new GsonJsonObject();
+                try {
+                    
+                    // parse event
+                    Event event = sensor.parseEvent(jsonConv.fromString(req.body()));
+                    
+                    // send to engine
+                    instance.getEngine().sendEvent(event);
+                    
+                } catch (IllegalArgumentException | JsonException e) {
+                    res.status(400);
+                    response.add("error", e.getMessage());
+                    instance.getLogger().logError(e.toString());
+                }
+                return response;
             }
         };
     }
