@@ -92,12 +92,12 @@ public class SensorController {
                     throw new IllegalArgumentException("Endpoint has to match regex [a-zA-Z0-9]+");
                 }
                 for (Entry<String, IJsonElement> attr : json.getAsJsonObject("attributes").entrySet()) {
-                    if (!attr.getKey().matches("[a-zA-Z0-9]+")) {
-                        throw new IllegalArgumentException("Attributes have to match regex [a-zA-Z0-9]+");
+                    if (!attr.getKey().matches("[a-zA-Z0-9\\.]+")) {
+                        throw new IllegalArgumentException("Attributes have to match regex [a-zA-Z0-9\\.]+");
                     } else if (!attr.getValue().getAsJsonObject().getAsJsonPrimitive("name")
-                            .getAsString().matches("[a-zA-Z0-9\\.]+")) {
+                            .getAsString().matches("[a-zA-Z0-9]+")) {
                         throw new IllegalArgumentException(
-                                "Attribute names have to match regex [a-zA-Z0-9\\.]+");
+                                "Attribute names have to match regex [a-zA-Z0-9]+");
                     } else if (!attr.getValue().getAsJsonObject().getAsJsonPrimitive("type")
                             .getAsString().matches("INTEGER|DOUBLE|STRING")) {
                         throw new IllegalArgumentException(

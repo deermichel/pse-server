@@ -103,7 +103,12 @@ public final class Sensor {
      *          the {@link SensorNode}.
      */
     public SensorNode getSensorNode() {
-        return new SensorNode("", new Point(0, 0), name, description, 
-                new Operand(new Attribute("todo", "", AttributeType.STRING)));
+        
+        // convert attributes
+        Attribute[] attrArray = attributes.values().stream()
+                .map(a -> new Attribute(a.getName(), "", a.getType()))
+                .toArray(Attribute[]::new);
+        
+        return new SensorNode("", new Point(0, 0), name, description, new Operand(attrArray));
     }
 }

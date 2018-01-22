@@ -12,6 +12,7 @@ import stream.vispar.jsonconverter.types.IJsonArray;
 import stream.vispar.jsonconverter.types.IJsonElement;
 import stream.vispar.jsonconverter.types.IJsonObject;
 import stream.vispar.model.Pattern;
+import stream.vispar.server.core.entities.Sensor;
 
 /**
  * Defines the routes for the api server provided by a {@link IRequestHandler}.
@@ -281,7 +282,25 @@ public enum ApiRoute {
     GET_SENSORS(RouteType.GET, "/sensors") {
         @Override
         public IJsonElement execute(ServerInstance instance, IJsonElement request) {
-            return null;
+            IJsonObject response = new GsonJsonObject();
+            
+            // authenticated?
+            if (!isAuthenticated(instance, request)) {
+                response.add("error", RouteError.NOT_AUTHORIZED.getCode());
+                return response;
+            }
+            
+            // get sensors and convert their SensorNode-representation to json
+            IJsonConverter jsonConv = new GsonConverter();
+            Collection<Sensor> sensors = instance.getSensorCtrl().getAll();
+            IJsonArray json = new GsonJsonArray();
+            for (Sensor s : sensors) {
+                json.add(jsonConv.toJson(s.getSensorNode()));
+            }
+            
+            // return data
+            response.add("data", json); 
+            return response;
         }
     };
     
