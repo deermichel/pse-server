@@ -1,10 +1,14 @@
 package stream.vispar.server.core.entities;
 
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
+import stream.vispar.jsonconverter.exceptions.JsonException;
 import stream.vispar.jsonconverter.types.IJsonElement;
 import stream.vispar.model.nodes.Attribute;
 import stream.vispar.model.nodes.AttributeType;
@@ -92,8 +96,26 @@ public final class Sensor {
      *          if the data could not be parsed.
      */
     public Event parseEvent(IJsonElement data) {
-        // for loop with going deeper for . and []
-        return new Event("STAMPI", new HashMap<>(), this);
+        
+        // set UTC timestamp
+        String timestamp = ZonedDateTime.now().format(DateTimeFormatter.ISO_INSTANT);
+        
+        // parse attribute values
+        Map<Attribute, String> values = new HashMap<>();
+        for (Entry<String, Attribute> attr : attributes.entrySet()) {
+            // TODO: JsonConverter remove
+            Attribute a = new Attribute(attr.getValue().getName(), "", attr.getValue().getType());
+
+            try {
+                values.put(a, getValueRecursively(data, attr.getKey()));
+            } catch (JsonException | NullPointerException e) {
+                throw new IllegalArgumentException("Sensor data for attribute '" + attr.getValue().getName() 
+                        + "' does not match configuration: " + e.toString());
+            }
+        }
+        
+        // return event
+        return new Event(timestamp, values, this);
     }
     
     /**
@@ -106,9 +128,35 @@ public final class Sensor {
         
         // convert attributes
         Attribute[] attrArray = attributes.values().stream()
-                .map(a -> new Attribute(a.getName(), "", a.getType()))
+                .map(a -> new Attribute(a.getName(), "", a.getType())) // TODO: JsonConverter -> remove
                 .toArray(Attribute[]::new);
         
         return new SensorNode("", new Point(0, 0), name, description, new Operand(attrArray));
+    }
+    
+    /**
+     * Returns the value of a key in a {@link IJsonElement}. It supports nested objects by recursively
+     * traverse the json until the bottom-level key with its value is found.
+     * 
+     * @param json
+     *          the {@link IJsonElement} to be traversed.
+     * @param key
+     *          the key to be searched for.
+     * @return
+     *          the value associated with the key.
+     * @throws JsonException
+     *          if key is invalid for given json.
+     */
+    private String getValueRecursively(IJsonElement json, String key) throws JsonException {
+        
+        // base case -> key is on root level of json
+        if (!key.contains(".")) {
+            return json.getAsJsonObject().getAsJsonPrimitive(key).getAsString();
+        }
+        
+        // else -> go a level deeper
+        String levelKey = key.split("\\.")[0];
+        String newKey = key.substring(levelKey.length() + 1);
+        return getValueRecursively(json.getAsJsonObject().get(levelKey), newKey);
     }
 }
