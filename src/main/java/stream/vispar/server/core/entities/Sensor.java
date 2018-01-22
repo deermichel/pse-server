@@ -7,6 +7,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import stream.vispar.jsonconverter.exceptions.JsonException;
 import stream.vispar.jsonconverter.types.IJsonElement;
@@ -151,12 +153,31 @@ public final class Sensor {
         
         // base case -> key is on root level of json
         if (!key.contains(".")) {
-            return json.getAsJsonObject().getAsJsonPrimitive(key).getAsString();
+            // array or object?
+            Matcher m = Pattern.compile(".*\\[(.*)\\]").matcher(key);
+            if (m.matches()) {
+                int index = Integer.valueOf(m.group(1));
+                String arrayKey = key.substring(0, key.indexOf("["));
+                return json.getAsJsonObject().get(arrayKey).getAsJsonArray()
+                        .get(index).getAsJsonPrimitive().getAsString();
+            } else {
+                return json.getAsJsonObject().getAsJsonPrimitive(key).getAsString();
+            }
         }
         
         // else -> go a level deeper
         String levelKey = key.split("\\.")[0];
         String newKey = key.substring(levelKey.length() + 1);
-        return getValueRecursively(json.getAsJsonObject().get(levelKey), newKey);
+        
+        // array or object?
+        Matcher m = Pattern.compile(".*\\[(.*)\\]").matcher(levelKey);
+        if (m.matches()) {
+            int index = Integer.valueOf(m.group(1));
+            String arrayKey = levelKey.substring(0, levelKey.indexOf("["));
+            return getValueRecursively(json.getAsJsonObject().get(arrayKey).getAsJsonArray()
+                    .get(index), newKey);
+        } else {
+            return getValueRecursively(json.getAsJsonObject().get(levelKey), newKey);
+        }
     }
 }
