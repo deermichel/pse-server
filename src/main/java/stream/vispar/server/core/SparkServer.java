@@ -156,6 +156,7 @@ public class SparkServer implements IRequestHandler {
                 }
                 
                 // execute route and return (send) result
+                res.type("application/json");
                 return route.execute(instance, jsonReq);
             }
         };
@@ -187,6 +188,7 @@ public class SparkServer implements IRequestHandler {
                     response.add("error", e.getMessage());
                     instance.getLogger().logError(e.toString());
                 }
+                res.type("application/json");
                 return response;
             }
         };
