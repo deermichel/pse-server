@@ -87,8 +87,12 @@ public class Simulation {
                 scheduler.schedule(() ->  {
                     
                     // create and send event (now has correct timestamp)
-                    Event event = simEvent.createEvent(instance);
-                    instance.getEngine().sendEvent(event);
+                    try {
+                        Event event = simEvent.createEvent(instance);
+                        instance.getEngine().sendEvent(event);
+                    } catch (IllegalStateException e) {
+                        instance.getLogger().logError(e.toString());
+                    }
                     
                 }, delay, TimeUnit.MILLISECONDS);
             }

@@ -168,6 +168,8 @@ public final class SimulatedEvent {
             } else if (value.random != null) { // random
                 int random = ThreadLocalRandom.current().nextInt(value.random.length);
                 val = value.random[random];
+            } else { // shouldn't happen due to prior file validation
+                throw new IllegalStateException("No simulation data for attribute '" + attr.getName() + "'");
             }
             simulatedData.put(attr, val);
         }

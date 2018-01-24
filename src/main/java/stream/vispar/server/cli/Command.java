@@ -129,10 +129,27 @@ public enum Command {
     /**
      * Command to start a simulation.
      */
-    SIMULATE("simulate", "simulate") {
+    SIMULATE("simulate", "simulate ([^ ]+)") {
         @Override
         protected CommandResult execute(ServerInstance instance, String input) {
-            return null;
+            Matcher matcher = getMatcher(input);
+            if (matcher.matches()) {
+                
+                // run simulation if exists
+                try {
+                    Simulation simulation = new Simulation(matcher.group(1));
+                    simulation.simulate(instance);
+                    return new StringCommandResult(String.format(instance.getLocalizer()
+                            .get(LocalizedString.RUNNING_SIMULATION), matcher.group(1)));
+                } catch (IllegalArgumentException e) {
+                    return new StringCommandResult(String.format(instance.getLocalizer()
+                            .get(LocalizedString.SIMULATION_FILE_INVALID), e.toString()));
+                }
+                
+            } else {
+                return new StringCommandResult(
+                        instance.getLocalizer().get(LocalizedString.INV_SIMULATE_SYNTAX));
+            }
         }
     },
     

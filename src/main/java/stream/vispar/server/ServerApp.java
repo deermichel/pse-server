@@ -104,20 +104,6 @@ public final class ServerApp {
         instance = new ServerInstance(config);
         instance.start();
         
-        
-        try {
-            new Simulation("sims/temp.sim").simulate(instance);
-            Thread.sleep(10000);
-            
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        instance.stop();
-        System.exit(1);
-        
-        
-        
-        
         // command REPL
         if (repl) {
             commandREPL();

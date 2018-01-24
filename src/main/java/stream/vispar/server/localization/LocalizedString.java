@@ -121,6 +121,15 @@ public enum LocalizedString {
     /** RECEIVED_EVENT */
     RECEIVED_EVENT("received_event"),
     
+    /** INV_SIMULATE_SYNTAX */
+    INV_SIMULATE_SYNTAX("inv_simulate_syntax"),
+    
+    /** RUNNING_SIMULATION */
+    RUNNING_SIMULATION("running_simulation"),
+    
+    /** SIMULATION_FILE_INVALID */
+    SIMULATION_FILE_INVALID("simulation_file_invalid"),
+    
     /** INV_ADDUSER_SYNTAX */
     INV_ADDUSER_SYNTAX("inv_adduser_syntax");
     
