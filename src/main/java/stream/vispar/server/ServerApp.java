@@ -108,6 +108,9 @@ public final class ServerApp {
         if (repl) {
             commandREPL();
         }
+        
+        // stop (else scheduled simulations might continue sending their events)
+        System.exit(0);
     }
     
     /**

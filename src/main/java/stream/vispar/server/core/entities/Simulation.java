@@ -97,5 +97,8 @@ public class Simulation {
                 }, delay, TimeUnit.MILLISECONDS);
             }
         }
+        
+        // cleanup
+        scheduler.shutdown();
     }
 }
