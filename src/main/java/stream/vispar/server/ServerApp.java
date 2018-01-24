@@ -1,8 +1,10 @@
 package stream.vispar.server;
 
+import java.text.SimpleDateFormat;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -101,7 +103,8 @@ public final class ServerApp {
         // setup logging
         MultiLogger logger = new MultiLogger();
         logger.addLogger(new ConsoleLogger(console, true));
-        logger.addLogger(new FileLogger("log.log", true));
+        String logName = "Vispar_" + new SimpleDateFormat("yyyy-MM-dd-HHmmss").format(new Date()) + ".log";
+        logger.addLogger(new FileLogger(logName, true));
         
         // create server config
         ServerConfig config = new ServerConfig(8080, 8081, Locale.US, logger, "localhost", "sensors");
