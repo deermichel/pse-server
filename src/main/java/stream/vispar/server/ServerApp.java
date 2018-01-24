@@ -38,6 +38,7 @@ import stream.vispar.server.core.MongoDBConnector;
 import stream.vispar.server.core.ServerConfig;
 import stream.vispar.server.core.ServerInstance;
 import stream.vispar.server.core.entities.Sensor;
+import stream.vispar.server.core.entities.Simulation;
 import stream.vispar.server.core.entities.User;
 import stream.vispar.server.localization.LocalizedString;
 import stream.vispar.server.logger.ConsoleLogger;
@@ -86,6 +87,9 @@ public final class ServerApp {
      *          if true, repl is enabled
      */
     private ServerApp(boolean repl) {
+        
+        new Simulation("");
+        System.exit(1);
        
 //        console = new DefaultConsole();
 //        MultiLogger logger = new MultiLogger();

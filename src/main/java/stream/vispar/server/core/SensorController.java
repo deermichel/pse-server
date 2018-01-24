@@ -81,7 +81,8 @@ public class SensorController {
         File[] files = dir.listFiles((d, name) -> name.endsWith(".conf"));
         
         // register a SensorJsonDeserializer that performs input validation
-        IJsonConverter conv = new GsonConverter().registerTypeAdapter(Sensor.class, new SensorJsonDeserializer());
+        IJsonConverter conv = new GsonConverter()
+                .registerTypeAdapter(Sensor.class, new SensorJsonDeserializer());
         for (File file : files) {
             try {
                 // read config file

@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import stream.vispar.server.core.ServerInstance;
+import stream.vispar.server.core.entities.Simulation;
 import stream.vispar.server.core.entities.User;
 import stream.vispar.server.localization.LocalizedString;
 
@@ -128,7 +129,7 @@ public enum Command {
     /**
      * Command to start a simulation.
      */
-    SIMULATE("simulate", "") {
+    SIMULATE("simulate", "simulate") {
         @Override
         protected CommandResult execute(ServerInstance instance, String input) {
             return null;
