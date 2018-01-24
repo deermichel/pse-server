@@ -88,19 +88,6 @@ public final class ServerApp {
      */
     private ServerApp(boolean repl) {
         
-        new Simulation("");
-        System.exit(1);
-       
-//        console = new DefaultConsole();
-//        MultiLogger logger = new MultiLogger();
-//        ServerConfig config = new ServerConfig(8080, 8081, Locale.US, logger, "localhost", "mo");
-//        instance = new ServerInstance(config);
-//        MongoDBConnector conn = new MongoDBConnector(instance, "localhost");
-//        conn.connect();
-//        Pattern pat = new Pattern("1473847", false, "Hello");
-//        System.out.println(new GsonConverter().toJson(pat).toString());
-//        System.exit(1);
-        
         // use system default console
         console = new DefaultConsole();
         
@@ -116,6 +103,18 @@ public final class ServerApp {
         // setup server instance
         instance = new ServerInstance(config);
         instance.start();
+        
+        
+        try {
+            new Simulation("sims/temp.sim").simulate(instance);
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+        instance.stop();
+        System.exit(1);
+        
+        
+        
         
         // command REPL
         if (repl) {

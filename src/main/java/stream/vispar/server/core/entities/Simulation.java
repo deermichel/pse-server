@@ -10,13 +10,17 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ScheduledExecutorService;
 
+import com.google.gson.JsonParseException;
+
+import stream.vispar.jsonconverter.IJsonConverter;
 import stream.vispar.jsonconverter.exceptions.JsonException;
-import stream.vispar.jsonconverter.exceptions.JsonParseException;
-import stream.vispar.jsonconverter.exceptions.JsonSyntaxException;
 import stream.vispar.jsonconverter.gson.GsonConverter;
 import stream.vispar.jsonconverter.types.IJsonArray;
 import stream.vispar.jsonconverter.types.IJsonElement;
 import stream.vispar.jsonconverter.types.IJsonObject;
+import stream.vispar.server.core.ServerInstance;
+import stream.vispar.server.core.entities.adapters.SensorJsonDeserializer;
+import stream.vispar.server.core.entities.adapters.SimulatedEventDeserializer;
 import stream.vispar.server.engine.IEngine;
 
 /**
@@ -43,51 +47,37 @@ public class Simulation {
     public Simulation(String simFile) {
         this.events = new ArrayList<>();
         
-        GsonConverter c = new GsonConverter();
-        String src = "{\n" + 
-                "        \"timestamp\": \"0\",\n" + 
-                "        \"sensor\": \"temp1\",\n" + 
-                "        \"data\": {\n" + 
-                "            \"value\": { \"fixed\": \"23\" },\n" + 
-                "            \"room\": { \"fixed\": \"Kinderzimmer\" }\n" + 
-                "        }\n" + 
-                "    }";
-        
-        try {
-            IJsonElement raw = c.fromString(src);
-            
-            System.out.println(c.fromJson(raw, SimulatedEvent.class));
-            
-            
-            
-            
-        } catch (JsonException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        
         // parse file
-//        try {
-//            String content = new String(Files.readAllBytes(
-//                    new File(Objects.requireNonNull(simFile)).toPath()));
-//            
-//            // for each event
-//            for (IJsonElement json : new GsonConverter().fromString(content).getAsJsonArray()) {
-//                
-//            }
-//            
-//        } catch (IOException | JsonParseException | JsonSyntaxException e) {
-//            throw new IllegalArgumentException(e.toString());
-//        }
+        // - register a SimulatedEventJsonDeserializer that performs input validation
+        IJsonConverter conv = new GsonConverter()
+                .registerTypeAdapter(SimulatedEvent.class, new SimulatedEventDeserializer());
+        try {
+            String content = new String(Files.readAllBytes(
+                    new File(Objects.requireNonNull(simFile)).toPath()));
+            
+            // for each event
+            for (IJsonElement json : new GsonConverter().fromString(content).getAsJsonArray()) {
+                events.add(conv.fromJson(json, SimulatedEvent.class));
+            }
+            
+        } catch (IOException | JsonException e) {
+            throw new IllegalArgumentException(e.toString());
+        }
     }
     
     /**
-     * Starts simulation on an engine.
+     * Starts simulation on a {@link ServerInstance}.
      * 
-     * @param engine
-     *          the {@link IEngine} used for the simulation.
+     * @param instance
+     *          the {@link ServerInstance} used for the simulation.
      */
-    public void simulate(IEngine engine) {
+    public void simulate(ServerInstance instance) {
+        
+        System.out.println(events);
+        for (SimulatedEvent e : events) {
+            Event a = e.createEvent(instance);
+            System.out.println(a);
+        }
         
     }
 }

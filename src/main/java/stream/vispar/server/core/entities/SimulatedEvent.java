@@ -1,11 +1,19 @@
 package stream.vispar.server.core.entities;
 
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 import stream.vispar.jsonconverter.gson.GsonConverter;
 import stream.vispar.jsonconverter.gson.typeadapters.GsonJsonNull;
 import stream.vispar.jsonconverter.types.IJsonElement;
+import stream.vispar.model.nodes.Attribute;
+import stream.vispar.model.nodes.AttributeType;
+import stream.vispar.server.core.ServerInstance;
 
 /**
  * Events used in a {@link Simulation} to simulate a real {@link Event}.
@@ -43,12 +51,12 @@ public final class SimulatedEvent {
         /**
          * (Integer) Range.
          */
-        private String[] range;
+        private int[] range;
         
         /**
          * Double range.
          */
-        private String[] drange;
+        private double[] drange;
         
         /**
          * Random value.
@@ -86,6 +94,59 @@ public final class SimulatedEvent {
         this.repeat = new RepeatConfig();
         this.sensor = "";
         this.data = new HashMap<>();
+    }
+    
+    /**
+     * Constructs a real {@link Event} using the simulation data.
+     * 
+     * @param instance
+     *          the target {@link ServerInstance} for the event.
+     * @return
+     *          the {@link Event}.
+     * @throws IllegalStateException
+     *          if the data could not be mapped to the sensors (not registered, bad format).
+     */
+    public Event createEvent(ServerInstance instance) {
+        
+        // get sensor and its attributes
+        Sensor sensor = instance.getSensorCtrl().getByName(this.sensor);
+        if (sensor == null) {
+            throw new IllegalStateException("Sensor '" + this.sensor + "' not registered");
+        }
+        Collection<Attribute> attributes = sensor.getAttributes();
+        
+        // map data
+        Map<Attribute, String> simulatedData = new HashMap<>();
+        for (Attribute attr : attributes) {
+            
+            // get matching value
+            AttributeValue value = data.get(attr.getName());
+            if (value == null) {
+                throw new IllegalStateException("No simulation data for attribute '" + attr.getName() + "'");
+            }
+            
+            // derive attribute type
+            String val = "";
+            if (value.fixed != null) { // fixed static value
+                val = value.fixed;
+            } else if (value.range != null) { // integer range
+                int random = ThreadLocalRandom.current().nextInt(value.range[0], value.range[1] + 1);
+                val = String.valueOf(random);
+            } else if (value.drange != null) { // double range
+                double random = ThreadLocalRandom.current().nextDouble(value.drange[0], value.drange[1]);
+                val = String.valueOf(random);
+            } else if (value.random != null) { // random
+                int random = ThreadLocalRandom.current().nextInt(value.random.length);
+                val = value.random[random];
+            }
+            simulatedData.put(attr, val);
+        }
+        
+        // set UTC timestamp
+        String timestamp = ZonedDateTime.now().format(DateTimeFormatter.ISO_INSTANT);
+        
+        // create event
+        return new Event(timestamp, simulatedData, sensor);
     }
     
     @Override

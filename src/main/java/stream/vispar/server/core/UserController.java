@@ -96,7 +96,7 @@ public class UserController {
     }
     
     /**
-     * Returns an user by name.
+     * Returns a user by name.
      * 
      * @param name
      *          the name of the requested user.

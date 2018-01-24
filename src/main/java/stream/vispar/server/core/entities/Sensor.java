@@ -88,6 +88,16 @@ public final class Sensor {
     }
     
     /**
+     * Returns the attributes of the sensor.
+     * 
+     * @return
+     *          the attributes.
+     */
+    public Collection<Attribute> getAttributes() {
+        return new ArrayList<>(attributes.values());
+    }
+    
+    /**
      * Parses an event from raw data based on the sensors attribute mappings.
      * 
      * @param data 

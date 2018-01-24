@@ -19,6 +19,7 @@ import stream.vispar.jsonconverter.types.IJsonElement;
 import stream.vispar.jsonconverter.types.IJsonObject;
 import stream.vispar.model.nodes.AttributeType;
 import stream.vispar.server.core.entities.Sensor;
+import stream.vispar.server.core.entities.User;
 import stream.vispar.server.core.entities.adapters.SensorJsonDeserializer;
 import stream.vispar.server.localization.LocalizedString;
 
@@ -95,8 +96,7 @@ public class SensorController {
                         instance.getLocalizer().get(LocalizedString.SENSOR_REGISTERED), 
                         sensor.getName(), sensor.getEndpoint()));
                 
-            } catch (IOException | JsonException | NullPointerException
-                    | IllegalArgumentException | JsonParseException e) {
+            } catch (IOException | JsonException | NullPointerException | IllegalArgumentException e) {
                 instance.getLogger().logError(String.format(
                         instance.getLocalizer().get(LocalizedString.SKIP_INVALID_CONFIG), 
                         file.getAbsolutePath(), e.toString()));
@@ -112,5 +112,22 @@ public class SensorController {
      */
     public Collection<Sensor> getAll() {
         return new HashSet<>(sensors);
+    }
+    
+    /**
+     * Returns a sensor by its name.
+     * 
+     * @param name
+     *          the name of the sensor.
+     * @return
+     *          the {@link Sensor} or null if not found.
+     */
+    public Sensor getByName(String name) {
+        for (Sensor s : sensors) {
+            if (s.getName().equals(name)) {
+                return s;
+            }
+        }
+        return null;
     }
 }
