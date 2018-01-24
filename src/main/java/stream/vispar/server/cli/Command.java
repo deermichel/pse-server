@@ -7,6 +7,8 @@ import java.util.regex.Pattern;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
 import stream.vispar.server.core.ServerInstance;
 import stream.vispar.server.core.entities.User;
 import stream.vispar.server.localization.LocalizedString;
@@ -27,7 +29,8 @@ public enum Command {
             Matcher matcher = getMatcher(input);
             if (matcher.matches()) {
                 
-                User user = new User(matcher.group(1), matcher.group(2));
+                String hashedPassword = DigestUtils.sha512Hex(matcher.group(2)).toLowerCase();
+                User user = new User(matcher.group(1), hashedPassword);
                 try {
                     instance.getUserCtrl().add(user);
                     return new StringCommandResult(

@@ -30,9 +30,9 @@ public enum ApiRoute {
             IJsonObject response = new GsonJsonObject();
             try {
                 
-                // get username and password
+                // get username and password (hash)
                 String password = request.getAsJsonObject().get("data")
-                        .getAsJsonObject().getAsJsonPrimitive("password").getAsString();
+                        .getAsJsonObject().getAsJsonPrimitive("password").getAsString().toLowerCase();
                 String username = request.getAsJsonObject().get("data")
                         .getAsJsonObject().getAsJsonPrimitive("username").getAsString();
                 
