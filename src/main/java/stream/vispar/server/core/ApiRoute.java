@@ -163,7 +163,7 @@ public enum ApiRoute {
                 
             } catch (IllegalArgumentException e) {
                 response.add("error", RouteError.PATTERN_EDITED.getCode());
-            } catch (JsonException | NullPointerException e) {
+            } catch (JsonException | NullPointerException | com.google.gson.JsonParseException e) {
                 instance.getLogger().logError(e.toString());
                 response.add("error", RouteError.INVALID_REQUEST.getCode());
             }
