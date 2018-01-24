@@ -10,10 +10,10 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Objects;
 
+import com.google.gson.JsonParseException;
+
 import stream.vispar.jsonconverter.IJsonConverter;
 import stream.vispar.jsonconverter.exceptions.JsonException;
-import stream.vispar.jsonconverter.exceptions.JsonParseException;
-import stream.vispar.jsonconverter.exceptions.JsonSyntaxException;
 import stream.vispar.jsonconverter.gson.GsonConverter;
 import stream.vispar.jsonconverter.types.IJsonElement;
 import stream.vispar.jsonconverter.types.IJsonObject;
@@ -84,7 +84,7 @@ public class SensorController {
         IJsonConverter conv = new GsonConverter().registerTypeAdapter(Sensor.class, new SensorJsonDeserializer());
         for (File file : files) {
             try {
-                // parse json
+                // read config file
                 String content = new String(Files.readAllBytes(file.toPath()));
                 
                 // parse sensor - this also does input validation
@@ -94,7 +94,8 @@ public class SensorController {
                         instance.getLocalizer().get(LocalizedString.SENSOR_REGISTERED), 
                         sensor.getName(), sensor.getEndpoint()));
                 
-            } catch (IOException | JsonException | IllegalArgumentException e) {
+            } catch (IOException | JsonException | NullPointerException
+                    | IllegalArgumentException | JsonParseException e) {
                 instance.getLogger().logError(String.format(
                         instance.getLocalizer().get(LocalizedString.SKIP_INVALID_CONFIG), 
                         file.getAbsolutePath(), e.toString()));
