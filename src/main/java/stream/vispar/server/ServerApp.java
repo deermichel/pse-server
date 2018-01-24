@@ -107,7 +107,9 @@ public final class ServerApp {
         
         try {
             new Simulation("sims/temp.sim").simulate(instance);
-        } catch (IllegalStateException e) {
+            Thread.sleep(10000);
+            
+        } catch (Exception e) {
             e.printStackTrace();
         }
         instance.stop();

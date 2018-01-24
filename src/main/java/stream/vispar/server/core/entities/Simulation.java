@@ -8,7 +8,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import com.google.gson.JsonParseException;
 
@@ -73,11 +75,23 @@ public class Simulation {
      */
     public void simulate(ServerInstance instance) {
         
-        System.out.println(events);
-        for (SimulatedEvent e : events) {
-            Event a = e.createEvent(instance);
-            System.out.println(a);
+        // simulate events
+        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+        for (SimulatedEvent simEvent : events) {
+            
+            // one normal execution + repeat count
+            for (int i = 0; i < simEvent.getRepeatCount() + 1; i++) {
+                
+                // calculate delay and schedule
+                int delay = simEvent.getTimeDelay() + i * simEvent.getRepeatInterval();
+                scheduler.schedule(() ->  {
+                    
+                    // create and send event (now has correct timestamp)
+                    Event event = simEvent.createEvent(instance);
+                    instance.getEngine().sendEvent(event);
+                    
+                }, delay, TimeUnit.MILLISECONDS);
+            }
         }
-        
     }
 }

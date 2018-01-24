@@ -30,12 +30,12 @@ public final class SimulatedEvent {
         /**
          * Number of repetitions.
          */
-        private int count;
+        private int count = 0;
         
         /**
          * Delay between repetitions.
          */
-        private int interval;
+        private int interval = 0;
     }
     
     /**
@@ -68,7 +68,7 @@ public final class SimulatedEvent {
     /**
      * When event should be sent after simulation has been started.
      */
-    private final int timestamp;
+    private final int time;
     
     /**
      * Repeated execution.
@@ -90,10 +90,40 @@ public final class SimulatedEvent {
      * Constructs a new {@link SimulatedEvent}. Called implicitly by json conversion.
      */
     private SimulatedEvent() {
-        this.timestamp = 0;
+        this.time = 0;
         this.repeat = new RepeatConfig();
         this.sensor = "";
         this.data = new HashMap<>();
+    }
+    
+    /**
+     * Returns the time when event should be sent after simulation has been started.
+     * 
+     * @return
+     *          the time delay.
+     */
+    public int getTimeDelay() {
+        return this.time;
+    }
+    
+    /**
+     * Returns the number of repetitions.
+     * 
+     * @return
+     *          the repeat count.
+     */
+    public int getRepeatCount() {
+        return this.repeat.count;
+    }
+    
+    /**
+     * Returns the delay between repetitions.
+     * 
+     * @return
+     *          the repeat interval.
+     */
+    public int getRepeatInterval() {
+        return this.repeat.interval;
     }
     
     /**
@@ -152,7 +182,7 @@ public final class SimulatedEvent {
     @Override
     public String toString() {
         Map<String, String> output = new HashMap<>();
-        output.put("timestamp", String.valueOf(timestamp));
+        output.put("time", String.valueOf(time));
         output.put("sensor", sensor);
         output.put("repeat", String.format("repeat(%d, %d)", repeat.count, repeat.interval));
         output.put("data", new GsonConverter().toJson(data).toString());
