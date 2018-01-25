@@ -121,6 +121,15 @@ public class SiddhiEngine implements IEngine {
     public void sendEvent(Event event) {
         instance.getLogger()
                 .log(String.format(instance.getLocalizer().get(LocalizedString.RECEIVED_EVENT), event.toString()));
+        
+        for (DeploymentInstance instance : deploymentInstances.values()) {
+            InputHandler handler = instance.sensorToHandler.get(event.getSensor().getName());
+            
+            if (Objects.nonNull(handler)) {
+                // a handler for the given event was found
+                // TODO feed event to InputHandler (problem: we need event data as ordered Object[]
+            }
+        }
     }
 
     /**
@@ -154,8 +163,12 @@ public class SiddhiEngine implements IEngine {
                     @Override
                     public void visitSensorNode(SensorNode node) {
                         // obtain handler for this sensor and add it to the map
-                        sensorToHandler.put(node.getSensorName(),
-                                runtime.getInputHandler(compiler.getStreamName(node)));
+                        if (!sensorToHandler.containsKey(node.getSensorName())) {
+                            // sensor hasn't been added yet. We need to check because one sensor might have
+                            // multiple nodes in a pattern
+                            sensorToHandler.put(node.getSensorName(),
+                                    runtime.getInputHandler(compiler.getStreamName(node)));
+                        }
                     }
                 });
             }
@@ -184,7 +197,7 @@ public class SiddhiEngine implements IEngine {
                     @Override
                     public void visitSocketActionNode(SocketActionNode node) {
                         // the output node is a socket action node
-                        
+
                         final SocketAction action = new SocketAction(instance.getSockHandler(), node.getMessage());
                         actions.add(action);
 

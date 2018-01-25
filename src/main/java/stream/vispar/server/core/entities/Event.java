@@ -13,49 +13,56 @@ import stream.vispar.server.engine.IEngine;
  * @author Micha Hanselmann
  */
 public class Event {
-    
+
     /**
      * Timestamp of the event (ISO-6801).
      */
     private final String timestamp;
-    
+
     /**
      * Attributes and their values of the event.
      */
     private final Map<Attribute, String> data;
-    
+
     /**
      * Sensor responsible for the event.
      */
     private final Sensor sensor;
-    
-    
+
     /**
      * Constructs a new {@link Event}.
      * 
      * @param timestamp
-     *          the timestamp of the event (ISO-6801).
+     *            the timestamp of the event (ISO-6801).
      * @param data
-     *          the attributes and their values of the event.
+     *            the attributes and their values of the event.
      * @param sensor
-     *          the sensor responsible for the event.
+     *            the sensor responsible for the event.
      */
     public Event(String timestamp, Map<Attribute, String> data, Sensor sensor) {
         this.timestamp = timestamp;
         this.data = new HashMap<>(Objects.requireNonNull(data));
         this.sensor = Objects.requireNonNull(sensor);
     }
-    
+
     /**
      * Returns the data of the event.
      * 
-     * @return
-     *          map of attributes and their values.
+     * @return map of attributes and their values.
      */
     public Map<Attribute, String> getData() {
         return new HashMap<>(data);
     }
-    
+
+    /**
+     * Returns the sensor of the event.
+     * 
+     * @return the sensor of the event.
+     */
+    public Sensor getSensor() {
+        return this.sensor;
+    }
+
     @Override
     public String toString() {
         Map<String, String> output = new HashMap<>();
