@@ -94,7 +94,9 @@ public final class ServerApp {
         // setup logging
         MultiLogger logger = new MultiLogger();
         logger.addLogger(new ConsoleLogger(console, true));
-        String logName = "Vispar_" + new SimpleDateFormat("yyyy-MM-dd-HHmmss").format(new Date()) + ".log";
+        //String logName = "Vispar_" + new SimpleDateFormat("yyyy-MM-dd-HHmmss").format(new Date()) + ".log";
+        // TODO: !!
+        String logName = "log.log";
         logger.addLogger(new FileLogger(logName, true));
         
         // create server config
@@ -107,10 +109,10 @@ public final class ServerApp {
         // command REPL
         if (repl) {
             commandREPL();
+            
+            // stop (else scheduled simulations might continue sending their events)
+            System.exit(0);
         }
-        
-        // stop (else scheduled simulations might continue sending their events)
-        System.exit(0);
     }
     
     /**
