@@ -9,21 +9,17 @@ import java.util.Objects;
 import org.wso2.siddhi.core.ExecutionPlanRuntime;
 import org.wso2.siddhi.core.SiddhiManager;
 import org.wso2.siddhi.core.stream.input.InputHandler;
+import org.wso2.siddhi.core.stream.output.StreamCallback;
 
 import stream.vispar.compiler.CompileException;
 import stream.vispar.compiler.SiddhiCode;
 import stream.vispar.compiler.SiddhiCompiler;
 import stream.vispar.compiler.TreeCompiler;
-import stream.vispar.model.NodeVisitor;
 import stream.vispar.model.Pattern;
-import stream.vispar.model.nodes.inputs.ConstantInputNode;
 import stream.vispar.model.nodes.inputs.InputNode;
 import stream.vispar.model.nodes.inputs.SensorNode;
-import stream.vispar.model.nodes.operators.CountAggregationNode;
-import stream.vispar.model.nodes.operators.FilterOperatorNode;
-import stream.vispar.model.nodes.operators.FunctionAggregationNode;
-import stream.vispar.model.nodes.operators.LogicalOperatorNode;
 import stream.vispar.model.nodes.outputs.MailActionNode;
+import stream.vispar.model.nodes.outputs.OutputNode;
 import stream.vispar.model.nodes.outputs.SocketActionNode;
 import stream.vispar.server.core.ServerInstance;
 import stream.vispar.server.core.entities.Event;
@@ -143,10 +139,10 @@ public class SiddhiEngine implements IEngine {
 
         private final Map<String, InputHandler> sensorToHandler;
 
-        public DeploymentInstance(Pattern pattern, ExecutionPlanRuntime runtime) {
+        DeploymentInstance(Pattern pattern, ExecutionPlanRuntime runtime) {
             this.patternId = Objects.requireNonNull(pattern).getId();
             this.runtimeId = Objects.requireNonNull(runtime).getName();
-            
+
             this.actions = new LinkedList<>();
 
             this.sensorToHandler = new HashMap<>();
@@ -164,7 +160,43 @@ public class SiddhiEngine implements IEngine {
                 });
             }
 
-            // TODO initialize actions
+            for (OutputNode output : pattern.getOutputNodes()) {
+
+                // visit the output node to determine the type of output
+                output.acceptVisitor(new NodeVisitorAdapter() {
+
+                    @Override
+                    public void visitMailActionNode(MailActionNode node) {
+                        // the output node is a mail action node
+
+                        final EmailAction action =
+                                new EmailAction(node.getRecipientEmail(), node.getSubject(), node.getMessage());
+                        actions.add(action);
+
+                        runtime.addCallback(compiler.getStreamName(node), new StreamCallback() {
+                            @Override
+                            public void receive(org.wso2.siddhi.core.event.Event[] events) {
+                                action.execute();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void visitSocketActionNode(SocketActionNode node) {
+                        // the output node is a socket action node
+                        
+                        final SocketAction action = new SocketAction(instance.getSockHandler(), node.getMessage());
+                        actions.add(action);
+
+                        runtime.addCallback(compiler.getStreamName(node), new StreamCallback() {
+                            @Override
+                            public void receive(org.wso2.siddhi.core.event.Event[] events) {
+                                action.execute();
+                            }
+                        });
+                    }
+                });
+            }
         }
     }
 }
