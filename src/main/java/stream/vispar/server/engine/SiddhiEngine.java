@@ -167,7 +167,7 @@ public class SiddhiEngine implements IEngine {
                 }
 
                 try {
-                    handler.send(data);
+                    handler.send(event.getTimestamp(), data);
                 } catch (InterruptedException e) {
                     // TODO error handling
                     e.printStackTrace();
