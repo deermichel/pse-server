@@ -5,23 +5,16 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import com.google.gson.JsonParseException;
-
 import stream.vispar.jsonconverter.IJsonConverter;
 import stream.vispar.jsonconverter.exceptions.JsonException;
 import stream.vispar.jsonconverter.gson.GsonConverter;
-import stream.vispar.jsonconverter.types.IJsonArray;
 import stream.vispar.jsonconverter.types.IJsonElement;
-import stream.vispar.jsonconverter.types.IJsonObject;
 import stream.vispar.server.core.ServerInstance;
-import stream.vispar.server.core.entities.adapters.SensorJsonDeserializer;
 import stream.vispar.server.core.entities.adapters.SimulatedEventDeserializer;
 import stream.vispar.server.engine.IEngine;
 

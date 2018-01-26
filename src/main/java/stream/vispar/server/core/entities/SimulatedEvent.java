@@ -1,18 +1,12 @@
 package stream.vispar.server.core.entities;
 
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 import stream.vispar.jsonconverter.gson.GsonConverter;
-import stream.vispar.jsonconverter.gson.typeadapters.GsonJsonNull;
-import stream.vispar.jsonconverter.types.IJsonElement;
 import stream.vispar.model.nodes.Attribute;
-import stream.vispar.model.nodes.AttributeType;
 import stream.vispar.server.core.ServerInstance;
 
 /**

@@ -1,7 +1,5 @@
 package stream.vispar.server.core.entities;
 
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -13,7 +11,6 @@ import java.util.regex.Pattern;
 import stream.vispar.jsonconverter.exceptions.JsonException;
 import stream.vispar.jsonconverter.types.IJsonElement;
 import stream.vispar.model.nodes.Attribute;
-import stream.vispar.model.nodes.AttributeType;
 import stream.vispar.model.nodes.Operand;
 import stream.vispar.model.nodes.Point;
 import stream.vispar.model.nodes.inputs.SensorNode;

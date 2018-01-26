@@ -1,7 +1,5 @@
 package stream.vispar.server.core.entities;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
