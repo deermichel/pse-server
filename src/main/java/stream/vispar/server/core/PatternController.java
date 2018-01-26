@@ -47,7 +47,7 @@ public class PatternController {
     public PatternController(ServerInstance instance) {
         this.instance = Objects.requireNonNull(instance);
         this.jsonConv = new GsonConverter();
-        this.dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+        this.dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX");
     }
     
     /**
@@ -69,10 +69,8 @@ public class PatternController {
             
             // check timestamps
             try {
-//         TODO:       if (dateFormat.parse(existingPattern.getLastUpdated())
-//                        .after(dateFormat.parse(pattern.getLastUpdated()))) {#
-                if (false) {
-                    dateFormat.parse("2014/09/12 00:00");
+                if (dateFormat.parse(existingPattern.getLastUpdated())
+                        .after(dateFormat.parse(pattern.getLastUpdated()))) {
                     throw new IllegalArgumentException("Newer version of pattern already saved");
                 }
             } catch (ParseException e) {
