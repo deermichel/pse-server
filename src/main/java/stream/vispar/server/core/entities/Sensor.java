@@ -130,6 +130,17 @@ public final class Sensor {
         return new Event(timestamp, values, this);
     }
     
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Sensor
+                && name.equals(((Sensor) obj).name);
+    }
+    
+    @Override
+    public int hashCode() {
+        return name.hashCode();
+    }
+    
     /**
      * Parses the {@link Sensor} to a {@link SensorNode} which can be used on the client.
      * 

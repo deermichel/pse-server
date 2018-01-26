@@ -91,6 +91,20 @@ public class SensorController {
                 
                 // parse sensor - this also does input validation
                 Sensor sensor = conv.fromJson(conv.fromString(content), Sensor.class);
+                
+                // validate name and endpoint
+                for (Sensor s : sensors) {
+                    if (s.getName().equals(sensor.getName())) {
+                        throw new IllegalArgumentException("Sensor with name '" + sensor.getName() + "'"
+                                + " already registered. Names have to be unique");
+                    } else if (s.getEndpoint().equals(sensor.getEndpoint())) {
+                        throw new IllegalArgumentException("Another sensor already uses endpoint '" 
+                                + sensor.getEndpoint() + "'. Endpoints have to be unique");
+                    }
+                }
+                
+                
+                // add sensor
                 sensors.add(sensor);
                 instance.getLogger().log(String.format(
                         instance.getLocalizer().get(LocalizedString.SENSOR_REGISTERED), 
