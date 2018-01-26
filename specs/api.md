@@ -12,6 +12,7 @@ Response on error:
 
 ## Overview
 * [Authentication](#authentication)
+* [Users](#users)
 * [Patterns](#patterns)
 * [Sensors](#sensors)
 
@@ -47,6 +48,24 @@ Logs a user out.
 
 // response on success
 {}
+```
+
+### Users
+
+#### GET `/users/me`
+Returns the user who is logged in (also used to check if authenticated).
+```json
+// no request parameters needed
+
+// response on success
+{
+    "data": {
+        "username": "<username>"
+    }
+}
+
+// errors
+1001 Not authorized.
 ```
 
 ### Patterns

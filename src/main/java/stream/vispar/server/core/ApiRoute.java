@@ -74,6 +74,32 @@ public enum ApiRoute {
     },
     
     /**
+     * GET route to get user who is logged in (also used to check if authenticated)
+     */
+    GET_USERS_ME(RouteType.GET, "/users/me") {
+        @Override
+        public IJsonElement execute(ServerInstance instance, IJsonElement request) {
+            IJsonObject response = new GsonJsonObject();
+            
+            // authenticated?
+            if (!isAuthenticated(instance, request)) {
+                response.add("error", RouteError.NOT_AUTHORIZED.getCode());
+                return response;
+            }
+            
+            // return username
+            IJsonObject data = new GsonJsonObject();
+            try {
+                data.add("username", request.getAsJsonObject().getAsJsonPrimitive("user").getAsString());
+            } catch (JsonParseException e) {
+                instance.getLogger().logError(e.toString()); // can't happen!
+            }
+            response.add("data", data);
+            return response;
+        }
+    },
+    
+    /**
      * GET route to list all patterns (as proxies).
      */
     GET_PATTERNS_ALL(RouteType.GET, "/patterns/all") {
