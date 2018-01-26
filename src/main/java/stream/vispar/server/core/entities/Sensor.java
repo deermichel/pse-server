@@ -115,11 +115,8 @@ public final class Sensor {
         // parse attribute values
         Map<Attribute, String> values = new HashMap<>();
         for (Entry<String, Attribute> attr : attributes.entrySet()) {
-            // TODO: JsonConverter remove
-            Attribute a = new Attribute(attr.getValue().getName(), "", attr.getValue().getType());
-
             try {
-                values.put(a, getValueRecursively(data, attr.getKey()));
+                values.put(attr.getValue(), getValueRecursively(data, attr.getKey()));
             } catch (JsonException | NullPointerException e) {
                 throw new IllegalArgumentException("Sensor data for attribute '" + attr.getValue().getName() 
                         + "' does not match configuration: " + e.toString());
@@ -148,12 +145,7 @@ public final class Sensor {
      *          the {@link SensorNode}.
      */
     public SensorNode getSensorNode() {
-        
-        // convert attributes
-        Attribute[] attrArray = attributes.values().stream()
-                .map(a -> new Attribute(a.getName(), "", a.getType())) // TODO: JsonConverter -> remove
-                .toArray(Attribute[]::new);
-        
+        Attribute[] attrArray = attributes.values().stream().toArray(Attribute[]::new);
         return new SensorNode("", new Point(0, 0), name, description, new Operand(attrArray));
     }
     
