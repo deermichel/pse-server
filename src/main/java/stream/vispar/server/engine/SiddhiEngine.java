@@ -16,6 +16,7 @@ import stream.vispar.compiler.SiddhiCode;
 import stream.vispar.compiler.SiddhiCompiler;
 import stream.vispar.compiler.TreeCompiler;
 import stream.vispar.model.Pattern;
+import stream.vispar.model.nodes.Attribute;
 import stream.vispar.model.nodes.inputs.InputNode;
 import stream.vispar.model.nodes.inputs.SensorNode;
 import stream.vispar.model.nodes.outputs.MailActionNode;
@@ -112,7 +113,11 @@ public class SiddhiEngine implements IEngine {
 
         // by shutting down the runtime, pattern recognition is stopped
         runtime.shutdown();
-        deploymentInstances.remove(pattern.getId());
+        DeploymentInstance removed = deploymentInstances.remove(pattern.getId());
+
+        assert Objects.nonNull(removed) : "tried to remove deployment instance, but none was present";
+        assert removed.patternId.equals(
+                pattern.getId()) : "inconsistent mapping found: pattern ID was mapped to wrong DeploymentInstance";
 
         // who updates the deployment status in the Pattern?
     }
@@ -121,13 +126,55 @@ public class SiddhiEngine implements IEngine {
     public void sendEvent(Event event) {
         instance.getLogger()
                 .log(String.format(instance.getLocalizer().get(LocalizedString.RECEIVED_EVENT), event.toString()));
-        
+
         for (DeploymentInstance instance : deploymentInstances.values()) {
             InputHandler handler = instance.sensorToHandler.get(event.getSensor().getName());
-            
+
             if (Objects.nonNull(handler)) {
                 // a handler for the given event was found
-                // TODO feed event to InputHandler (problem: we need event data as ordered Object[]
+
+                // this array represents the order of attributes expected by the handler
+                Attribute[] attributeOrder = compiler.getAttributesOrdered(event.getSensor().getSensorNode());
+
+                // maps the attributes to the values of the current event
+                Map<Attribute, String> dataMap = event.getData();
+
+                assert attributeOrder.length == dataMap.size() && dataMap.size() == event.getSensor().getAttributes()
+                        .size() : "unexpected inconsistency with sensor attributes";
+
+                Object[] data = new Object[attributeOrder.length];
+
+                // extracting the data for each attribute in the correct order
+                for (int i = 0; i < attributeOrder.length; ++i) {
+                    String next = dataMap.get(attributeOrder[i]);
+
+                    Object nextObject = null;
+                    switch (attributeOrder[i].getType()) {
+                    case DOUBLE:
+                        nextObject = Double.parseDouble(next);
+                        break;
+                    case INTEGER:
+                        nextObject = Integer.parseInt(next);
+                        break;
+                    case STRING:
+                        nextObject = next;
+                        break;
+                    default:
+                        throw new IllegalStateException("Attribute has unknown type");
+                    }
+
+                    data[i] = nextObject;
+                }
+
+                try {
+                    handler.send(data);
+                } catch (InterruptedException e) {
+                    // TODO error handling
+                    e.printStackTrace();
+                }
+            } else {
+                // no handler found for the given event
+                // should this be logged?
             }
         }
     }
