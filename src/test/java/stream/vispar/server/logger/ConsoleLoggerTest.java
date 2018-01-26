@@ -3,12 +3,7 @@
  */
 package stream.vispar.server.logger;
 
-import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.sameInstance;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 

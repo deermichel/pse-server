@@ -5,10 +5,6 @@ package stream.vispar.server.logger;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.stringContainsInOrder;
-
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 /**

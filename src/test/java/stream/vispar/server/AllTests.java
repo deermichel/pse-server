@@ -5,7 +5,6 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 import stream.vispar.server.cli.DefaultConsoleTest;
-import stream.vispar.server.core.MongoDBConnectorTest;
 import stream.vispar.server.core.ServerConfigTest;
 import stream.vispar.server.core.ServerInstanceTest;
 import stream.vispar.server.core.SparkServerTest;
@@ -26,7 +25,6 @@ import stream.vispar.server.logger.MultiLoggerTest;
     DefaultConsoleTest.class,
     
     // core
-    MongoDBConnectorTest.class,
     ServerConfigTest.class,
     ServerInstanceTest.class,
     SparkServerTest.class,
