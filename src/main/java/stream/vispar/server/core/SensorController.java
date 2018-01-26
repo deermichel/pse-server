@@ -3,23 +3,14 @@ package stream.vispar.server.core;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Map.Entry;
 import java.util.Objects;
-
-import com.google.gson.JsonParseException;
 
 import stream.vispar.jsonconverter.IJsonConverter;
 import stream.vispar.jsonconverter.exceptions.JsonException;
 import stream.vispar.jsonconverter.gson.GsonConverter;
-import stream.vispar.jsonconverter.types.IJsonElement;
-import stream.vispar.jsonconverter.types.IJsonObject;
-import stream.vispar.model.nodes.AttributeType;
 import stream.vispar.server.core.entities.Sensor;
-import stream.vispar.server.core.entities.User;
 import stream.vispar.server.core.entities.adapters.SensorJsonDeserializer;
 import stream.vispar.server.localization.LocalizedString;
 

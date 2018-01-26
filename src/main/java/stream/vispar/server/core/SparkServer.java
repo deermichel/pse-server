@@ -1,20 +1,15 @@
 package stream.vispar.server.core;
 
-import java.util.Arrays;
 import java.util.Objects;
-
-import javax.swing.plaf.synth.SynthSeparatorUI;
 
 import spark.Request;
 import spark.Response;
 import spark.Route;
-import spark.RouteImpl;
 import spark.Service;
 import stream.vispar.jsonconverter.IJsonConverter;
 import stream.vispar.jsonconverter.exceptions.JsonException;
 import stream.vispar.jsonconverter.gson.GsonConverter;
 import stream.vispar.jsonconverter.gson.typeadapters.GsonJsonObject;
-import stream.vispar.jsonconverter.types.IJsonElement;
 import stream.vispar.jsonconverter.types.IJsonObject;
 import stream.vispar.server.ServerApp;
 import stream.vispar.server.core.entities.Event;

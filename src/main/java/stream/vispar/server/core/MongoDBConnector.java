@@ -1,21 +1,15 @@
 package stream.vispar.server.core;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Objects;
 
 import org.bson.Document;
 
 import com.mongodb.MongoClient;
-import com.mongodb.MongoClientOptions;
 import com.mongodb.MongoClientURI;
 import com.mongodb.MongoException;
-import com.mongodb.MongoTimeoutException;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.MongoDriverInformation;
-import com.mongodb.client.model.Filters;
-
 import stream.vispar.jsonconverter.IJsonConverter;
 import stream.vispar.jsonconverter.exceptions.JsonParseException;
 import stream.vispar.jsonconverter.exceptions.JsonSyntaxException;
@@ -75,6 +69,7 @@ public class MongoDBConnector implements IDatabaseConnector {
         client = new MongoClient(url);
         database = client.getDatabase("vispar");
 
+        // try to connect (else stop server)
         try {
             client.getAddress();
             instance.getLogger().log(
