@@ -1,5 +1,6 @@
 package stream.vispar.server.cli;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -104,8 +105,7 @@ public enum Command {
                 
                 // get and concat all pattern names (with their deployment status)
                 List<String> patternnames = instance.getPatternCtrl().getAll().stream()
-                        .sorted((p1, p2) -> 
-                            p1.getName().toLowerCase().compareTo(p2.getName().toLowerCase()))
+                        .sorted((p1, p2) -> p1.getName().compareToIgnoreCase(p2.getName()))
                         .map(pattern -> {
                             if (pattern.isDeployed()) {
                                 return pattern.getName() + " "
@@ -177,8 +177,15 @@ public enum Command {
         @Override
         protected CommandResult execute(ServerInstance instance, String input) {
             if (getMatcher(input).matches()) {
-                return new StringCommandResult(
-                        instance.getLocalizer().get(LocalizedString.AVAILABLE_COMMANDS));
+                
+                // get and concat all commands
+                List<String> commands = Arrays.asList(Command.values()).stream()
+                        .map(c -> c.toString())
+                        .sorted((c1, c2) -> c1.compareToIgnoreCase(c2))
+                        .collect(Collectors.toList());
+                return new StringCommandResult(String.format(
+                        instance.getLocalizer().get(LocalizedString.AVAILABLE_COMMANDS), 
+                        String.join(", ", commands)));
             } else {
                 return new StringCommandResult(
                         instance.getLocalizer().get(LocalizedString.INV_HELP_SYNTAX));
@@ -209,6 +216,11 @@ public enum Command {
     Command(String keyword, String regex) {
         this.keyword = keyword;
         this.pattern = Pattern.compile(regex);
+    }
+    
+    @Override
+    public String toString() {
+        return keyword;
     }
     
     /**
