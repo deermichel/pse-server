@@ -44,6 +44,7 @@ public class SensorJsonDeserializer implements JsonDeserializer<Sensor> {
             }
         }
 
+        // (attributes)
         for (Entry<String, JsonElement> attr : jsonObj.getAsJsonObject("attributes").entrySet()) {
             if (!attr.getKey().matches(attrRegex)) {
                 throw new JsonParseException("Attributes have to match regex " + attrRegex);

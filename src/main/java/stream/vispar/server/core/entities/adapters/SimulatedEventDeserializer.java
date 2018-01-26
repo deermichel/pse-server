@@ -10,9 +10,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
-import stream.vispar.jsonconverter.gson.adapters.JsonAttributeAdapter;
-import stream.vispar.model.nodes.Attribute;
-import stream.vispar.server.core.entities.Sensor;
 import stream.vispar.server.core.entities.SimulatedEvent;
 
 /**
@@ -39,6 +36,7 @@ public class SimulatedEventDeserializer implements JsonDeserializer<SimulatedEve
             throw new JsonParseException("Sensor has to match regex [a-zA-Z0-9]+");
         }
         
+        // (data/attributes)
         for (Entry<String, JsonElement> data : jsonObj.getAsJsonObject("data").entrySet()) {
             if (!data.getKey().matches("[a-zA-Z0-9]+")) {
                 throw new JsonParseException("Attribute names have to match regex [a-zA-Z0-9]+");
