@@ -52,18 +52,18 @@ public class SimulatedEventDeserializer implements JsonDeserializer<SimulatedEve
             } else if (value.has("range")) {
                 if (value.getAsJsonArray("range").size() != 2) {
                     throw new JsonParseException("Range has to be an array with size 2");
-                } else if (!value.getAsJsonArray("range").get(0).getAsString().matches("[0-9]+")) {
-                    throw new JsonParseException("Range minimum has to match regex [0-9]+");
-                } else if (!value.getAsJsonArray("range").get(1).getAsString().matches("[0-9]+")) {
-                    throw new JsonParseException("Range maximum has to match regex [0-9]+");
+                } else if (!value.getAsJsonArray("range").get(0).getAsString().matches("-?[0-9]+")) {
+                    throw new JsonParseException("Range minimum has to match regex -?[0-9]+");
+                } else if (!value.getAsJsonArray("range").get(1).getAsString().matches("-?[0-9]+")) {
+                    throw new JsonParseException("Range maximum has to match regex -?[0-9]+");
                 }
             } else if (value.has("drange")) {
                 if (value.getAsJsonArray("drange").size() != 2) {
                     throw new JsonParseException("Double range has to be an array with size 2");
-                } else if (!value.getAsJsonArray("drange").get(0).getAsString().matches("[0-9\\.]+")) {
-                    throw new JsonParseException("Double range minimum has to match regex [0-9\\.]+");
-                } else if (!value.getAsJsonArray("drange").get(1).getAsString().matches("[0-9\\.]+")) {
-                    throw new JsonParseException("Double range maximum has to match regex [0-9\\.]+");
+                } else if (!value.getAsJsonArray("drange").get(0).getAsString().matches("-?[0-9\\.]+")) {
+                    throw new JsonParseException("Double range minimum has to match regex -?[0-9\\.]+");
+                } else if (!value.getAsJsonArray("drange").get(1).getAsString().matches("-?[0-9\\.]+")) {
+                    throw new JsonParseException("Double range maximum has to match regex -?[0-9\\.]+");
                 }
             } else if (value.has("random") && !value.get("random").isJsonArray()) {
                 throw new JsonParseException("Random value has to offer an array of options");
