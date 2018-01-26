@@ -31,14 +31,18 @@ public class SensorJsonDeserializer implements JsonDeserializer<Sensor> {
         }
         JsonObject jsonObj = json.getAsJsonObject();
 
+        String attrRegex = "[a-zA-Z0-9]+(\\[[0-9]+\\])?(\\.[a-zA-Z0-9]+(\\[[0-9]+\\])?)*";
+
         // validate sensor config json
         if (!jsonObj.getAsJsonPrimitive("name").getAsString().matches("[a-zA-Z0-9]+")) {
             throw new JsonParseException("Name has to match regex [a-zA-Z0-9]+");
         } else if (!jsonObj.getAsJsonPrimitive("endpoint").getAsString().matches("[a-zA-Z0-9]+")) {
             throw new JsonParseException("Endpoint has to match regex [a-zA-Z0-9]+");
+        } else if (jsonObj.has("timestamp")) {
+            if (!jsonObj.getAsJsonPrimitive("timestamp").getAsString().matches(attrRegex)) {
+                throw new JsonParseException("Timestamp has to match regex " + attrRegex);
+            }
         }
-
-        String attrRegex = "[a-zA-Z0-9]+(\\[[0-9]+\\])?(\\.[a-zA-Z0-9]+(\\[[0-9]+\\])?)*";
 
         for (Entry<String, JsonElement> attr : jsonObj.getAsJsonObject("attributes").entrySet()) {
             if (!attr.getKey().matches(attrRegex)) {

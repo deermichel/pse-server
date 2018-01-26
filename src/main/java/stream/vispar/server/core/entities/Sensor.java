@@ -42,6 +42,11 @@ public final class Sensor {
     private final String endpoint;
     
     /**
+     * Timestamp source of the sensor.
+     */
+    private final String timestamp;
+    
+    /**
      * Attribute mappings of the sensor.
      */
     private final Map<String, Attribute> attributes;
@@ -54,6 +59,7 @@ public final class Sensor {
         this.name = "";
         this.description = "";
         this.endpoint = "";
+        this.timestamp = "";
         this.attributes = new HashMap<>();
     }
     
@@ -109,6 +115,17 @@ public final class Sensor {
      */
     public Event parseEvent(IJsonElement data) {
         
+        // set timestamp (either from system or from sensor)
+        long timestampMillis = System.currentTimeMillis(); // default
+        if (timestamp != null && !timestamp.isEmpty()) {
+            try {
+                timestampMillis = Long.valueOf(getValueRecursively(data, timestamp));
+            } catch (JsonException | NullPointerException | NumberFormatException e) {
+                throw new IllegalArgumentException("Sensor data for timestamp does not match configuration: " 
+                        + e.toString());
+            }
+        }
+        
         // parse attribute values
         Map<Attribute, String> values = new HashMap<>();
         for (Entry<String, Attribute> attr : attributes.entrySet()) {
@@ -121,7 +138,7 @@ public final class Sensor {
         }
         
         // return event
-        return new Event(System.currentTimeMillis(), values, this);
+        return new Event(timestampMillis, values, this);
     }
     
     @Override
