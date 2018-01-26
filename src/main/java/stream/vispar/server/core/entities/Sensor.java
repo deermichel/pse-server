@@ -109,9 +109,6 @@ public final class Sensor {
      */
     public Event parseEvent(IJsonElement data) {
         
-        // set UTC timestamp
-        String timestamp = ZonedDateTime.now().format(DateTimeFormatter.ISO_INSTANT);
-        
         // parse attribute values
         Map<Attribute, String> values = new HashMap<>();
         for (Entry<String, Attribute> attr : attributes.entrySet()) {
@@ -124,7 +121,7 @@ public final class Sensor {
         }
         
         // return event
-        return new Event(timestamp, values, this);
+        return new Event(System.currentTimeMillis(), values, this);
     }
     
     @Override

@@ -174,11 +174,8 @@ public final class SimulatedEvent {
             simulatedData.put(attr, val);
         }
         
-        // set UTC timestamp
-        String timestamp = ZonedDateTime.now().format(DateTimeFormatter.ISO_INSTANT);
-        
         // create event
-        return new Event(timestamp, simulatedData, sensor);
+        return new Event(System.currentTimeMillis(), simulatedData, sensor);
     }
     
     @Override
