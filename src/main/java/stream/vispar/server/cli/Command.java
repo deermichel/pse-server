@@ -1,11 +1,9 @@
 package stream.vispar.server.cli;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.apache.commons.codec.digest.DigestUtils;
@@ -31,8 +29,11 @@ public enum Command {
             Matcher matcher = getMatcher(input);
             if (matcher.matches()) {
                 
+                // create user
                 String hashedPassword = DigestUtils.sha512Hex(matcher.group(2)).toLowerCase();
                 User user = new User(matcher.group(1), hashedPassword);
+                
+                // add user if not exists
                 try {
                     instance.getUserCtrl().add(user);
                     return new StringCommandResult(
@@ -88,6 +89,7 @@ public enum Command {
                 String result = String.format(instance.getLocalizer().get(LocalizedString.USERS), 
                         String.join(", ", usernames));
                 return new StringCommandResult(result);
+                
             } else {
                 return new StringCommandResult(
                         instance.getLocalizer().get(LocalizedString.INV_LISTUSERS_SYNTAX));
@@ -119,6 +121,7 @@ public enum Command {
                         String.join(", ", patternnames));
                 
                 return new StringCommandResult(result);
+                
             } else {
                 return new StringCommandResult(
                         instance.getLocalizer().get(LocalizedString.INV_LISTPATTERNS_SYNTAX));
@@ -160,9 +163,12 @@ public enum Command {
         @Override
         protected CommandResult execute(ServerInstance instance, String input) {
             if (getMatcher(input).matches()) {
+                
+                // stop server instance
                 instance.stop();
                 return new StringCommandResult(
                         instance.getLocalizer().get(LocalizedString.SERVER_STOPPED));
+                
             } else {
                 return new StringCommandResult(
                         instance.getLocalizer().get(LocalizedString.INV_STOP_SYNTAX));
@@ -186,6 +192,7 @@ public enum Command {
                 return new StringCommandResult(String.format(
                         instance.getLocalizer().get(LocalizedString.AVAILABLE_COMMANDS), 
                         String.join(", ", commands)));
+                
             } else {
                 return new StringCommandResult(
                         instance.getLocalizer().get(LocalizedString.INV_HELP_SYNTAX));

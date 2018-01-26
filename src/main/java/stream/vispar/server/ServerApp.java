@@ -1,45 +1,18 @@
 package stream.vispar.server;
 
-import java.text.SimpleDateFormat;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
-import org.bson.Document;
-
-import com.mongodb.MongoClient;
-import com.mongodb.client.FindIterable;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.model.Filters;
-
 import java.util.Objects;
 
-import stream.vispar.jsonconverter.exceptions.JsonException;
-import stream.vispar.jsonconverter.exceptions.JsonParseException;
-import stream.vispar.jsonconverter.exceptions.JsonSyntaxException;
-import stream.vispar.jsonconverter.gson.GsonConverter;
-import stream.vispar.jsonconverter.gson.typeadapters.GsonJsonObject;
-import stream.vispar.jsonconverter.types.IJsonElement;
-import stream.vispar.model.Pattern;
-import stream.vispar.model.nodes.Attribute;
-import stream.vispar.model.nodes.AttributeType;
-import stream.vispar.model.nodes.Operand;
-import stream.vispar.model.nodes.Point;
-import stream.vispar.model.nodes.inputs.SensorNode;
 import stream.vispar.server.cli.Command;
 import stream.vispar.server.cli.CommandResult;
 import stream.vispar.server.cli.DefaultConsole;
 import stream.vispar.server.cli.IConsole;
-import stream.vispar.server.core.MongoDBConnector;
 import stream.vispar.server.core.ServerConfig;
 import stream.vispar.server.core.ServerInstance;
-import stream.vispar.server.core.entities.Sensor;
-import stream.vispar.server.core.entities.Simulation;
-import stream.vispar.server.core.entities.User;
 import stream.vispar.server.localization.LocalizedString;
 import stream.vispar.server.logger.ConsoleLogger;
 import stream.vispar.server.logger.FileLogger;
