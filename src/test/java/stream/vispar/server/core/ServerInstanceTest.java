@@ -7,6 +7,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.sameInstance;
+import static org.mockito.Mockito.mock;
 
 import java.util.Locale;
 
@@ -30,8 +31,8 @@ public class ServerInstanceTest {
      */
     @Test
     public void testServerInstance() {
-        ILogger logger = new ConsoleLogger(new DefaultConsole(), false);
-        ServerConfig config = new ServerConfig(80, 81, Locale.US, logger, "databaseUrl", "configPath");
+        ILogger logger = mock(ILogger.class);
+        ServerConfig config = new ServerConfig(8080, 8081, Locale.US, logger, "localhost", ".");
         ServerInstance instance = new ServerInstance(config);
         
         assertThat(instance.isRunning(), equalTo(false));
@@ -57,32 +58,50 @@ public class ServerInstanceTest {
     }
 
     /**
-     * Test method for {@link ServerInstance#start()}.
+     * Test method for {@link ServerInstance#start()} and {@link ServerInstance#stop()}.
      */
     @Test
-    public void testStart() {
+    public void testStartStop() {
         ILogger logger = new ConsoleLogger(new DefaultConsole(), false);
-        ServerConfig config = new ServerConfig(80, 81, Locale.US, logger, "databaseUrl", "configPath");
+        ServerConfig config = new ServerConfig(8080, 8081, Locale.US, logger, "localhost", ".");
         ServerInstance instance = new ServerInstance(config);
         
         assertThat(instance.isRunning(), equalTo(false));
         instance.start();
         assertThat(instance.isRunning(), equalTo(true));
         instance.stop();
+        assertThat(instance.isRunning(), equalTo(false));
     }
 
     /**
-     * Test method for {@link ServerInstance#stop()}.
+     * Test method for {@link ServerInstance#start()}.
      */
     @Test
-    public void testStop() {
+    public void testMultipleStart() {
         ILogger logger = new ConsoleLogger(new DefaultConsole(), false);
-        ServerConfig config = new ServerConfig(80, 81, Locale.US, logger, "databaseUrl", "configPath");
+        ServerConfig config = new ServerConfig(8080, 8081, Locale.US, logger, "localhost", ".");
         ServerInstance instance = new ServerInstance(config);
         
         assertThat(instance.isRunning(), equalTo(false));
         instance.start();
+        instance.start();
+        instance.start();
         assertThat(instance.isRunning(), equalTo(true));
+        instance.stop();
+    }
+
+    /**
+     * Test method for {@link ServerInstance#start()}.
+     */
+    @Test
+    public void testMultipleStop() {
+        ILogger logger = new ConsoleLogger(new DefaultConsole(), false);
+        ServerConfig config = new ServerConfig(8080, 8081, Locale.US, logger, "localhost", ".");
+        ServerInstance instance = new ServerInstance(config);
+        
+        assertThat(instance.isRunning(), equalTo(false));
+        instance.stop();
+        instance.stop();
         instance.stop();
         assertThat(instance.isRunning(), equalTo(false));
     }

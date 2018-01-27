@@ -11,10 +11,8 @@ import org.junit.Test;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.sameInstance;
+import static org.mockito.Mockito.mock;
 
-
-import stream.vispar.server.cli.DefaultConsole;
-import stream.vispar.server.logger.ConsoleLogger;
 import stream.vispar.server.logger.ILogger;
 
 /**
@@ -32,7 +30,7 @@ public class ServerConfigTest {
      */
     @Before
     public void setUp() {
-        logger = new ConsoleLogger(new DefaultConsole(), false);
+        logger = mock(ILogger.class);
     }
 
     /**
@@ -127,5 +125,15 @@ public class ServerConfigTest {
     @Test(expected = IllegalArgumentException.class)
     public void testServerConfigInvalid4() {
         new ServerConfig(123480, 23, Locale.US, logger, "databaseUrl", "configPath");
+    }
+
+    /**
+     * Test method for {@link ServerConfig#ServerConfig(int, int, Locale, ILogger, String, String)}.
+     * 
+     * Checks behavior on invalid argument.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testServerConfigInvalid5() {
+        new ServerConfig(80, 80, Locale.US, logger, "databaseUrl", "configPath");
     }
 }

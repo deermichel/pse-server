@@ -36,7 +36,7 @@ public class DefaultConsoleTest {
     }
     
     /**
-     * Replace system std console.
+     * Save system std console.
      */
     @Before
     public void setUp() {
