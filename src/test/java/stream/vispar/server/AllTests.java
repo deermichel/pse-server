@@ -8,6 +8,9 @@ import stream.vispar.server.cli.DefaultConsoleTest;
 import stream.vispar.server.core.ServerConfigTest;
 import stream.vispar.server.core.ServerInstanceTest;
 import stream.vispar.server.core.SparkServerTest;
+import stream.vispar.server.core.entities.EventTest;
+import stream.vispar.server.core.entities.SimulatedEventTest;
+import stream.vispar.server.core.entities.UserTest;
 import stream.vispar.server.localization.LocalizerTest;
 import stream.vispar.server.logger.ConsoleLoggerTest;
 import stream.vispar.server.logger.FileLoggerTest;
@@ -28,6 +31,11 @@ import stream.vispar.server.logger.MultiLoggerTest;
     ServerConfigTest.class,
     ServerInstanceTest.class,
     SparkServerTest.class,
+    
+    // entities
+    EventTest.class,
+    SimulatedEventTest.class,
+    UserTest.class,
     
     // localization
     LocalizerTest.class,
