@@ -169,12 +169,8 @@ public class SiddhiEngine implements IEngine {
                 try {
                     handler.send(event.getTimestamp(), data);
                 } catch (InterruptedException e) {
-                    // TODO error handling
-                    e.printStackTrace();
+                    this.instance.getLogger().logError(e.toString());
                 }
-            } else {
-                // no handler found for the given event
-                // should this be logged?
             }
         }
     }
