@@ -11,6 +11,7 @@ import stream.vispar.server.core.SparkServerTest;
 import stream.vispar.server.core.entities.EventTest;
 import stream.vispar.server.core.entities.SensorTest;
 import stream.vispar.server.core.entities.SimulatedEventTest;
+import stream.vispar.server.core.entities.SimulationTest;
 import stream.vispar.server.core.entities.UserTest;
 import stream.vispar.server.localization.LocalizerTest;
 import stream.vispar.server.logger.ConsoleLoggerTest;
@@ -37,6 +38,7 @@ import stream.vispar.server.logger.MultiLoggerTest;
     EventTest.class,
     SensorTest.class,
     SimulatedEventTest.class,
+    SimulationTest.class,
     UserTest.class,
     
     // localization
