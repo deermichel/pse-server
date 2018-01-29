@@ -61,12 +61,16 @@ public class SiddhiEngine implements IEngine {
 
     @Override
     public void start() {
-
+        instance.getLogger().log(instance.getLocalizer().get(LocalizedString.SIDDHI_ENGINE_STARTED));
     }
 
     @Override
     public void stop() {
-
+        
+        // undeploy all patterns
+        instance.getPatternCtrl().getAll().forEach(pattern -> undeploy(pattern));
+        
+        instance.getLogger().log(instance.getLocalizer().get(LocalizedString.SIDDHI_ENGINE_STOPPED));
     }
 
     @Override
@@ -85,16 +89,14 @@ public class SiddhiEngine implements IEngine {
         try {
             code = compiler.compile(pattern);
         } catch (CompileException e) {
-            // TODO add logging
-            e.printStackTrace();
-            return;
+            instance.getLogger().logError("Siddhi compiler error: " + e.toString());
+            throw new IllegalArgumentException(e.toString());
         }
 
+        // init and start runtime
         ExecutionPlanRuntime runtime = manager.createExecutionPlanRuntime(code.getAsString());
         deploymentInstances.put(pattern.getId(), new DeploymentInstance(pattern, runtime));
         runtime.start();
-
-        // who updates the deployment status in the Pattern?
     }
 
     @Override
@@ -118,8 +120,6 @@ public class SiddhiEngine implements IEngine {
         assert Objects.nonNull(removed) : "tried to remove deployment instance, but none was present";
         assert removed.patternId.equals(
                 pattern.getId()) : "inconsistent mapping found: pattern ID was mapped to wrong DeploymentInstance";
-
-        // who updates the deployment status in the Pattern?
     }
 
     @Override

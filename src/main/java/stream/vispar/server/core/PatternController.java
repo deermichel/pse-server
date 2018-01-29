@@ -12,6 +12,9 @@ import stream.vispar.jsonconverter.exceptions.JsonParseException;
 import stream.vispar.jsonconverter.gson.GsonConverter;
 import stream.vispar.jsonconverter.types.IJsonElement;
 import stream.vispar.model.Pattern;
+import stream.vispar.model.nodes.inputs.InputNode;
+import stream.vispar.model.nodes.inputs.SensorNode;
+import stream.vispar.server.core.entities.adapters.NodeVisitorAdapter;
 import stream.vispar.server.localization.LocalizedString;
 
 /**
@@ -133,7 +136,7 @@ public class PatternController {
      * 
      * @param id
      *          the id of the {@link Pattern} to be renamed.
-     * @param name
+     * @param newName
      *          the new name of the pattern.
      * @return
      *          the renamed {@link Pattern}.   
@@ -179,7 +182,8 @@ public class PatternController {
      * @throws IllegalArgumentException
      *          if the pattern does not exist.
      * @throws IllegalStateException
-     *          if the pattern is already deployed.
+     *          if the pattern is already deployed, is invalid, sensors used in pattern
+     *          are not registered on server.
      */
     public Pattern deploy(String id) {
         IDatabaseConnector db = instance.getDBConn();
@@ -189,10 +193,39 @@ public class PatternController {
         if (pattern == null) {
             throw new IllegalArgumentException("Pattern does not exist");
         } else if (pattern.isDeployed()) {
-            throw new IllegalStateException("Pattern already deployed");
+            throw new IllegalStateException(String.valueOf(RouteError.PATTERN_ALREADY_DEPLOYED.getCode()));
+        }
+        
+        // validate pattern and sensors used in pattern
+        if (!pattern.isValid()) {
+            throw new IllegalStateException(String.valueOf(RouteError.PATTERN_INVALID.getCode()));
+        }
+        Collection<String> usedSensors = new ArrayList<>();
+        for (InputNode input : pattern.getInputNodes()) {
+            input.acceptVisitor(new NodeVisitorAdapter() {
+                @Override
+                public void visitSensorNode(SensorNode node) {
+                    usedSensors.add(node.getSensorName());
+                }
+            });
+        }
+        for (String sensor : usedSensors) {
+            if (instance.getSensorCtrl().getByName(sensor) == null) {
+                // throw new IllegalStateException("Sensor '" + sensor + "' not registered on server");
+                throw new IllegalStateException(String.valueOf(RouteError.UNKNOWN_SENSORS.getCode()));
+            }
         }
         
         // deploy pattern
+        try {
+            instance.getEngine().deploy(pattern);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalStateException(String.valueOf(RouteError.PATTERN_INVALID.getCode()));
+        }
+        instance.getLogger().log(String.format(instance.getLocalizer().get(
+                LocalizedString.PATTERN_DEPLOYED), pattern.getName()));
+        
+        // update deployment status in db
         IJsonElement json = db.find("patterns", "id", pattern.getId());
         try {
             json.getAsJsonObject().add("isDeployed", true);
@@ -200,8 +233,6 @@ public class PatternController {
             instance.getLogger().logError(e.toString());
         }
         db.update("patterns", "id", pattern.getId(), json);
-        instance.getLogger().log(String.format(instance.getLocalizer().get(
-                LocalizedString.PATTERN_DEPLOYED), pattern.getName()));
         
         // return deployed pattern
         try {
@@ -236,6 +267,11 @@ public class PatternController {
         }
         
         // undeploy pattern
+        instance.getEngine().undeploy(pattern);
+        instance.getLogger().log(String.format(instance.getLocalizer().get(
+                LocalizedString.PATTERN_UNDEPLOYED), pattern.getName()));
+        
+        // update deployment status in db
         IJsonElement json = db.find("patterns", "id", pattern.getId());
         try {
             json.getAsJsonObject().add("isDeployed", false);
@@ -243,8 +279,6 @@ public class PatternController {
             instance.getLogger().logError(e.toString());
         }
         db.update("patterns", "id", pattern.getId(), json);
-        instance.getLogger().log(String.format(instance.getLocalizer().get(
-                LocalizedString.PATTERN_UNDEPLOYED), pattern.getName()));
         
         // return undeployed pattern
         try {

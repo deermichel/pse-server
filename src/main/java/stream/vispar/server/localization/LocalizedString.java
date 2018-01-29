@@ -130,6 +130,12 @@ public enum LocalizedString {
     /** SIMULATION_FILE_INVALID */
     SIMULATION_FILE_INVALID("simulation_file_invalid"),
     
+    /** SIDDHI_ENGINE_STARTED */
+    SIDDHI_ENGINE_STARTED("siddhi_engine_started"),
+    
+    /** SIDDHI_ENGINE_STOPPED */
+    SIDDHI_ENGINE_STOPPED("siddhi_engine_stopped"),
+    
     /** INV_ADDUSER_SYNTAX */
     INV_ADDUSER_SYNTAX("inv_adduser_syntax");
     

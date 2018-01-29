@@ -178,7 +178,7 @@ Deploys the pattern on the server.
 1001 Not authorized.
 3000 Pattern not found.
 3002 Pattern already deployed.
-3004 Pattern not valid.
+3004 Pattern not valid or could not be compiled.
 3005 Sensors used in pattern not registered on server.
 ```
 

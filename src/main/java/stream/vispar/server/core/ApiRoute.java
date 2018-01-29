@@ -293,7 +293,7 @@ public enum ApiRoute {
             } catch (IllegalArgumentException e) {
                 response.add("error", RouteError.UNKNOWN_PATTERN.getCode());
             } catch (IllegalStateException e) {
-                response.add("error", RouteError.PATTERN_ALREADY_DEPLOYED.getCode());
+                response.add("error", e.getMessage());
             } catch (JsonException | NullPointerException e) {
                 instance.getLogger().logError(e.toString());
                 response.add("error", RouteError.INVALID_REQUEST.getCode());

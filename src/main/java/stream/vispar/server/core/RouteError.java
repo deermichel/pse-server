@@ -46,7 +46,17 @@ public enum RouteError {
     /**
      * Pattern not deployed.
      */
-    PATTERN_NOT_DEPLOYED(3003);
+    PATTERN_NOT_DEPLOYED(3003),
+    
+    /**
+     * Pattern not valid or could not be compiled.
+     */
+    PATTERN_INVALID(3004),
+    
+    /**
+     * Sensors used in pattern not registered on server.
+     */
+    UNKNOWN_SENSORS(3005);
     
     
     /**
