@@ -102,7 +102,7 @@ public class SiddhiEngine implements IEngine {
     @Override
     public void undeploy(Pattern pattern) {
         Objects.requireNonNull(pattern);
-
+        
         if (!pattern.isDeployed()) {
             assert !deploymentInstances
                     .containsKey(pattern.getId()) : "Pattern is not deployed, but Runtime is present.";

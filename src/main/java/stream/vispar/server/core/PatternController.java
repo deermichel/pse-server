@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import stream.vispar.jsonconverter.IJsonConverter;
 import stream.vispar.jsonconverter.exceptions.JsonException;
@@ -327,5 +328,27 @@ public class PatternController {
             instance.getLogger().logError(e.toString());
         }
         return null;
+    }
+    
+    /**
+     * Resets all patterns to be undeployed.
+     */
+    public void resetDeploymentStatus() {
+        IDatabaseConnector db = instance.getDBConn();
+        
+        // for all deployed patterns
+        Collection<Pattern> deployedPatterns = getAll().stream()
+                .filter(pattern -> pattern.isDeployed()).collect(Collectors.toList());
+        for (Pattern pattern : deployedPatterns) {
+            
+            // reset deployment status in db
+            IJsonElement json = db.find("patterns", "id", pattern.getId());
+            try {
+                json.getAsJsonObject().add("isDeployed", false);
+            } catch (JsonParseException e) {
+                instance.getLogger().logError(e.toString());
+            }
+            db.update("patterns", "id", pattern.getId(), json);
+        }
     }
 }

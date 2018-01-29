@@ -104,6 +104,7 @@ public class ServerInstance {
         this.running = true;
         logger.log(localizer.get(LocalizedString.STARTING_SERVER));
         dbConn.connect();
+        patternCtrl.resetDeploymentStatus();
         sensorCtrl.registerSensors();
         engine.start();
         sockHandler.start();
@@ -119,8 +120,8 @@ public class ServerInstance {
         }
         this.running = false;
         logger.log(localizer.get(LocalizedString.STOPPING_SERVER));
-        dbConn.disconnect();
         engine.stop();
+        dbConn.disconnect();
         reqHandler.stop();
         sockHandler.stop();
     }
