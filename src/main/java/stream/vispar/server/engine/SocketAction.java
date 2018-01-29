@@ -1,5 +1,7 @@
 package stream.vispar.server.engine;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import stream.vispar.server.core.ISocketHandler;
@@ -38,5 +40,12 @@ public class SocketAction implements IAction {
     @Override
     public void execute() {
         sockHandler.sendMessage(message);
+    }
+    
+    @Override
+    public String toString() {
+        Map<String, String> output = new HashMap<>();
+        output.put("message", message);
+        return output.toString();
     }
 }

@@ -1,5 +1,7 @@
 package stream.vispar.server.engine;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import stream.vispar.server.core.entities.Event;
@@ -38,5 +40,12 @@ public class EventAction implements IAction {
     @Override
     public void execute() {
         engine.sendEvent(event);
+    }
+    
+    @Override
+    public String toString() {
+        Map<String, String> output = new HashMap<>();
+        output.put("event", event.toString());
+        return output.toString();
     }
 }

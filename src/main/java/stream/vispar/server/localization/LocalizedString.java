@@ -97,6 +97,9 @@ public enum LocalizedString {
     /** PATTERN_UNDEPLOYED */
     PATTERN_UNDEPLOYED("pattern_undeployed"),
     
+    /** PATTERN_RECOGNIZED */
+    PATTERN_RECOGNIZED("pattern_recognized"),
+    
     /** READING_SENSOR_CONFIGS */
     READING_SENSOR_CONFIGS("reading_sensor_configs"),
     

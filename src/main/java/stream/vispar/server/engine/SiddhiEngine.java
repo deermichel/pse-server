@@ -232,6 +232,11 @@ public class SiddhiEngine implements IEngine {
                         runtime.addCallback(compiler.getStreamName(node), new StreamCallback() {
                             @Override
                             public void receive(org.wso2.siddhi.core.event.Event[] events) {
+                                
+                                instance.getLogger().log(String.format(
+                                        instance.getLocalizer().get(LocalizedString.PATTERN_RECOGNIZED), 
+                                        pattern.getName(), "email" + action.toString()));
+                                
                                 action.execute();
                             }
                         });
@@ -247,6 +252,11 @@ public class SiddhiEngine implements IEngine {
                         runtime.addCallback(compiler.getStreamName(node), new StreamCallback() {
                             @Override
                             public void receive(org.wso2.siddhi.core.event.Event[] events) {
+                                
+                                instance.getLogger().log(String.format(
+                                        instance.getLocalizer().get(LocalizedString.PATTERN_RECOGNIZED), 
+                                        pattern.getName(), "socket" + action.toString()));
+                                
                                 action.execute();
                             }
                         });

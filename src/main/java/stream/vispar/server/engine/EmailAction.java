@@ -1,5 +1,8 @@
 package stream.vispar.server.engine;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Action implementation that sends a email with predefined address, subject and message.
  * 
@@ -42,5 +45,14 @@ public class EmailAction implements IAction {
     @Override
     public void execute() {
         
+    }
+    
+    @Override
+    public String toString() {
+        Map<String, String> output = new HashMap<>();
+        output.put("recipient", recipient);
+        output.put("subject", subject);
+        output.put("message", message);
+        return output.toString();
     }
 }
