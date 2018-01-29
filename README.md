@@ -29,6 +29,7 @@ $ java [startup options] -jar path/to/vispar-server.jar
 -Dsocketport=8081                       // set port for socket (used for socket actions)
 -Ddatabase="localhost:27017"            // set url to MongoDB database
 -Dconfigpath="./sensors"                // set path to sensor configuration files
+-Dnoshell                               // disable interactive shell (to run as service)
 ```
 
 Commands
@@ -40,6 +41,17 @@ help                                    // show available commands
 listpatterns                            // list all patterns and their deployment status
 listusers                               // list all users
 removeuser <username>                   // remove a user
-simulate <path/to/file.sim>             // start simulation specified in given file
+simulate <./path/to/file.sim>           // start simulation specified in given file
 stop                                    // stop the server
 ```
+
+Further Documentation
+-----
+
+* [Sensor Configuration](docs/sensorconfig.md)
+* [Simulations](docs/simulation.md)
+* [API Specification](docs/api.md)
+
+
+_&#169; 2017-2018 Mina Akram Zaher, Jonas Bühler, Florian Pfisterer,
+Carlos Rosero, Micha Hanselmann, Nico Weidmann._
