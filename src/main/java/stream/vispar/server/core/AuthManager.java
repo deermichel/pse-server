@@ -2,9 +2,9 @@ package stream.vispar.server.core;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
 import stream.vispar.server.core.entities.User;
 import stream.vispar.server.localization.LocalizedString;
@@ -35,10 +35,7 @@ public class AuthManager {
      */
     public AuthManager(ServerInstance instance) {
         this.instance = Objects.requireNonNull(instance);
-        tokens = new HashMap<>();
-        
-        // TODO: REMOVE______----!!!!
-        tokens.put("token", new User("deermichel", "123"));
+        tokens = new ConcurrentHashMap<>();
     }
     
     /**

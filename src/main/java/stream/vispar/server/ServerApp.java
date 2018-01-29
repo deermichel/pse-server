@@ -1,6 +1,8 @@
 package stream.vispar.server;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -67,9 +69,7 @@ public final class ServerApp {
         // setup logging
         MultiLogger logger = new MultiLogger();
         logger.addLogger(new ConsoleLogger(console, true));
-        //String logName = "Vispar_" + new SimpleDateFormat("yyyy-MM-dd-HHmmss").format(new Date()) + ".log";
-        // TODO: !!
-        String logName = "log.log";
+        String logName = "Vispar_" + new SimpleDateFormat("yyyy-MM-dd-HHmmss").format(new Date()) + ".log";
         logger.addLogger(new FileLogger(logName, true));
         
         // create server config

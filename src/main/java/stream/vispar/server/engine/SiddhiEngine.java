@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.wso2.siddhi.core.ExecutionPlanRuntime;
 import org.wso2.siddhi.core.SiddhiManager;
@@ -56,7 +57,7 @@ public class SiddhiEngine implements IEngine {
         this.manager = new SiddhiManager();
         this.compiler = new TreeCompiler();
 
-        this.deploymentInstances = new HashMap<>();
+        this.deploymentInstances = new ConcurrentHashMap<>();
     }
 
     @Override
