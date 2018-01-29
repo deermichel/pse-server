@@ -50,7 +50,7 @@ public class UserController {
      * @throws IllegalArgumentException
      *          if a user with the same name exists.
      */
-    public User add(User user) {
+    public synchronized User add(User user) {
         IDatabaseConnector db = instance.getDBConn();
         
         // does user already exist?
@@ -80,7 +80,7 @@ public class UserController {
      * @throws IllegalArgumentException
      *          if the user did not exist before.
      */
-    public void remove(String username) {
+    public synchronized void remove(String username) {
         IDatabaseConnector db = instance.getDBConn();
         
         // get user

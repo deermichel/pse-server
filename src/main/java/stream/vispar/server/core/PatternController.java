@@ -63,7 +63,7 @@ public class PatternController {
      * @throws IllegalArgumentException
      *          if the pattern (with same id) was edited and has a newer timestamp then the supplied.
      */
-    public Pattern update(Pattern pattern) {
+    public synchronized Pattern update(Pattern pattern) {
         IDatabaseConnector db = instance.getDBConn();
         
         // already exists?
@@ -117,7 +117,7 @@ public class PatternController {
      * @throws IllegalArgumentException
      *          if the pattern did not exist before.
      */
-    public void remove(String id) {
+    public synchronized void remove(String id) {
         IDatabaseConnector db = instance.getDBConn();
         
         // get pattern
@@ -144,7 +144,7 @@ public class PatternController {
      * @throws IllegalArgumentException
      *          if the pattern did not exist before.
      */
-    public Pattern rename(String id, String newName) {
+    public synchronized Pattern rename(String id, String newName) {
         IDatabaseConnector db = instance.getDBConn();
         
         // get pattern
@@ -186,7 +186,7 @@ public class PatternController {
      *          if the pattern is already deployed, is invalid, sensors used in pattern
      *          are not registered on server.
      */
-    public Pattern deploy(String id) {
+    public synchronized Pattern deploy(String id) {
         IDatabaseConnector db = instance.getDBConn();
         
         // get pattern and check deployment status
@@ -256,7 +256,7 @@ public class PatternController {
      * @throws IllegalStateException
      *          if the pattern is already undeployed.
      */
-    public Pattern undeploy(String id) {
+    public synchronized Pattern undeploy(String id) {
         IDatabaseConnector db = instance.getDBConn();
         
         // get pattern and check deployment status
