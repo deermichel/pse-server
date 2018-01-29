@@ -135,7 +135,7 @@ public class SiddhiEngine implements IEngine {
                 // a handler for the given event was found
 
                 // this array represents the order of attributes expected by the handler
-                Attribute[] attributeOrder = compiler.getAttributesOrdered(event.getSensor().getSensorNode());
+                Attribute[] attributeOrder = instance.sensorToAttributeOrder.get(event.getSensor().getName());
 
                 // maps the attributes to the values of the current event
                 Map<Attribute, String> dataMap = event.getData();
@@ -191,6 +191,7 @@ public class SiddhiEngine implements IEngine {
         private final Collection<IAction> actions;
 
         private final Map<String, InputHandler> sensorToHandler;
+        private final Map<String, Attribute[]> sensorToAttributeOrder;
 
         DeploymentInstance(Pattern pattern, ExecutionPlanRuntime runtime) {
             this.patternId = Objects.requireNonNull(pattern).getId();
@@ -199,6 +200,7 @@ public class SiddhiEngine implements IEngine {
             this.actions = new LinkedList<>();
 
             this.sensorToHandler = new HashMap<>();
+            this.sensorToAttributeOrder = new HashMap<>();
 
             // initialize input handlers using a node visitor
             for (InputNode input : pattern.getInputNodes()) {
@@ -213,6 +215,9 @@ public class SiddhiEngine implements IEngine {
                             sensorToHandler.put(node.getSensorName(),
                                     runtime.getInputHandler(compiler.getStreamName(node)));
                         }
+                        
+                        // store attribute order
+                        sensorToAttributeOrder.put(node.getSensorName(), compiler.getAttributesOrdered(node));
                     }
                 });
             }
