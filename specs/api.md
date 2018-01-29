@@ -140,6 +140,26 @@ Deletes the pattern from the server.
 3000 Pattern not found.
 ```
 
+#### POST `/patterns/rename`
+Renames a pattern on the server.
+```json
+// request parameters
+{
+    "id": "<patternId>",
+    "name": "<newName>"
+}
+
+// response on success
+{
+    "data": "<patternObject>"
+}
+
+// errors
+1000 Invalid request format.
+1001 Not authorized.
+3000 Pattern not found.
+```
+
 #### POST `/patterns/deploy`
 Deploys the pattern on the server.
 ```json
@@ -158,6 +178,8 @@ Deploys the pattern on the server.
 1001 Not authorized.
 3000 Pattern not found.
 3002 Pattern already deployed.
+3004 Pattern not valid.
+3005 Sensors used in pattern not registered on server.
 ```
 
 #### POST `/patterns/undeploy`

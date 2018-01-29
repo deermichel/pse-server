@@ -129,6 +129,47 @@ public class PatternController {
     }
     
     /**
+     * Renames a pattern.
+     * 
+     * @param id
+     *          the id of the {@link Pattern} to be renamed.
+     * @param name
+     *          the new name of the pattern.
+     * @return
+     *          the renamed {@link Pattern}.   
+     * @throws IllegalArgumentException
+     *          if the pattern did not exist before.
+     */
+    public Pattern rename(String id, String newName) {
+        IDatabaseConnector db = instance.getDBConn();
+        
+        // get pattern
+        Pattern pattern = getById(id);
+        if (pattern == null) {
+            throw new IllegalArgumentException("Pattern does not exist");
+        }
+        
+        // rename pattern
+        IJsonElement json = db.find("patterns", "id", pattern.getId());
+        try {
+            json.getAsJsonObject().add("name", newName);
+        } catch (JsonParseException e) {
+            instance.getLogger().logError(e.toString());
+        }
+        db.update("patterns", "id", pattern.getId(), json);
+        instance.getLogger().log(String.format(instance.getLocalizer().get(
+                LocalizedString.PATTERN_UPDATED), newName));
+        
+        // return renamed pattern
+        try {
+            return jsonConv.fromJson(json);
+        } catch (JsonException e) {
+            instance.getLogger().logError(e.toString());
+        }
+        return null;
+    }
+    
+    /**
      * Deploys a pattern.
      * 
      * @param id

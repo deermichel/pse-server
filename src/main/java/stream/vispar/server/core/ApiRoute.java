@@ -231,6 +231,42 @@ public enum ApiRoute {
     },
     
     /**
+     * POST route to rename a pattern.
+     */
+    RENAME_PATTERNS(RouteType.POST, "/patterns/rename") {
+        @Override
+        public IJsonElement execute(ServerInstance instance, IJsonElement request) {
+            IJsonObject response = new GsonJsonObject();
+            
+            // authenticated?
+            if (!isAuthenticated(instance, request)) {
+                response.add("error", RouteError.NOT_AUTHORIZED.getCode());
+                return response;
+            }
+            
+            try {
+                    
+                // get pattern id and new name
+                String patternId = request.getAsJsonObject().get("data")
+                        .getAsJsonObject().getAsJsonPrimitive("id").getAsString();
+                String newName = request.getAsJsonObject().get("data")
+                        .getAsJsonObject().getAsJsonPrimitive("name").getAsString();
+                
+                // rename pattern
+                Pattern pattern = instance.getPatternCtrl().rename(patternId, newName);
+                response.add("data", new GsonConverter().toJson(pattern));
+                
+            } catch (IllegalArgumentException e) {
+                response.add("error", RouteError.UNKNOWN_PATTERN.getCode());
+            } catch (JsonException | NullPointerException e) {
+                instance.getLogger().logError(e.toString());
+                response.add("error", RouteError.INVALID_REQUEST.getCode());
+            }
+            return response;
+        }
+    },
+    
+    /**
      * POST route to deploy a pattern.
      */
     POST_PATTERNS_DEPLOY(RouteType.POST, "/patterns/deploy") {
