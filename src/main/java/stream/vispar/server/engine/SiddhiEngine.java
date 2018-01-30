@@ -94,7 +94,7 @@ public class SiddhiEngine implements IEngine {
             instance.getLogger().logError("Siddhi compiler error: " + e.toString());
             throw new IllegalArgumentException(e.toString());
         }
-
+        
         // init and start runtime
         ExecutionPlanRuntime runtime = manager.createExecutionPlanRuntime(code.getAsString());
         deploymentInstances.put(pattern.getId(), new DeploymentInstance(pattern, runtime));
@@ -130,10 +130,10 @@ public class SiddhiEngine implements IEngine {
                 .log(String.format(instance.getLocalizer().get(LocalizedString.RECEIVED_EVENT), event.toString()));
 
         for (DeploymentInstance instance : deploymentInstances.values()) {
-            InputHandler handler = instance.sensorToHandler.get(event.getSensor().getName());
+            Collection<InputHandler> handlers = instance.sensorToHandler.get(event.getSensor().getName());
 
-            if (Objects.nonNull(handler)) {
-                // a handler for the given event was found
+            if (Objects.nonNull(handlers)) {
+                // handlers for the given event were found
 
                 // this array represents the order of attributes expected by the handler
                 Attribute[] attributeOrder = instance.sensorToAttributeOrder.get(event.getSensor().getName());
@@ -172,11 +172,13 @@ public class SiddhiEngine implements IEngine {
                     data[i] = nextObject;
                 }
 
-                try {
-                    handler.send(event.getTimestamp(), data);
-                } catch (InterruptedException e) {
-                    this.instance.getLogger().logError(e.toString());
-                }
+                handlers.forEach(handler -> {
+                    try {
+                        handler.send(event.getTimestamp(), data);
+                    } catch (InterruptedException e) {
+                        this.instance.getLogger().logError(e.toString());
+                    }
+                });
             }
         }
     }
@@ -195,7 +197,7 @@ public class SiddhiEngine implements IEngine {
 
         private final Collection<IAction> actions;
 
-        private final Map<String, InputHandler> sensorToHandler;
+        private final Map<String, Collection<InputHandler>> sensorToHandler;
         private final Map<String, Attribute[]> sensorToAttributeOrder;
 
         DeploymentInstance(Pattern pattern, ExecutionPlanRuntime runtime) {
@@ -217,9 +219,13 @@ public class SiddhiEngine implements IEngine {
                         if (!sensorToHandler.containsKey(node.getSensorName())) {
                             // sensor hasn't been added yet. We need to check because one sensor might have
                             // multiple nodes in a pattern
-                            sensorToHandler.put(node.getSensorName(),
-                                    runtime.getInputHandler(compiler.getStreamName(node)));
+                            sensorToHandler.put(node.getSensorName(), new LinkedList<>());
+                            // sensorToHandler.put(node.getSensorName(),
+                                    runtime.getInputHandler(compiler.getStreamName(node));
                         }
+                        
+                        sensorToHandler.get(node.getSensorName())
+                                .add(runtime.getInputHandler(compiler.getStreamName(node)));
                         
                         // store attribute order
                         sensorToAttributeOrder.put(node.getSensorName(), compiler.getAttributesOrdered(node));
