@@ -10,6 +10,7 @@ import stream.vispar.server.core.AuthManagerTest;
 import stream.vispar.server.core.ServerConfigTest;
 import stream.vispar.server.core.ServerInstanceTest;
 import stream.vispar.server.core.SparkServerTest;
+import stream.vispar.server.core.UserControllerTest;
 import stream.vispar.server.core.entities.EventTest;
 import stream.vispar.server.core.entities.SensorTest;
 import stream.vispar.server.core.entities.SimulatedEventTest;
@@ -40,6 +41,7 @@ import stream.vispar.server.logger.MultiLoggerTest;
     ServerConfigTest.class,
     ServerInstanceTest.class,
     SparkServerTest.class,
+    UserControllerTest.class,
     
     // entities
     EventTest.class,
