@@ -4,12 +4,14 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 
 import stream.vispar.jsonconverter.IJsonConverter;
 import stream.vispar.jsonconverter.exceptions.JsonException;
 import stream.vispar.jsonconverter.gson.GsonConverter;
+import stream.vispar.model.nodes.Attribute;
 import stream.vispar.server.core.entities.Sensor;
 import stream.vispar.server.core.entities.adapters.SensorJsonDeserializer;
 import stream.vispar.server.localization.LocalizedString;
@@ -94,6 +96,14 @@ public class SensorController {
                     }
                 }
                 
+                // validate attributes
+                Collection<Attribute> attrs = sensor.getAttributes();
+                for (Attribute a : attrs) {
+                    if (Collections.frequency(attrs, a) > 1) {
+                        throw new IllegalArgumentException("Attribute '" + a.getName() + "' defined multiple"
+                                + " times. Attribute names have to be unique");
+                    }
+                }
                 
                 // add sensor
                 sensors.add(sensor);
