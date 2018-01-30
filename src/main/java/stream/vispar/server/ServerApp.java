@@ -3,7 +3,6 @@ package stream.vispar.server;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -51,17 +50,13 @@ public final class ServerApp {
      *          the cli args.
      */
     public static void main(String[] args) {
-        List<String> argsList = Arrays.asList(args);
-        new ServerApp(!argsList.contains("-norepl"));
+        new ServerApp();
     }
     
     /**
      * Constructs a new {@link ServerApp} instance.
-     * 
-     * @param repl
-     *          if true, repl is enabled
      */
-    private ServerApp(boolean repl) {
+    private ServerApp() {
         
         // use system default console
         console = new DefaultConsole();
@@ -72,19 +67,35 @@ public final class ServerApp {
         String logName = "Vispar_" + new SimpleDateFormat("yyyy-MM-dd-HHmmss").format(new Date()) + ".log";
         logger.addLogger(new FileLogger(logName, true));
         
+        // retrieve startup args or set to default
+        int requestPort = 0;
+        int socketPort = 0;
+        try {
+            requestPort = Integer.valueOf(System.getProperty("requestport", "8080"));
+            socketPort = Integer.valueOf(System.getProperty("socketport", "8081"));
+        } catch (NumberFormatException e) {
+            System.err.println("[ERROR] Port number must be an integer: " + e.toString());
+            System.exit(1);
+        }
+        String databaseUrl = System.getProperty("database", "localhost");
+        String configPath = System.getProperty("configpath", "sensors");
+        
         // create server config
-        ServerConfig config = new ServerConfig(8080, 8081, Locale.US, logger, "localhost", "sensors");
+        ServerConfig config = new ServerConfig(requestPort, socketPort, Locale.US, logger, databaseUrl, configPath);
         
         // setup server instance
         instance = new ServerInstance(config);
         instance.start();
         
         // command REPL
-        if (repl) {
+        if (System.getProperty("noshell") == null) {
             commandREPL();
             
             // stop (else scheduled simulations might continue sending their events)
             System.exit(0);
+            
+        } else {
+            instance.getLogger().log(instance.getLocalizer().get(LocalizedString.NOSHELL));
         }
     }
     

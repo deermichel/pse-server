@@ -139,6 +139,9 @@ public enum LocalizedString {
     /** SIDDHI_ENGINE_STOPPED */
     SIDDHI_ENGINE_STOPPED("siddhi_engine_stopped"),
     
+    /** NOSHELL */
+    NOSHELL("noshell"),
+    
     /** INV_ADDUSER_SYNTAX */
     INV_ADDUSER_SYNTAX("inv_adduser_syntax");
     

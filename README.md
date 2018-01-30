@@ -16,7 +16,7 @@ Requirements
 * Mail SMTP server (running on localhost:25 without authentication - only needed
     if you want to use email actions). Postfix is recommended for simple use cases.
 * Firewall configured to allow connections via port 8080 and 8081.
-* Sensor configuration files placed in folder `./sensors`
+* Sensor configuration files placed in folder `sensors`
 
 Start server
 -----
@@ -28,7 +28,7 @@ $ java [startup options] -jar path/to/vispar-server.jar
 -Drequestport=8080                      // set port for api requests and sensor endpoints
 -Dsocketport=8081                       // set port for socket (used for socket actions)
 -Ddatabase="localhost:27017"            // set url to MongoDB database
--Dconfigpath="./sensors"                // set path to sensor configuration files
+-Dconfigpath="sensors"                  // set path to sensor configuration files
 -Dnoshell                               // disable interactive shell (to run as service)
 ```
 
@@ -41,7 +41,7 @@ help                                    // show available commands
 listpatterns                            // list all patterns and their deployment status
 listusers                               // list all users
 removeuser <username>                   // remove a user
-simulate <./path/to/file.sim>           // start simulation specified in given file
+simulate <path/to/file.sim>             // start simulation specified in given file
 stop                                    // stop the server
 ```
 
