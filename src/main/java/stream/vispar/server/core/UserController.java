@@ -93,6 +93,9 @@ public class UserController {
         db.delete("users", "name", user.getName());
         instance.getLogger().log(String.format(instance.getLocalizer().get(LocalizedString.USER_REMOVED), 
                 user.getName()));
+        
+        // invalidate tokens
+        instance.getAuthMgr().logoutAll(user);
     }
     
     /**

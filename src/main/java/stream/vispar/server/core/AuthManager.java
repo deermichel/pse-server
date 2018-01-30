@@ -39,7 +39,7 @@ public class AuthManager {
     }
     
     /**
-     * Logs an user in and returns the token.
+     * Logs a user in and returns the token.
      * 
      * @param username
      *          the username of the {@link User} to be logged in.
@@ -69,7 +69,7 @@ public class AuthManager {
     }
     
     /**
-     * Logs an user out by invalidating the token.
+     * Logs a user out by invalidating the token.
      * 
      * @param token
      *          the access token of the user.
@@ -83,7 +83,7 @@ public class AuthManager {
     }
     
     /**
-     * Authenticates an user by the access token.
+     * Authenticates a user by the access token.
      * 
      * @param token
      *          the access token of the user.
@@ -92,6 +92,20 @@ public class AuthManager {
      */
     public User authenticate(String token) {
         return tokens.get(token);
+    }
+    
+    /**
+     * Logs a user out by invalidating all tokens (e.g. if user was deleted).
+     * 
+     * @param user
+     *          the user to be logged out.
+     */
+    public void logoutAll(User user) {
+        tokens.forEach((t, u) -> {
+            if (u.equals(user)) {
+                tokens.remove(t);
+            }
+        });
     }
     
     /**
