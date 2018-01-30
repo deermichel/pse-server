@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -138,7 +139,11 @@ public class SiddhiEngine implements IEngine {
                 Attribute[] attributeOrder = instance.sensorToAttributeOrder.get(event.getSensor().getName());
 
                 // maps the attributes to the values of the current event
-                Map<Attribute, String> dataMap = event.getData();
+                Map<String, String> dataMap = new HashMap<>();
+                
+                for (Entry<Attribute, String> entry : event.getData().entrySet()) {
+                    dataMap.put(entry.getKey().getName(), entry.getValue());
+                }
 
                 assert attributeOrder.length == dataMap.size() && dataMap.size() == event.getSensor().getAttributes()
                         .size() : "unexpected inconsistency with sensor attributes";
@@ -147,7 +152,7 @@ public class SiddhiEngine implements IEngine {
 
                 // extracting the data for each attribute in the correct order
                 for (int i = 0; i < attributeOrder.length; ++i) {
-                    String next = dataMap.get(attributeOrder[i]);
+                    String next = dataMap.get(attributeOrder[i].getName());
 
                     Object nextObject = null;
                     switch (attributeOrder[i].getType()) {
