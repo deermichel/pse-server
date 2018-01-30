@@ -1,0 +1,27 @@
+[
+    {
+        "time": "0",
+        "sensor": "temp1",
+        "data": {
+            "value": { "fixed": "23" },
+            "room": { "fixed": "Kitchen" }
+        }
+    },
+    {
+        "time": "1000",
+        "sensor": "temp2",
+        "data": {
+            "value": { "fixed": "21" },
+            "room": { "fixed": "Floor" }
+        }
+    },
+    {
+        "time": "2000",
+        "sensor": "temp1",
+        "repeat": { "count": "4", "interval": "500" },
+        "data": {
+            "value": { "range": [ "17", "24" ] },
+            "room": { "random": [ "Kitchen", "WC" ] }
+        }
+    }
+]

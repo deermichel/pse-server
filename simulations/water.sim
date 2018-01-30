@@ -1,0 +1,18 @@
+[
+    {
+        "time": "500",
+        "sensor": "water",
+        "data": {
+            "minFillLevel": { "fixed": "4.235" },
+            "maxFillLevel": { "drange": [ "4.5", "5.0" ] }
+        }
+    },
+    {
+        "time": "500",
+        "sensor": "water",
+        "data": {
+            "minFillLevel": { "fixed": "4.235" },
+            "maxFillLevel": { "random": [ "4.3", "4.531", "4.24" ] }
+        }
+    }
+]
