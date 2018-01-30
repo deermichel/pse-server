@@ -102,7 +102,7 @@ public class SparkSocket implements ISocketHandler {
     }
 
     @Override
-    public void sendMessage(String message) {
+    public synchronized void sendMessage(String message) {
         
         // send message to all connected clients
         try {
