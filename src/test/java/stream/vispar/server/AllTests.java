@@ -5,6 +5,8 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 import stream.vispar.server.cli.DefaultConsoleTest;
+import stream.vispar.server.cli.StringCommandResult;
+import stream.vispar.server.core.AuthManager;
 import stream.vispar.server.core.ServerConfigTest;
 import stream.vispar.server.core.ServerInstanceTest;
 import stream.vispar.server.core.SparkServerTest;
@@ -28,8 +30,10 @@ import stream.vispar.server.logger.MultiLoggerTest;
     
     // cli
     DefaultConsoleTest.class,
+    StringCommandResult.class,
     
     // core
+    AuthManager.class,
     ServerConfigTest.class,
     ServerInstanceTest.class,
     SparkServerTest.class,
