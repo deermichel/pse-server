@@ -6,9 +6,9 @@ bin/
 
 # mac
 .DS_Store
+
+# maven
 /target/
 
 # vispar
 *.log
-sensors/
-sims/
