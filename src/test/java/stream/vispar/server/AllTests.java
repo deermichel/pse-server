@@ -12,6 +12,7 @@ import stream.vispar.server.core.SensorControllerTest;
 import stream.vispar.server.core.ServerConfigTest;
 import stream.vispar.server.core.ServerInstanceTest;
 import stream.vispar.server.core.SparkServerTest;
+import stream.vispar.server.core.SparkSocketTest;
 import stream.vispar.server.core.UserControllerTest;
 import stream.vispar.server.core.entities.EventTest;
 import stream.vispar.server.core.entities.SensorTest;
@@ -34,6 +35,9 @@ import stream.vispar.server.logger.MultiLoggerTest;
 @RunWith(Suite.class)
 @SuiteClasses({
     
+    // main
+    ServerAppTest.class,
+    
     // cli
     DefaultConsoleTest.class,
     StringCommandResultTest.class,
@@ -45,6 +49,7 @@ import stream.vispar.server.logger.MultiLoggerTest;
     ServerConfigTest.class,
     ServerInstanceTest.class,
     SparkServerTest.class,
+    SparkSocketTest.class,
     UserControllerTest.class,
     
     // entities
