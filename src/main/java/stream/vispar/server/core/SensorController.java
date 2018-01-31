@@ -45,9 +45,7 @@ public class SensorController {
      * @param instance
      *          the {@link ServerInstance} the controller belongs to.
      * @param configPath
-     *          the path to the config files of the sensors.
-     * @throws IllegalArgumentException
-     *          if path is not a valid directory.
+     *          the path to the config files of the sensors..
      */
     public SensorController(ServerInstance instance, String configPath) {
         this.instance = Objects.requireNonNull(instance);
@@ -57,6 +55,9 @@ public class SensorController {
     
     /**
      * Registers and parses all sensors in config path.
+     * 
+     * @throws IllegalArgumentException
+     *          if path is not a valid directory
      */
     public void registerSensors() {
 

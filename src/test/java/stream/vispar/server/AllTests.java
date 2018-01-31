@@ -7,6 +7,8 @@ import org.junit.runners.Suite.SuiteClasses;
 import stream.vispar.server.cli.DefaultConsoleTest;
 import stream.vispar.server.cli.StringCommandResultTest;
 import stream.vispar.server.core.AuthManagerTest;
+import stream.vispar.server.core.PatternControllerTest;
+import stream.vispar.server.core.SensorControllerTest;
 import stream.vispar.server.core.ServerConfigTest;
 import stream.vispar.server.core.ServerInstanceTest;
 import stream.vispar.server.core.SparkServerTest;
@@ -38,6 +40,8 @@ import stream.vispar.server.logger.MultiLoggerTest;
     
     // core
     AuthManagerTest.class,
+    PatternControllerTest.class,
+    SensorControllerTest.class,
     ServerConfigTest.class,
     ServerInstanceTest.class,
     SparkServerTest.class,

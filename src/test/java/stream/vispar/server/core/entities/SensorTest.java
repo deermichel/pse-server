@@ -6,7 +6,7 @@ package stream.vispar.server.core.entities;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.not;
 import java.util.Collection;
 
@@ -100,7 +100,8 @@ public class SensorTest {
     @Test
     public void testGetAttributes() {
         Collection<Attribute> attr = sensor.getAttributes();
-        assertThat(attr, contains(new Attribute("value", "", AttributeType.INTEGER),
+        assertThat(attr, containsInAnyOrder(
+                new Attribute("value", "", AttributeType.INTEGER),
                 new Attribute("room", "", AttributeType.STRING)));
     }
 

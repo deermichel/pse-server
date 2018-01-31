@@ -5,7 +5,7 @@ package stream.vispar.server.core;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
@@ -115,6 +115,6 @@ public class UserControllerTest {
         UserController ctrl = new UserController(inst);
         Collection<User> users = ctrl.getAll();
         verify(db, times(1)).getAll("users");
-        assertThat(users, contains(user1, user2));
+        assertThat(users, containsInAnyOrder(user1, user2));
     }
 }
