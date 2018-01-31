@@ -7,6 +7,7 @@ import org.junit.runners.Suite.SuiteClasses;
 import stream.vispar.server.cli.DefaultConsoleTest;
 import stream.vispar.server.cli.StringCommandResultTest;
 import stream.vispar.server.core.AuthManagerTest;
+import stream.vispar.server.core.MongoDBConnectorTest;
 import stream.vispar.server.core.PatternControllerTest;
 import stream.vispar.server.core.SensorControllerTest;
 import stream.vispar.server.core.ServerConfigTest;
@@ -44,6 +45,7 @@ import stream.vispar.server.logger.MultiLoggerTest;
     
     // core
     AuthManagerTest.class,
+    MongoDBConnectorTest.class,
     PatternControllerTest.class,
     SensorControllerTest.class,
     ServerConfigTest.class,

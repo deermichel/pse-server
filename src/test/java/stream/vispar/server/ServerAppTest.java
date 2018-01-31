@@ -38,6 +38,7 @@ public class ServerAppTest {
         try {
             System.setProperty("requestport", "9080");
             System.setProperty("socketport", "9081");
+            System.setProperty("configpath", "./src/test/resources/sensors");
             ServerApp.main(null); // should terminate
         } catch (SecurityException e) {
             // all right
