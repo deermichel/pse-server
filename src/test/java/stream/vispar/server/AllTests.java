@@ -4,6 +4,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import stream.vispar.server.cli.CommandTest;
 import stream.vispar.server.cli.DefaultConsoleTest;
 import stream.vispar.server.cli.StringCommandResultTest;
 import stream.vispar.server.core.AuthManagerTest;
@@ -40,6 +41,7 @@ import stream.vispar.server.logger.MultiLoggerTest;
     ServerAppTest.class,
     
     // cli
+    CommandTest.class,
     DefaultConsoleTest.class,
     StringCommandResultTest.class,
     
