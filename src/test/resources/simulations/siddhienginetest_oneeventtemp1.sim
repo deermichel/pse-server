@@ -1,0 +1,10 @@
+[
+    {
+        "time": "0",
+        "sensor": "temp1",
+        "data": {
+            "value": { "fixed": "23" },
+            "room": { "fixed": "Kinderzimmer" }
+        }
+    }
+]

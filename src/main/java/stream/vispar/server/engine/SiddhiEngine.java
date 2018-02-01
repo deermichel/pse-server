@@ -1,6 +1,7 @@
 package stream.vispar.server.engine;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -68,16 +69,19 @@ public class SiddhiEngine implements IEngine {
 
     @Override
     public void stop() {
-        
+
         // undeploy all patterns
         instance.getPatternCtrl().getAll().forEach(pattern -> undeploy(pattern));
-        
+
         instance.getLogger().log(instance.getLocalizer().get(LocalizedString.SIDDHI_ENGINE_STOPPED));
     }
 
     @Override
     public void deploy(Pattern pattern) {
         Objects.requireNonNull(pattern);
+
+        assert Objects.nonNull(instance.getPatternCtrl().getById(
+                pattern.getId())) : "tried to deploy a pattern that could not be found in the pattern controller";
 
         if (pattern.isDeployed()) {
             assert deploymentInstances
@@ -94,7 +98,7 @@ public class SiddhiEngine implements IEngine {
             instance.getLogger().logError("Siddhi compiler error: " + e.toString());
             throw new IllegalArgumentException(e.toString());
         }
-        
+
         // init and start runtime
         ExecutionPlanRuntime runtime = manager.createExecutionPlanRuntime(code.getAsString());
         deploymentInstances.put(pattern.getId(), new DeploymentInstance(pattern, runtime));
@@ -104,7 +108,7 @@ public class SiddhiEngine implements IEngine {
     @Override
     public void undeploy(Pattern pattern) {
         Objects.requireNonNull(pattern);
-        
+
         if (!pattern.isDeployed()) {
             assert !deploymentInstances
                     .containsKey(pattern.getId()) : "Pattern is not deployed, but Runtime is present.";
@@ -140,7 +144,7 @@ public class SiddhiEngine implements IEngine {
 
                 // maps the attributes to the values of the current event
                 Map<String, String> dataMap = new HashMap<>();
-                
+
                 for (Entry<Attribute, String> entry : event.getData().entrySet()) {
                     dataMap.put(entry.getKey().getName(), entry.getValue());
                 }
@@ -184,13 +188,24 @@ public class SiddhiEngine implements IEngine {
     }
 
     /**
+     * Returns this {@link SiddhiEngine}'s {@link DeploymentInstance}s. Used for
+     * testing purposes.
+     * 
+     * @return a {@code Collection<DeploymentInstance>} of all DeploymentInstances
+     *         of this SiddhiEngine.
+     */
+    protected Collection<DeploymentInstance> getDeploymentInstances() {
+        return deploymentInstances.values();
+    }
+
+    /**
      * The DeploymentInstance encapsulates the id of a deployed {@link Pattern}, the
      * id of the {@link ExecutionPlanRuntime} and the Handlers for the input- and
      * output streams.
      * 
      * @author Nico Weidmann
      */
-    private class DeploymentInstance {
+    protected class DeploymentInstance {
 
         private final String patternId;
         private final String runtimeId;
@@ -200,6 +215,15 @@ public class SiddhiEngine implements IEngine {
         private final Map<String, Collection<InputHandler>> sensorToHandler;
         private final Map<String, Attribute[]> sensorToAttributeOrder;
 
+        /**
+         * Constructs a new instance of {@link DeploymentInstance} for the given
+         * pattern, in the specified {@link ExecutionPlanRuntime}.
+         * 
+         * @param pattern
+         *            the pattern that should be deployed
+         * @param runtime
+         *            the runtime the pattern should be deployed in
+         */
         DeploymentInstance(Pattern pattern, ExecutionPlanRuntime runtime) {
             this.patternId = Objects.requireNonNull(pattern).getId();
             this.runtimeId = Objects.requireNonNull(runtime).getName();
@@ -221,12 +245,12 @@ public class SiddhiEngine implements IEngine {
                             // multiple nodes in a pattern
                             sensorToHandler.put(node.getSensorName(), new LinkedList<>());
                             // sensorToHandler.put(node.getSensorName(),
-                                    runtime.getInputHandler(compiler.getStreamName(node));
+                            runtime.getInputHandler(compiler.getStreamName(node));
                         }
-                        
+
                         sensorToHandler.get(node.getSensorName())
                                 .add(runtime.getInputHandler(compiler.getStreamName(node)));
-                        
+
                         // store attribute order
                         sensorToAttributeOrder.put(node.getSensorName(), compiler.getAttributesOrdered(node));
                     }
@@ -249,11 +273,12 @@ public class SiddhiEngine implements IEngine {
                         runtime.addCallback(compiler.getStreamName(node), new StreamCallback() {
                             @Override
                             public void receive(org.wso2.siddhi.core.event.Event[] events) {
-                                
-                                instance.getLogger().log(String.format(
-                                        instance.getLocalizer().get(LocalizedString.PATTERN_RECOGNIZED), 
-                                        pattern.getName(), "email" + action.toString()));
-                                
+
+                                instance.getLogger()
+                                        .log(String.format(
+                                                instance.getLocalizer().get(LocalizedString.PATTERN_RECOGNIZED),
+                                                pattern.getName(), "email" + action.toString()));
+
                                 action.execute();
                             }
                         });
@@ -269,17 +294,65 @@ public class SiddhiEngine implements IEngine {
                         runtime.addCallback(compiler.getStreamName(node), new StreamCallback() {
                             @Override
                             public void receive(org.wso2.siddhi.core.event.Event[] events) {
-                                
-                                instance.getLogger().log(String.format(
-                                        instance.getLocalizer().get(LocalizedString.PATTERN_RECOGNIZED), 
-                                        pattern.getName(), "socket" + action.toString()));
-                                
+
+                                instance.getLogger()
+                                        .log(String.format(
+                                                instance.getLocalizer().get(LocalizedString.PATTERN_RECOGNIZED),
+                                                pattern.getName(), "socket" + action.toString()));
+
                                 action.execute();
                             }
                         });
                     }
                 });
             }
+        }
+
+        // ===== GETTERS FOR TESTING PURPOSES =====
+
+        /**
+         * Getter for the pattern id.
+         * 
+         * @return the pattern id
+         */
+        protected String getPatternId() {
+            return patternId;
+        }
+
+        /**
+         * Getter for the runtime id.
+         * 
+         * @return the runtime id
+         */
+        protected String getRuntimeId() {
+            return runtimeId;
+        }
+
+        /**
+         * Getter for the actions.
+         * 
+         * @return the actions
+         */
+        protected Collection<IAction> getActions() {
+            return Collections.unmodifiableCollection(actions);
+        }
+
+        /**
+         * Getter for the sensor to handler mapping.
+         * 
+         * @return the mapping
+         */
+        protected Map<String, Collection<InputHandler>> getSensorToHandler() {
+            return Collections.unmodifiableMap(sensorToHandler);
+        }
+
+        /**
+         * Getter for the sensor to attribute order mapping.
+         * 
+         * @return the mapping
+         */
+        protected Map<String, Attribute[]> getSensorToAttributeOrder() {
+            return Collections.unmodifiableMap(sensorToAttributeOrder);
         }
     }
 }

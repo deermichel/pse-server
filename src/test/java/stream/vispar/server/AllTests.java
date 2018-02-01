@@ -23,6 +23,7 @@ import stream.vispar.server.core.entities.SimulationTest;
 import stream.vispar.server.core.entities.UserTest;
 import stream.vispar.server.engine.EmailActionTest;
 import stream.vispar.server.engine.EventActionTest;
+import stream.vispar.server.engine.SiddhiEngineTest;
 import stream.vispar.server.engine.SocketActionTest;
 import stream.vispar.server.localization.LocalizerTest;
 import stream.vispar.server.logger.ConsoleLoggerTest;
@@ -67,6 +68,7 @@ import stream.vispar.server.logger.MultiLoggerTest;
     EmailActionTest.class,
     EventActionTest.class,
     SocketActionTest.class,
+    SiddhiEngineTest.class,
     
     // localization
     LocalizerTest.class,
