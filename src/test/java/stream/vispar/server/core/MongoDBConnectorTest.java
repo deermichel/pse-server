@@ -51,8 +51,7 @@ public class MongoDBConnectorTest {
         instance = new ServerInstance(config);
         
         client = new MongoClient();
-        System.out.println(client.getDatabase("admin").getCollection("system.version")
-                .find(new Document("version", "")));
+        client.getDatabase("admin").getCollection("system.version").find(new Document("version", ""));
     }
     
     /**
