@@ -62,6 +62,7 @@ public class PatternController {
         Pattern existingPattern = getById(pattern.getId());
         if (existingPattern != null) {
 
+            // check timestamp
             if (existingPattern.getLastUpdated().after(pattern.getLastUpdated())) {
                 throw new IllegalArgumentException("Newer version of pattern already saved");
             }

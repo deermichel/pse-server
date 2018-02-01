@@ -67,8 +67,8 @@ import stream.vispar.server.logger.MultiLoggerTest;
     // engine
     EmailActionTest.class,
     EventActionTest.class,
-    SocketActionTest.class,
     SiddhiEngineTest.class,
+    SocketActionTest.class,
     
     // localization
     LocalizerTest.class,
