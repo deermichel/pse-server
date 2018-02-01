@@ -1,7 +1,5 @@
 package stream.vispar.server.core;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
@@ -35,12 +33,7 @@ public class PatternController {
      */
     private final IJsonConverter jsonConv;
     
-    /**
-     * Timestamp formatter.
-     */
-    private final SimpleDateFormat dateFormat;
-    
-    
+
     /**
      * Constructs a new {@link PatternController}.
      * 
@@ -50,7 +43,6 @@ public class PatternController {
     public PatternController(ServerInstance instance) {
         this.instance = Objects.requireNonNull(instance);
         this.jsonConv = new GsonConverter();
-        this.dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX");
     }
     
     /**
@@ -69,15 +61,9 @@ public class PatternController {
         // already exists?
         Pattern existingPattern = getById(pattern.getId());
         if (existingPattern != null) {
-            
-            // check timestamps
-            try {
-                if (dateFormat.parse(existingPattern.getLastUpdated())
-                        .after(dateFormat.parse(pattern.getLastUpdated()))) {
-                    throw new IllegalArgumentException("Newer version of pattern already saved");
-                }
-            } catch (ParseException e) {
-                instance.getLogger().logError(e.toString());
+
+            if (existingPattern.getLastUpdated().after(pattern.getLastUpdated())) {
+                throw new IllegalArgumentException("Newer version of pattern already saved");
             }
             
             // update pattern
