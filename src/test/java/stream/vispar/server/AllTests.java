@@ -22,6 +22,7 @@ import stream.vispar.server.core.entities.SensorTest;
 import stream.vispar.server.core.entities.SimulatedEventTest;
 import stream.vispar.server.core.entities.SimulationTest;
 import stream.vispar.server.core.entities.UserTest;
+import stream.vispar.server.core.entities.adapters.SensorJsonDeserializerTest;
 import stream.vispar.server.engine.EmailActionTest;
 import stream.vispar.server.engine.EventActionTest;
 import stream.vispar.server.engine.SiddhiEngineTest;
@@ -65,6 +66,9 @@ import stream.vispar.server.logger.MultiLoggerTest;
     SimulatedEventTest.class,
     SimulationTest.class,
     UserTest.class,
+    
+    // adapters
+    SensorJsonDeserializerTest.class,
     
     // engine
     EmailActionTest.class,
