@@ -16,16 +16,11 @@ import org.mockito.Mockito;
 
 import stream.vispar.jsonconverter.IJsonConverter;
 import stream.vispar.jsonconverter.exceptions.JsonException;
-import stream.vispar.jsonconverter.exceptions.JsonParseException;
 import stream.vispar.jsonconverter.gson.GsonConverter;
 import stream.vispar.jsonconverter.gson.typeadapters.GsonJsonObject;
 import stream.vispar.jsonconverter.types.IJsonArray;
 import stream.vispar.jsonconverter.types.IJsonObject;
 import stream.vispar.model.Pattern;
-import stream.vispar.server.cli.Command;
-import stream.vispar.server.cli.CommandResult;
-import stream.vispar.server.core.entities.User;
-import stream.vispar.server.localization.LocalizedString;
 
 /**
  * Tests for {@link ApiRoute}.
@@ -41,6 +36,10 @@ public class ApiRouteTest {
      */
     @Test
     public void testPostLogin() throws JsonException {
+        // basics
+        assertThat(ApiRoute.POST_LOGIN.getEndpoint(), equalTo("/auth/login"));
+        assertThat(ApiRoute.POST_LOGIN.getType(), equalTo(RouteType.POST));
+        
         // prepare mocked instance
         ServerInstance inst = spy(new ServerInstanceMock());
         AuthManager auth = mock(AuthManager.class);
@@ -69,6 +68,10 @@ public class ApiRouteTest {
      */
     @Test
     public void testPostLogout() throws JsonException {
+        // basics
+        assertThat(ApiRoute.POST_LOGOUT.getEndpoint(), equalTo("/auth/logout"));
+        assertThat(ApiRoute.POST_LOGOUT.getType(), equalTo(RouteType.POST));
+        
         // prepare mocked instance
         ServerInstance inst = spy(new ServerInstanceMock());
         AuthManager auth = mock(AuthManager.class);
@@ -92,6 +95,10 @@ public class ApiRouteTest {
      */
     @Test
     public void testGetUsersMe() throws JsonException {
+        // basics
+        assertThat(ApiRoute.GET_USERS_ME.getEndpoint(), equalTo("/users/me"));
+        assertThat(ApiRoute.GET_USERS_ME.getType(), equalTo(RouteType.GET));
+        
         // prepare mocked instance
         ServerInstance inst = spy(new ServerInstanceMock());
         
@@ -113,6 +120,10 @@ public class ApiRouteTest {
      */
     @Test
     public void testGetPatternsAll() throws JsonException {
+        // basics
+        assertThat(ApiRoute.GET_PATTERNS_ALL.getEndpoint(), equalTo("/patterns/all"));
+        assertThat(ApiRoute.GET_PATTERNS_ALL.getType(), equalTo(RouteType.GET));
+        
         // prepare mocked instance
         ServerInstance inst = spy(new ServerInstanceMock());
         PatternController ctrl = mock(PatternController.class);
@@ -143,6 +154,10 @@ public class ApiRouteTest {
      */
     @Test
     public void testGetPatterns() throws JsonException {
+        // basics
+        assertThat(ApiRoute.GET_PATTERNS.getEndpoint(), equalTo("/patterns"));
+        assertThat(ApiRoute.GET_PATTERNS.getType(), equalTo(RouteType.GET));
+        
         // prepare mocked instance
         ServerInstance inst = spy(new ServerInstanceMock());
         PatternController ctrl = mock(PatternController.class);
@@ -171,6 +186,10 @@ public class ApiRouteTest {
      */
     @Test
     public void testPostPatterns() throws JsonException {
+        // basics
+        assertThat(ApiRoute.POST_PATTERNS.getEndpoint(), equalTo("/patterns"));
+        assertThat(ApiRoute.POST_PATTERNS.getType(), equalTo(RouteType.POST));
+        
         // prepare mocked instance
         ServerInstance inst = spy(new ServerInstanceMock());
         PatternController ctrl = mock(PatternController.class);
@@ -191,5 +210,178 @@ public class ApiRouteTest {
         verify(ctrl, times(1)).update(Mockito.any(Pattern.class));
         assertThat(result, equalTo(new GsonConverter().toJson(updatedPattern)));
     }
+
+    /**
+     * Test for ApiRoute.DELETE_PATTERNS
+     * 
+     * @throws JsonException bad json.
+     */
+    @Test
+    public void testDeletePatterns() throws JsonException {
+        // basics
+        assertThat(ApiRoute.DELETE_PATTERNS.getEndpoint(), equalTo("/patterns/delete"));
+        assertThat(ApiRoute.DELETE_PATTERNS.getType(), equalTo(RouteType.POST));
+        
+        // prepare mocked instance
+        ServerInstance inst = spy(new ServerInstanceMock());
+        PatternController ctrl = mock(PatternController.class);
+        when(inst.getPatternCtrl()).thenReturn(ctrl);
+        
+        // create request
+        IJsonObject request = new GsonJsonObject();
+        request.add("user", "user123");
+        IJsonObject requestData = new GsonJsonObject();
+        requestData.add("id", "id1");
+        request.add("data", requestData);
+        
+        // POST patterns/delete
+        IJsonObject result = ApiRoute.DELETE_PATTERNS.execute(inst, request).getAsJsonObject();
+        verify(ctrl, times(1)).remove("id1");
+        assertThat(result.keySet().size(), equalTo(0));
+    }
+
+    /**
+     * Test for ApiRoute.RENAME_PATTERNS
+     * 
+     * @throws JsonException bad json.
+     */
+    @Test
+    public void testRenamePatterns() throws JsonException {
+        // basics
+        assertThat(ApiRoute.RENAME_PATTERNS.getEndpoint(), equalTo("/patterns/rename"));
+        assertThat(ApiRoute.RENAME_PATTERNS.getType(), equalTo(RouteType.POST));
+        
+        // prepare mocked instance
+        ServerInstance inst = spy(new ServerInstanceMock());
+        PatternController ctrl = mock(PatternController.class);
+        Pattern renamedPattern = new Pattern("id1", false, "myRenamedPattern");
+        when(ctrl.rename("id1", "myRenamedPattern")).thenReturn(renamedPattern);
+        when(inst.getPatternCtrl()).thenReturn(ctrl);
+        
+        // create request
+        IJsonObject request = new GsonJsonObject();
+        request.add("user", "user123");
+        IJsonObject requestData = new GsonJsonObject();
+        requestData.add("id", "id1");
+        requestData.add("name", "myRenamedPattern");
+        request.add("data", requestData);
+        
+        // POST patterns/rename
+        IJsonObject result = ApiRoute.RENAME_PATTERNS.execute(inst, request).getAsJsonObject()
+                .get("data").getAsJsonObject();
+        verify(ctrl, times(1)).rename("id1", "myRenamedPattern");
+        assertThat(result, equalTo(new GsonConverter().toJson(renamedPattern)));
+    }
+
+    /**
+     * Test for ApiRoute.POST_PATTERNS_DEPLOY
+     * 
+     * @throws JsonException bad json.
+     */
+    @Test
+    public void testPostPatternsDeploy() throws JsonException {
+        // basics
+        assertThat(ApiRoute.POST_PATTERNS_DEPLOY.getEndpoint(), equalTo("/patterns/deploy"));
+        assertThat(ApiRoute.POST_PATTERNS_DEPLOY.getType(), equalTo(RouteType.POST));
+        
+        // prepare mocked instance
+        ServerInstance inst = spy(new ServerInstanceMock());
+        PatternController ctrl = mock(PatternController.class);
+        Pattern deployedPattern = new Pattern("id1", true, "myPattern");
+        when(ctrl.deploy("id1")).thenReturn(deployedPattern);
+        when(inst.getPatternCtrl()).thenReturn(ctrl);
+        
+        // create request
+        IJsonObject request = new GsonJsonObject();
+        request.add("user", "user123");
+        IJsonObject requestData = new GsonJsonObject();
+        requestData.add("id", "id1");
+        request.add("data", requestData);
+        
+        // POST patterns/deploy
+        IJsonObject result = ApiRoute.POST_PATTERNS_DEPLOY.execute(inst, request).getAsJsonObject()
+                .get("data").getAsJsonObject();
+        verify(ctrl, times(1)).deploy("id1");
+        assertThat(result, equalTo(new GsonConverter().toJson(deployedPattern)));
+    }
+
+    /**
+     * Test for ApiRoute.POST_PATTERNS_UNDEPLOY
+     * 
+     * @throws JsonException bad json.
+     */
+    @Test
+    public void testPostPatternsUndeploy() throws JsonException {
+        // basics
+        assertThat(ApiRoute.POST_PATTERNS_UNDEPLOY.getEndpoint(), equalTo("/patterns/undeploy"));
+        assertThat(ApiRoute.POST_PATTERNS_UNDEPLOY.getType(), equalTo(RouteType.POST));
+        
+        // prepare mocked instance
+        ServerInstance inst = spy(new ServerInstanceMock());
+        PatternController ctrl = mock(PatternController.class);
+        Pattern undeployedPattern = new Pattern("id1", false, "myPattern");
+        when(ctrl.undeploy("id1")).thenReturn(undeployedPattern);
+        when(inst.getPatternCtrl()).thenReturn(ctrl);
+        
+        // create request
+        IJsonObject request = new GsonJsonObject();
+        request.add("user", "user123");
+        IJsonObject requestData = new GsonJsonObject();
+        requestData.add("id", "id1");
+        request.add("data", requestData);
+        
+        // POST patterns/undeploy
+        IJsonObject result = ApiRoute.POST_PATTERNS_UNDEPLOY.execute(inst, request).getAsJsonObject()
+                .get("data").getAsJsonObject();
+        verify(ctrl, times(1)).undeploy("id1");
+        assertThat(result, equalTo(new GsonConverter().toJson(undeployedPattern)));
+    }
+
+    /**
+     * Test for ApiRoute.GET_SENSORS
+     * 
+     * @throws JsonException bad json.
+     */
+    @Test
+    public void testGetSensors() throws JsonException {
+        // basics
+        assertThat(ApiRoute.GET_SENSORS.getEndpoint(), equalTo("/sensors"));
+        assertThat(ApiRoute.GET_SENSORS.getType(), equalTo(RouteType.GET));
+        
+        // prepare mocked instance
+        ServerInstance inst = spy(new ServerInstanceMock());
+        SensorController ctrl = spy(inst.getSensorCtrl());
+        when(inst.getSensorCtrl()).thenReturn(ctrl);
+        ctrl.registerSensors();
+        
+        // create request
+        IJsonObject request = new GsonJsonObject();
+        request.add("user", "user123");
+        
+        // GET sensors
+        IJsonArray result = ApiRoute.GET_SENSORS.execute(inst, request).getAsJsonObject()
+                .get("data").getAsJsonArray();
+        verify(ctrl, times(1)).getAll();
+        assertThat(result.size(), equalTo(1));
+        assertThat(result.get(0), equalTo(new GsonConverter().toJson(ctrl.getByName("temp1").getSensorNode())));
+    }
     
+    /**
+     * Test for unauthenticated request on GET /users/me route.
+     * 
+     * @throws JsonException bad json.
+     */
+    @Test
+    public void testUnauthenticatedUsersMe() throws JsonException {
+        // prepare mocked instance
+        ServerInstance inst = spy(new ServerInstanceMock());
+        
+        // create request
+        IJsonObject request = new GsonJsonObject();
+        
+        // GET users/me
+        IJsonObject result = ApiRoute.GET_USERS_ME.execute(inst, request).getAsJsonObject();
+        assertThat(result.has("error"), equalTo(true));
+        assertThat(result.getAsJsonPrimitive("error").getAsInt(), equalTo(RouteError.NOT_AUTHORIZED.getCode()));
+    }
 }
