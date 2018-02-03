@@ -59,7 +59,7 @@ public class DBConnectorMock implements IDatabaseConnector {
                     throw new IllegalStateException();
                 }
                 try {
-                    if (o.has(key) && o.get(value).getAsJsonPrimitive().getAsString().equals(value)) {
+                    if (o.has(key) && o.get(key).getAsJsonPrimitive().getAsString().equals(value)) {
                         // found entry
                         return o;
                     }
