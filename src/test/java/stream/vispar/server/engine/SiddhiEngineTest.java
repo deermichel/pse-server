@@ -109,6 +109,8 @@ public class SiddhiEngineTest {
         mockedInstance.stop();
 
         assertTrue(subject.getDeploymentInstances().isEmpty());
+        mockedInstance.start();
+        mockedInstance.getPatternCtrl().remove("id");
     }
 
     /**
@@ -166,6 +168,7 @@ public class SiddhiEngineTest {
 
         assertTrue(
                 subject.getDeploymentInstances().stream().anyMatch(instance -> instance.getPatternId().equals("id")));
+        mockedInstance.getPatternCtrl().remove("id");
     }
 
     /**
@@ -210,5 +213,6 @@ public class SiddhiEngineTest {
 
         assertTrue(
                 subject.getDeploymentInstances().stream().noneMatch(instance -> instance.getPatternId().equals("id")));
+        mockedInstance.getPatternCtrl().remove("id");
     }
 }
