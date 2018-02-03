@@ -20,6 +20,16 @@ public class ServerInstanceMock extends ServerInstance {
         super(getConfig());
     }
     
+    /**
+     * Construct new {@link ServerInstanceMock}.
+     * 
+     * @param db
+     *            the {@link IDatabaseConnector} used by the instance.
+     */
+    public ServerInstanceMock(IDatabaseConnector db) {
+        super(getConfig(), db);
+    }
+    
     private static ServerConfig getConfig() {
         ILogger logger = mock(ILogger.class);
         return new ServerConfig(8888, 8889, Locale.US, logger, "localhost", "./src/test/resources/sensors");

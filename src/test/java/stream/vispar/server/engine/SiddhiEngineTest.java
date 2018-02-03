@@ -19,6 +19,7 @@ import stream.vispar.model.nodes.Operand;
 import stream.vispar.model.nodes.Point;
 import stream.vispar.model.nodes.inputs.SensorNode;
 import stream.vispar.model.nodes.outputs.SocketActionNode;
+import stream.vispar.server.core.DBConnectorMock;
 import stream.vispar.server.core.ServerInstance;
 import stream.vispar.server.core.ServerInstanceMock;
 import stream.vispar.server.core.entities.Simulation;
@@ -33,13 +34,15 @@ public class SiddhiEngineTest {
 
     private SiddhiEngine subject;
     private ServerInstance mockedInstance;
+    private DBConnectorMock mockedDB;
 
     /**
      * Sets up the test environment before each test.
      */
     @Before
     public void setUp() {
-        this.mockedInstance = new ServerInstanceMock();
+        this.mockedDB = new DBConnectorMock();
+        this.mockedInstance = new ServerInstanceMock(mockedDB);
         mockedInstance.start();
         this.subject = (SiddhiEngine) mockedInstance.getEngine();
     }
@@ -110,7 +113,6 @@ public class SiddhiEngineTest {
 
         assertTrue(subject.getDeploymentInstances().isEmpty());
         mockedInstance.start();
-        mockedInstance.getPatternCtrl().remove("id");
     }
 
     /**
@@ -168,7 +170,6 @@ public class SiddhiEngineTest {
 
         assertTrue(
                 subject.getDeploymentInstances().stream().anyMatch(instance -> instance.getPatternId().equals("id")));
-        mockedInstance.getPatternCtrl().remove("id");
     }
 
     /**
@@ -213,6 +214,5 @@ public class SiddhiEngineTest {
 
         assertTrue(
                 subject.getDeploymentInstances().stream().noneMatch(instance -> instance.getPatternId().equals("id")));
-        mockedInstance.getPatternCtrl().remove("id");
     }
 }
