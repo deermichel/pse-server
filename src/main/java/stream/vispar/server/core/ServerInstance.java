@@ -1,6 +1,7 @@
 package stream.vispar.server.core;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import stream.vispar.server.engine.IEngine;
 import stream.vispar.server.engine.SiddhiEngine;
@@ -78,13 +79,26 @@ public class ServerInstance {
      *          the {@link ServerConfig} used for the instance.
      */
     public ServerInstance(ServerConfig config) {
+        this(config, null);
+    }
+    
+    /**
+     * Constructs a new {@link ServerInstance}. For testing purposes.
+     * 
+     * @param config
+     *            the {@link ServerConfig} used for this instance.
+     * @param dbConn
+     *            the {@link IDatabaseConnector} used for this instance. A new
+     *            {@link MongoDBConnector} is created if {@code null}.
+     */
+    protected ServerInstance(ServerConfig config, IDatabaseConnector dbConn) {
         this.running = false;
         Objects.requireNonNull(config);
         
         // init server components
         logger = config.getLogger();
         localizer = new Localizer(config.getLocale());
-        dbConn = new MongoDBConnector(this, config.getDatabaseUrl());
+        this.dbConn = Optional.ofNullable(dbConn).orElse(new MongoDBConnector(this, config.getDatabaseUrl()));
         engine = new SiddhiEngine(this);
         userCtrl = new UserController(this);
         patternCtrl = new PatternController(this);
