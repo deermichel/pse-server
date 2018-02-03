@@ -20,7 +20,6 @@ public class DBConnectorMock implements IDatabaseConnector {
 
     @Override
     public void connect() {
-        collections.put("patterns", new LinkedList<>());
         // nothing to do here
     }
 
@@ -43,14 +42,13 @@ public class DBConnectorMock implements IDatabaseConnector {
 
     @Override
     public IJsonElement insert(String collection, IJsonElement data) {
-        Optional.ofNullable(collections.get(collection)).orElseThrow(IllegalArgumentException::new).add(data);
+        ensureCollection(collection).add(data);
         return data;
     }
 
     @Override
     public IJsonElement find(String collection, String key, String value) {
-        Collection<IJsonElement> col =
-                Optional.ofNullable(collections.get(collection)).orElseThrow(IllegalArgumentException::new);
+        Collection<IJsonElement> col = ensureCollection(collection);
 
         for (IJsonElement e : col) {
             if (e.isJsonObject()) {
@@ -75,15 +73,12 @@ public class DBConnectorMock implements IDatabaseConnector {
 
     @Override
     public Collection<IJsonElement> getAll(String collection) {
-        return Optional.ofNullable(collections.get(collection)).orElseThrow(IllegalArgumentException::new);
+        return ensureCollection(collection);
     }
 
     @Override
     public IJsonElement update(String collection, String key, String value, IJsonElement data) {
-        Collection<IJsonElement> col = collections.get(collection);
-        if (Objects.isNull(col)) {
-            throw new IllegalArgumentException();
-        }
+        Collection<IJsonElement> col = ensureCollection(collection);
         IJsonElement toUpdate = this.find(collection, key, value);
         if (Objects.isNull(toUpdate)) {
             throw new IllegalArgumentException();
@@ -101,5 +96,12 @@ public class DBConnectorMock implements IDatabaseConnector {
         }
 
         collections.get(collection).remove(toDelete);
+    }
+
+    private Collection<IJsonElement> ensureCollection(String collection) {
+        if (!collections.containsKey(collection)) {
+            collections.put(collection, new LinkedList<>());
+        }
+        return collections.get(collection);
     }
 }
