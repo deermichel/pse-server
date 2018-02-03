@@ -50,6 +50,7 @@ Further Documentation
 
 * [Sensor Configuration](docs/sensorconfig.md)
 * [Simulations](docs/simulation.md)
+* [Installation on Raspberry Pi](docs/rpi-install.md)
 * [API Specification](docs/api.md)
 
 
