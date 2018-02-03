@@ -156,7 +156,9 @@ public class ComplexEventPatterns {
         pattern.addInputNode(in1);
         
         ConstantInputNode in2 = new ConstantDoubleNode("1", p, 10.5);
-        ConstantInputNode in3 = new ConstantDoubleNode("1", p, 15.5);
+        ConstantInputNode in3 = new ConstantDoubleNode("2", p, 15.5);
+        pattern.addInputNode(in2);
+        pattern.addInputNode(in3);
         
         FilterOperatorNode fil1 = new FilterOperatorNode("2-3-4", p, Relation.GREATER_EQUAL);
         in1.setOutput(fil1);
