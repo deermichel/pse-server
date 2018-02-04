@@ -47,16 +47,16 @@ public class SensorControllerTest {
         SensorController ctrl = new SensorController(inst, "./src/test/resources/sensors");
         assertThat(ctrl.getAll().size(), equalTo(0));
         ctrl.registerSensors();
-        assertThat(ctrl.getAll().size(), equalTo(1));
+        assertThat(ctrl.getAll().size(), equalTo(5));
         ctrl.registerSensors(); // same sensor shouldnt be registered twice
-        assertThat(ctrl.getAll().size(), equalTo(1));
+        assertThat(ctrl.getAll().size(), equalTo(5));
         
-        Sensor s = ctrl.getAll().iterator().next();
-        assertThat(s.getName(), equalTo("temp1"));
-        assertThat(s.getEndpoint(), equalTo("temp1"));
-        assertThat(s.getAttributes(), containsInAnyOrder(
-                new Attribute("value", "", AttributeType.INTEGER), 
-                new Attribute("room", "", AttributeType.STRING)));
+//        Sensor s = ctrl.getAll().iterator().next();
+//        assertThat(s.getName(), equalTo("temp1"));
+//        assertThat(s.getEndpoint(), equalTo("temp1"));
+//        assertThat(s.getAttributes(), containsInAnyOrder(
+//                new Attribute("value", "", AttributeType.INTEGER), 
+//                new Attribute("room", "", AttributeType.STRING)));
     }
 
     /**
@@ -69,7 +69,7 @@ public class SensorControllerTest {
         SensorController ctrl = new SensorController(inst, "./src/test/resources/sensors");
         assertThat(ctrl.getAll().size(), equalTo(0));
         ctrl.registerSensors();
-        assertThat(ctrl.getAll().size(), equalTo(1));
+        assertThat(ctrl.getAll().size(), equalTo(5));
     }
 
     /**
@@ -82,7 +82,7 @@ public class SensorControllerTest {
         SensorController ctrl = new SensorController(inst, "./src/test/resources/sensors");
         assertThat(ctrl.getAll().size(), equalTo(0));
         ctrl.registerSensors();
-        assertThat(ctrl.getAll().size(), equalTo(1));
+        assertThat(ctrl.getAll().size(), equalTo(5));
         
         Sensor s = ctrl.getByName("temp1");
         assertThat(s.getName(), equalTo("temp1"));
