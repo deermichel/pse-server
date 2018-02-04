@@ -1,0 +1,22 @@
+[
+	{
+		"time": "0",
+		"sensor": "outsideTemperatureSensor",
+		"data": { "outsideTemperature": { "fixed": "19" } }
+	},
+	{
+		"time": "500",
+		"sensor": "rainSensor",
+		"data": { "rain": { "fixed": "2" } }
+	},
+	{
+		"time": "1000",
+		"sensor": "rainSensor",
+		"data": { "rain": { "fixed": "3" } }
+	},
+	{
+		"time": "2000",
+		"sensor": "rainSensor",
+		"data": { "rain": { "fixed": "4" } }
+	}
+]

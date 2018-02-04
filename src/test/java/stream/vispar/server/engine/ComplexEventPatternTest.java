@@ -6,6 +6,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import stream.vispar.compiler.TreeCompiler;
 import stream.vispar.model.Pattern;
 import stream.vispar.server.core.DBConnectorMock;
 import stream.vispar.server.core.ServerInstance;
@@ -54,19 +55,39 @@ public class ComplexEventPatternTest {
     public void testDeploy() throws Exception {
         testPattern(ComplexEventPatterns.getMultipleOutputsPattern());
     	testPattern(ComplexEventPatterns.getSensorMultipleTimesPattern());
-        testPattern(ComplexEventPatterns.getAggregationPattern());
-        testPattern(ComplexEventPatterns.getFilterPattern());
-        testPattern(ComplexEventPatterns.getConstantFilterPattern());
-        testPattern(ComplexEventPatterns.getCountAggregationPattern());
-        testPattern(ComplexEventPatterns.getLogicalPattern());
-        testPattern(ComplexEventPatterns.getGoodWeatherPattern());
-        testPattern(ComplexEventPatterns.getBadWeatherPattern());
+    	
+        Pattern aggregationPattern = ComplexEventPatterns.getAggregationPattern();
+		testPattern(aggregationPattern);
+		simulate(aggregationPattern, "tempAll");
+		
+        Pattern filterPattern = ComplexEventPatterns.getFilterPattern();
+		testPattern(filterPattern);
+		simulate(filterPattern, "tempAll");
         
-        simulate("goodWeatherSimple");
-        simulate("goodWeatherSimple2");
-        simulate("goodWeatherNoEvent");
-        simulate("goodWeatherNoEvent2");
-        simulate("goodWeatherRandom");
+        Pattern constantFilterPattern = ComplexEventPatterns.getConstantFilterPattern();
+		testPattern(constantFilterPattern);
+		simulate(constantFilterPattern, "tempAll");
+        
+        Pattern countAggregationPattern = ComplexEventPatterns.getCountAggregationPattern();
+		testPattern(countAggregationPattern);
+		simulate(countAggregationPattern, "tempAll");
+        
+        Pattern logicalPattern = ComplexEventPatterns.getLogicalPattern();
+        System.out.println(new TreeCompiler().compile(logicalPattern).getAsString());
+		testPattern(logicalPattern);
+		simulate(logicalPattern, "tempAll");
+        
+        Pattern badWeatherPattern = ComplexEventPatterns.getBadWeatherPattern();
+		testPattern(badWeatherPattern);
+        simulate(badWeatherPattern, "badWeatherSimple");
+		
+        Pattern goodWeatherPattern = ComplexEventPatterns.getGoodWeatherPattern();
+        testPattern(goodWeatherPattern);
+        simulate(goodWeatherPattern, "goodWeatherSimple");
+        simulate(goodWeatherPattern, "goodWeatherSimple2");
+        simulate(goodWeatherPattern, "goodWeatherNoEvent");
+        simulate(goodWeatherPattern, "goodWeatherNoEvent2");
+        simulate(goodWeatherPattern, "goodWeatherRandom");
     }
     
     
@@ -78,6 +99,7 @@ public class ComplexEventPatternTest {
         try {
         	// deploy pattern
         	mockedInstance.getPatternCtrl().deploy(pattern.getId());
+        	mockedInstance.getPatternCtrl().undeploy(pattern.getId());
         } catch (Exception e) {
         	e.printStackTrace();
         	
@@ -85,16 +107,21 @@ public class ComplexEventPatternTest {
         	fail("exception was thrown");
         	return;
         }
-        
 //        System.out.println("deployed " + pattern.getName());
     }
     
-    private void simulate(String simulation) throws InterruptedException {
-    	System.out.println("simulate " + simulation);
-    	new Simulation("./src/test/resources/simulations/" + simulation + ".sim").simulate(mockedInstance);
-    	Thread.sleep(5000);
+    
+    private void simulate(Pattern pattern, String simulation) throws Exception {
+        System.out.println("simulate " + simulation);
+        
+        mockedInstance.getPatternCtrl().deploy(pattern.getId());
+        new Simulation("./src/test/resources/simulations/" + simulation + ".sim").simulate(mockedInstance);
+    	Thread.sleep(3000);
+    	
     	System.out.println();
     	System.out.println();
+    	
+    	mockedInstance.getPatternCtrl().undeploy(pattern.getId());
     }
 
 }

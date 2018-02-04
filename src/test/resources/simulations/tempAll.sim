@@ -1,0 +1,29 @@
+[
+    {
+        "time": "0",
+        "sensor": "temp1",
+        "repeat": { "count": "5", "interval": "200" },
+        "data": {
+            "value": { "range": [ "17", "24" ] },
+            "room": { "fixed": "temp1" }
+        }
+    },
+    {
+        "time": "700",
+        "sensor": "temp2",
+        "repeat": { "count": "4", "interval": "200" },
+        "data": {
+            "value": { "range": [ "17", "24" ] },
+            "room": { "fixed": "temp2" }
+        }
+    },
+    {
+        "time": "1400",
+        "sensor": "temp3",
+        "repeat": { "count": "4", "interval": "200" },
+        "data": {
+            "value": { "range": [ "17", "24" ] },
+            "room": { "fixed": "temp3" }
+        }
+    }
+]

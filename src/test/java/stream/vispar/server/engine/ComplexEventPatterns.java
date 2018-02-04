@@ -145,7 +145,7 @@ public class ComplexEventPatterns {
         pattern.addOperatorNode(agg2);
         
         SocketActionNode out1 = new SocketActionNode("4", p);
-        out1.setMessage("Hello World");
+        out1.setMessage("aggregation socket (sum of maximums)");
         agg2.setOutput(out1);
         pattern.addOutputNode(out1);
         
@@ -168,7 +168,7 @@ public class ComplexEventPatterns {
         pattern.addOperatorNode(count);
         
         SocketActionNode out1 = new SocketActionNode("3", p);
-        out1.setMessage("Hello World");
+        out1.setMessage("count aggregation socket (max 10)");
         count.setOutput(out1);
         pattern.addOutputNode(out1);
         
@@ -185,9 +185,9 @@ public class ComplexEventPatterns {
 
         Attribute attr = intAttr1.mutableCopy(in1.getId());
         
-        ConstantInputNode in2 = new ConstantIntegerNode("1-1", p, 10);
+        ConstantInputNode in2 = new ConstantIntegerNode("1-1", p, 18);
         pattern.addInputNode(in2);
-        ConstantInputNode in3 = new ConstantIntegerNode("1-2", p, 15);
+        ConstantInputNode in3 = new ConstantIntegerNode("1-2", p, 22);
         pattern.addInputNode(in3);
         
         FilterOperatorNode fil1 = new FilterOperatorNode("2-3-4", p, Relation.GREATER_EQUAL);
@@ -205,7 +205,7 @@ public class ComplexEventPatterns {
         pattern.addOperatorNode(fil2);
         
         SocketActionNode out1 = new SocketActionNode("4-5-6", p);
-        out1.setMessage("Hello World");
+        out1.setMessage("constant filter socket 18 <= x < 22");
         fil2.setOutput(out1);
         pattern.addOutputNode(out1);
         
@@ -231,7 +231,7 @@ public class ComplexEventPatterns {
         pattern.addOperatorNode(fil1);
         
         SocketActionNode out1 = new SocketActionNode(uuid(), p);
-        out1.setMessage("Hello World");
+        out1.setMessage("filter socket");
         fil1.setOutput(out1);
         pattern.addOutputNode(out1);
         
@@ -254,7 +254,7 @@ public class ComplexEventPatterns {
         pattern.addOperatorNode(agg1);
         
         SocketActionNode out1 = new SocketActionNode("1-3", p);
-        out1.setMessage("Hello World");
+        out1.setMessage("maximum aggregation socket");
         agg1.setOutput(out1);
         pattern.addOutputNode(out1);
         
@@ -270,7 +270,7 @@ public class ComplexEventPatterns {
         pattern.addOperatorNode(agg2);
         
         SocketActionNode out2 = new SocketActionNode("2-3", p);
-        out2.setMessage("Hello World");
+        out2.setMessage("minimum aggregation socket");
         agg2.setOutput(out2);
         pattern.addOutputNode(out2);
         
@@ -286,7 +286,7 @@ public class ComplexEventPatterns {
         pattern.addOperatorNode(agg3);
         
         SocketActionNode out3 = new SocketActionNode("3-3", p);
-        out3.setMessage("Hello World");
+        out3.setMessage("sum aggregation socket");
         agg3.setOutput(out3);
         pattern.addOutputNode(out3);
         
@@ -302,7 +302,7 @@ public class ComplexEventPatterns {
         pattern.addOperatorNode(agg4);
         
         SocketActionNode out4 = new SocketActionNode("4-3", p);
-        out4.setMessage("Hello World");
+        out4.setMessage("average aggregation socket");
         agg4.setOutput(out4);
         pattern.addOutputNode(out4);
         
@@ -327,7 +327,7 @@ public class ComplexEventPatterns {
         pattern.addOperatorNode(log1);
         
         SocketActionNode out1 = new SocketActionNode("1-3", p);
-        out1.setMessage("Hello World");
+        out1.setMessage("logical or socket");
         log1.setOutput(out1);
         pattern.addOutputNode(out1);
         
@@ -345,7 +345,7 @@ public class ComplexEventPatterns {
         pattern.addOperatorNode(log2);
         
         SocketActionNode out2 = new SocketActionNode("2-3", p);
-        out2.setMessage("Hello World");
+        out2.setMessage("logical and socket");
         log2.setOutput(out2);
         pattern.addOutputNode(out2);
         
@@ -364,7 +364,7 @@ public class ComplexEventPatterns {
         pattern.addOperatorNode(log3);
         
         SocketActionNode out3 = new SocketActionNode("3-3", p);
-        out3.setMessage("Hello World");
+        out3.setMessage("logical sequence socket");
         log3.setOutput(out3);
         pattern.addOutputNode(out3);
         
