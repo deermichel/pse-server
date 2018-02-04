@@ -36,12 +36,9 @@ Konfiguration des Servers erfolgt über SSH, damit die Benutzererstellung gezeig
 
 ###### Sensorenverwaltung
 
-5. `listsensors` -> noch keine Sensoren konfiguriert
 6. Server auschalten -> `stop`
 7. Konfigurationsdateien in `./sensors/` verschieben (Konfigdateien zeigen?)
 8. Server starten
-9. `listsensors` -> neue Sensoren werden angezeigt
-
 
 ### Client
 
@@ -112,8 +109,8 @@ wenn der Knopf innerhalb von 10 Sekunden mind. 5 mal gedrückt wurde.
 
 ###### Komplexeres Muster
 
-Idee: **Temperaturüberwachung**  
-E-Mail schicken, wenn Temperatur 30 Sekunden lang über 25 °C ist und der Knopf nicht gedrückt wurde.
+Idee: **Feuchteüberwachung**  
+E-Mail schicken, wenn Feuchte 30 Sekunden lang über ?? % ist und der Knopf nicht gedrückt wurde.
 
 ### Server
 
