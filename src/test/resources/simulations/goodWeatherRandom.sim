@@ -1,0 +1,14 @@
+[
+	{
+		"time": "2000",
+		"sensor": "outsideTemperatureSensor",
+		"repeat": { "count": "4", "interval": "100" },
+		"data": { "outsideTemperature": { "fixed": "21" } }
+	},
+	{
+		"time": "0",
+		"sensor": "rainSensor",
+		"repeat": { "count": "9", "interval": "50" },
+		"data": { "rain": { "range": [ "0", "6" ] } }
+	}
+]

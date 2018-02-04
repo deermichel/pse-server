@@ -186,7 +186,9 @@ public class ComplexEventPatterns {
         Attribute attr = intAttr1.mutableCopy(in1.getId());
         
         ConstantInputNode in2 = new ConstantIntegerNode("1-1", p, 10);
+        pattern.addInputNode(in2);
         ConstantInputNode in3 = new ConstantIntegerNode("1-2", p, 15);
+        pattern.addInputNode(in3);
         
         FilterOperatorNode fil1 = new FilterOperatorNode("2-3-4", p, Relation.GREATER_EQUAL);
         in1.setOutput(fil1);
@@ -289,7 +291,7 @@ public class ComplexEventPatterns {
         pattern.addOutputNode(out3);
         
         
-        SensorNode in4 = new SensorNode("4-1", p, "sensor1", "description", new Operand(intAttr1));
+        SensorNode in4 = copySensorNode(temp1);
         pattern.addInputNode(in4);
         
         FunctionAggregationNode agg4 = new FunctionAggregationNode("4-2", p, AggregationFunction.AVERAGE);
