@@ -242,6 +242,7 @@ public class ComplexEventPatterns {
         Pattern pattern = new Pattern("multiple_outputs_pattern", false, "multiple outputs pattern");
         
         SensorNode in1 = temp1;
+        pattern.addInputNode(in1);
         
         FunctionAggregationNode agg1 = new FunctionAggregationNode("1-2", p, AggregationFunction.MAXIUMUM);
         in1.setOutput(agg1);
