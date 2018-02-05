@@ -2,6 +2,13 @@
 
 ## Vorbedingungen
 
+###### Setup
+- Netzwerk: **Repeater** anschließen
+- Raspberries mit Strom versorgen
+- **IP-Scan** durchführen, ggf. Config-Dateien (Socket und Sensoren) anpassen
+- Micha Rechner an Beamer, SSH zu Server, Mirror von Handy
+- Nico Rechner Socket-Skript (ggf. IP anpassen)
+
 ###### Server
 - Datenbank läuft
 - Postfix läuft
@@ -14,6 +21,7 @@
 ###### Client
 - Client-App ist auf 2 Smartphones installiert
 - Smartphones haben Verbindung zum Server
+- Systemsprache **Englisch** (sonst Bugs)
 
 
 ## Ablauf
@@ -74,10 +82,11 @@ wenn der Knopf innerhalb von 10 Sekunden mind. 5 mal gedrückt wurde.
 12. Auf zweitem Smartphone mit anderem Benutzer einloggen
 13. Muster-Liste anzeigen -> zuvor erstelltes Muster wird angezeigt
 14. Muster im Editor öffnen
-15. Aggregation-Node hinzufügen
+15. Count-Aggregation-Node hinzufügen
 16. Sensor mit Aggregation verbinden
-17. Aggregation bearbeiten -> richtiges Attribut und `Summe` auswählen, Zeitfenster `10 sek.` festlegen
+17. Aggregation bearbeiten -> Zeitfenster `10 sek.` festlegen
 18. Filter-Node hinzufügen, ConstantInputNode mit Wert `5` hinzufügen
+18. Filter konfig. -> Greater/Equal *(Bug: Reihenfolge von Attributen stimmt nicht)*
 19. Muster fertig zusammenbauen
 20. Muster speichern
 
@@ -107,13 +116,13 @@ wenn der Knopf innerhalb von 10 Sekunden mind. 5 mal gedrückt wurde.
 31. Für das duplizierte Muster `Muster löschen` auswählen
 32. Zeigen, dass das Muster auf beiden Smartphones nicht mehr angezeigt wird.
 
-###### Komplexeres Muster
+###### Weiteres Muster
 
-Idee: **Feuchteüberwachung**  
-E-Mail schicken, wenn Feuchte 30 Sekunden lang über ?? % ist und der Knopf nicht gedrückt wurde.
+Wir demonstrieren den Sequenzoperator:
+2 SensorNodes: `button1` und `photo1`. Verbinde mittels Sequenz, Zeitfenster `5 sek.`. Schließe SocketAction an.
 
 ### Server
 
 1. `listpatterns` zeigen: alle zuvor erstellten (und noch nicht gelöschten) Muster werden angezeigt
-2. `deleteuser`: einen Benutzer löschen
+2. `removeuser`: einen Benutzer löschen
 3. Demonstrieren, dass sich der gelöschte Benutzer nicht mehr einloggen kann
