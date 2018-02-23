@@ -28,6 +28,10 @@ import stream.vispar.model.nodes.outputs.SocketActionNode;
 import stream.vispar.server.core.ServerInstance;
 import stream.vispar.server.core.entities.Event;
 import stream.vispar.server.core.entities.adapters.NodeVisitorAdapter;
+import stream.vispar.server.engine.extensions.StringComparator;
+import stream.vispar.server.engine.extensions.StringConcatenator;
+import stream.vispar.server.engine.extensions.StringMaximum;
+import stream.vispar.server.engine.extensions.StringMinimum;
 import stream.vispar.server.localization.LocalizedString;
 
 /**
@@ -60,6 +64,15 @@ public class SiddhiEngine implements IEngine {
         this.compiler = new TreeCompiler();
 
         this.deploymentInstances = new ConcurrentHashMap<>();
+        
+//        manager.setExtension("vispar:count", EventCounterExtension.class);
+//        manager.setExtension("vispar:and", LogicalAndFunction.class);
+//        manager.setExtension("vispar:timeLength", TimeLengthWindow.class);
+        manager.setExtension("vispar:stringcompare", StringComparator.class);
+        manager.setExtension("vispar:stringsum", StringConcatenator.class);
+        manager.setExtension("vispar:stringmax", StringMaximum.class);
+        manager.setExtension("vispar:stringmin", StringMinimum.class);
+//        manager.setExtension("vispar:string:avg", StringAverage.class);
     }
 
     @Override
