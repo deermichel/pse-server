@@ -30,6 +30,7 @@ import stream.vispar.server.core.entities.Event;
 import stream.vispar.server.core.entities.adapters.NodeVisitorAdapter;
 import stream.vispar.server.engine.extensions.EventCounterExtension;
 import stream.vispar.server.engine.extensions.LogicalAndFunction;
+import stream.vispar.server.engine.extensions.StringAverage;
 import stream.vispar.server.engine.extensions.StringComparator;
 import stream.vispar.server.engine.extensions.StringConcatenator;
 import stream.vispar.server.engine.extensions.StringMaximum;
@@ -75,7 +76,7 @@ public class SiddhiEngine implements IEngine {
         manager.setExtension("vispar:stringsum", StringConcatenator.class);
         manager.setExtension("vispar:stringmax", StringMaximum.class);
         manager.setExtension("vispar:stringmin", StringMinimum.class);
-//        manager.setExtension("vispar:string:avg", StringAverage.class);
+        manager.setExtension("vispar:stringavg", StringAverage.class);
     }
 
     @Override
