@@ -113,6 +113,9 @@ public class PatternController {
             throw new IllegalArgumentException("Pattern does not exist");
         }
         
+        // undeploy pattern if deployed
+        undeploy(id);
+        
         // delete pattern
         db.delete("patterns", "id", pattern.getId());
         instance.getLogger().log(String.format(instance.getLocalizer().get(LocalizedString.PATTERN_DELETED),
