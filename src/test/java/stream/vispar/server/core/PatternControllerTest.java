@@ -257,4 +257,33 @@ public class PatternControllerTest {
         ctrl.resetDeploymentStatus();
         verify(db, times(1)).update("patterns", "id", pattern.getId(), jsonPattern);
     }
+    
+    /**
+     * Tests whether pattern will be undeployed if it is deleted.
+     * 
+     * @see Issue #1
+     * 
+     * @throws JsonException 
+     *              bad json
+     */
+    @Test
+    public void testUndeployOnDelete() throws JsonException {
+        // prepare mocked instance
+        Pattern pattern = new Pattern("id1", true, "name1");
+        ServerInstance inst = spy(new ServerInstanceMock());
+        IDatabaseConnector db = mock(IDatabaseConnector.class);
+        IEngine engine = mock(IEngine.class);
+        IJsonElement jsonPattern = new GsonConverter().toJson(pattern);
+        when(db.find("patterns", "id", "id1")).thenReturn(jsonPattern);
+        when(inst.getDBConn()).thenReturn(db);
+        when(inst.getEngine()).thenReturn(engine);
+        
+        assertThat(pattern.isDeployed(), equalTo(true));
+        assertThat(pattern.isValid(), equalTo(true));
+        
+        // check if undeployed on remove
+        PatternController ctrl = new PatternController(inst);
+        ctrl.remove("id1");
+        verify(engine, times(1)).undeploy(Mockito.any(Pattern.class));
+    }
 }
