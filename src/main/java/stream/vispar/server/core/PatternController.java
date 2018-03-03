@@ -114,7 +114,9 @@ public class PatternController {
         }
         
         // undeploy pattern if deployed
-        undeploy(id);
+        if (pattern.isDeployed()) {
+            undeploy(id);
+        }
         
         // delete pattern
         db.delete("patterns", "id", pattern.getId());
