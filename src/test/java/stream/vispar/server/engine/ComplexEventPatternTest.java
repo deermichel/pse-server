@@ -1,7 +1,5 @@
 package stream.vispar.server.engine;
 
-import static org.junit.Assert.fail;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,7 +41,6 @@ public class ComplexEventPatternTest {
         }
     }
 
-
     /**
      * Test method for {@link SiddhiEngine#deploy(Pattern)}. Tests that a simple
      * pattern is recognized and it's action is executed upon detection.
@@ -54,33 +51,33 @@ public class ComplexEventPatternTest {
     @Test
     public void testDeploy() throws Exception {
         testPattern(ComplexEventPatterns.getMultipleOutputsPattern());
-    	testPattern(ComplexEventPatterns.getSensorMultipleTimesPattern());
-    	
+        testPattern(ComplexEventPatterns.getSensorMultipleTimesPattern());
+
         Pattern aggregationPattern = ComplexEventPatterns.getAggregationPattern();
-		testPattern(aggregationPattern);
-		simulate(aggregationPattern, "tempAll");
-		
+        testPattern(aggregationPattern);
+        simulate(aggregationPattern, "tempAll");
+
         Pattern filterPattern = ComplexEventPatterns.getFilterPattern();
-		testPattern(filterPattern);
-		simulate(filterPattern, "tempAll");
-        
+        testPattern(filterPattern);
+        simulate(filterPattern, "tempAll");
+
         Pattern constantFilterPattern = ComplexEventPatterns.getConstantFilterPattern();
-		testPattern(constantFilterPattern);
-		simulate(constantFilterPattern, "tempAll");
-        
+        testPattern(constantFilterPattern);
+        simulate(constantFilterPattern, "tempAll");
+
         Pattern countAggregationPattern = ComplexEventPatterns.getCountAggregationPattern();
-		testPattern(countAggregationPattern);
-		simulate(countAggregationPattern, "tempAll");
-        
+        testPattern(countAggregationPattern);
+        simulate(countAggregationPattern, "tempAll");
+
         Pattern logicalPattern = ComplexEventPatterns.getLogicalPattern();
         System.out.println(new TreeCompiler().compile(logicalPattern).getAsString());
-		testPattern(logicalPattern);
-		simulate(logicalPattern, "tempAll");
-        
+        testPattern(logicalPattern);
+        simulate(logicalPattern, "tempAll");
+
         Pattern badWeatherPattern = ComplexEventPatterns.getBadWeatherPattern();
-		testPattern(badWeatherPattern);
+        testPattern(badWeatherPattern);
         simulate(badWeatherPattern, "badWeatherSimple");
-		
+
         Pattern goodWeatherPattern = ComplexEventPatterns.getGoodWeatherPattern();
         testPattern(goodWeatherPattern);
         simulate(goodWeatherPattern, "goodWeatherSimple");
@@ -89,39 +86,28 @@ public class ComplexEventPatternTest {
         simulate(goodWeatherPattern, "goodWeatherNoEvent2");
         simulate(goodWeatherPattern, "goodWeatherRandom");
     }
-    
-    
+
     private void testPattern(Pattern pattern) throws Exception {
-//    	System.out.println(pattern.isValid());
-    	
+        // System.out.println(pattern.isValid());
+
         mockedInstance.getPatternCtrl().update(pattern);
-        
-        try {
-        	// deploy pattern
-        	mockedInstance.getPatternCtrl().deploy(pattern.getId());
-        	mockedInstance.getPatternCtrl().undeploy(pattern.getId());
-        } catch (Exception e) {
-        	e.printStackTrace();
-        	
-//        	System.out.println(new TreeCompiler().compile(pattern).getAsString());
-        	fail("exception was thrown");
-        	return;
-        }
-//        System.out.println("deployed " + pattern.getName());
+
+        // deploy pattern
+        mockedInstance.getPatternCtrl().deploy(pattern.getId());
+        mockedInstance.getPatternCtrl().undeploy(pattern.getId());
     }
-    
-    
+
     private void simulate(Pattern pattern, String simulation) throws Exception {
         System.out.println("simulate " + simulation);
-        
+
         mockedInstance.getPatternCtrl().deploy(pattern.getId());
         new Simulation("./src/test/resources/simulations/" + simulation + ".sim").simulate(mockedInstance);
-    	Thread.sleep(3000);
-    	
-    	System.out.println();
-    	System.out.println();
-    	
-    	mockedInstance.getPatternCtrl().undeploy(pattern.getId());
+        Thread.sleep(3000);
+
+        System.out.println();
+        System.out.println();
+
+        mockedInstance.getPatternCtrl().undeploy(pattern.getId());
     }
 
 }
