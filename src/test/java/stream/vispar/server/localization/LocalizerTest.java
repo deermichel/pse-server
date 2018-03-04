@@ -31,8 +31,11 @@ public class LocalizerTest {
      */
     @Test
     public void testGet() {
+        Locale previousDefault = Locale.getDefault();
+        Locale.setDefault(Locale.US);
         assertThat(new Localizer(Locale.US).get(LocalizedString.TEST), equalTo("Test_Default"));
         assertThat(new Localizer(Locale.GERMANY).get(LocalizedString.TEST), equalTo("Test_DE"));
+        Locale.setDefault(previousDefault);
     }
 
     /**
