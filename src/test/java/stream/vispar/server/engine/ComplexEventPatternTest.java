@@ -4,7 +4,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import stream.vispar.compiler.TreeCompiler;
 import stream.vispar.model.Pattern;
 import stream.vispar.server.core.DBConnectorMock;
 import stream.vispar.server.core.ServerInstance;
@@ -16,7 +15,6 @@ import stream.vispar.server.core.entities.Simulation;
  */
 public class ComplexEventPatternTest {
 
-    private SiddhiEngine subject;
     private ServerInstance mockedInstance;
     private DBConnectorMock mockedDB;
 
@@ -28,7 +26,6 @@ public class ComplexEventPatternTest {
         this.mockedDB = new DBConnectorMock();
         this.mockedInstance = new ServerInstanceMock(mockedDB);
         mockedInstance.start();
-        this.subject = (SiddhiEngine) mockedInstance.getEngine();
     }
 
     /**
@@ -42,8 +39,7 @@ public class ComplexEventPatternTest {
     }
 
     /**
-     * Test method for {@link SiddhiEngine#deploy(Pattern)}. Tests that a simple
-     * pattern is recognized and it's action is executed upon detection.
+     * Tries to deploy different complex event patterns and simulates some events.
      * 
      * @throws Exception
      *             cause sometimes something goes wrong
@@ -70,7 +66,6 @@ public class ComplexEventPatternTest {
         simulate(countAggregationPattern, "tempAll");
 
         Pattern logicalPattern = ComplexEventPatterns.getLogicalPattern();
-        System.out.println(new TreeCompiler().compile(logicalPattern).getAsString());
         testPattern(logicalPattern);
         simulate(logicalPattern, "tempAll");
 
@@ -81,15 +76,13 @@ public class ComplexEventPatternTest {
         Pattern goodWeatherPattern = ComplexEventPatterns.getGoodWeatherPattern();
         testPattern(goodWeatherPattern);
         simulate(goodWeatherPattern, "goodWeatherSimple");
-        simulate(goodWeatherPattern, "goodWeatherSimple2");
-        simulate(goodWeatherPattern, "goodWeatherNoEvent");
-        simulate(goodWeatherPattern, "goodWeatherNoEvent2");
-        simulate(goodWeatherPattern, "goodWeatherRandom");
+//        simulate(goodWeatherPattern, "goodWeatherSimple2");
+//        simulate(goodWeatherPattern, "goodWeatherNoEvent");
+//        simulate(goodWeatherPattern, "goodWeatherNoEvent2");
+//        simulate(goodWeatherPattern, "goodWeatherRandom");
     }
 
     private void testPattern(Pattern pattern) throws Exception {
-        // System.out.println(pattern.isValid());
-
         mockedInstance.getPatternCtrl().update(pattern);
 
         // deploy pattern
@@ -98,14 +91,11 @@ public class ComplexEventPatternTest {
     }
 
     private void simulate(Pattern pattern, String simulation) throws Exception {
-        System.out.println("simulate " + simulation);
+//        System.out.println("simulate " + simulation);
 
         mockedInstance.getPatternCtrl().deploy(pattern.getId());
         new Simulation("./src/test/resources/simulations/" + simulation + ".sim").simulate(mockedInstance);
-        Thread.sleep(3000);
-
-        System.out.println();
-        System.out.println();
+//        Thread.sleep(3000);
 
         mockedInstance.getPatternCtrl().undeploy(pattern.getId());
     }
