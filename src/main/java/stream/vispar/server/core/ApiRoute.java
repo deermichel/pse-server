@@ -12,7 +12,10 @@ import stream.vispar.jsonconverter.types.IJsonArray;
 import stream.vispar.jsonconverter.types.IJsonElement;
 import stream.vispar.jsonconverter.types.IJsonObject;
 import stream.vispar.model.Pattern;
+import stream.vispar.model.nodes.Node;
+import stream.vispar.model.nodes.outputs.PatternOutputNode;
 import stream.vispar.server.core.entities.Sensor;
+import stream.vispar.server.core.entities.adapters.NodeVisitorAdapter;
 
 /**
  * Defines the routes for the api server provided by a {@link IRequestHandler}.
@@ -337,6 +340,42 @@ public enum ApiRoute {
             return response;
         }
     },
+    
+    /**
+     * GET route to get all available pattern input nodes.
+     */
+    GET_PATTERNS_INPUTNODES(RouteType.GET, "/patterns/inputnodes") {
+        @Override
+        public IJsonElement execute(ServerInstance instance, IJsonElement request) {
+            IJsonObject response = new GsonJsonObject();
+            
+            // authenticated?
+            if (!isAuthenticated(instance, request)) {
+                response.add(ERROR_KEY_NAME, RouteError.NOT_AUTHORIZED.getCode());
+                return response;
+            }
+            
+            // get patterns and get their pattern output nodes as input nodes and convert to json
+            IJsonConverter jsonConv = new GsonConverter();
+            Collection<Pattern> patterns = instance.getPatternCtrl().getAll();
+            IJsonArray json = new GsonJsonArray();
+            for (Pattern p : patterns) {
+                for (Node n : p.getAllNodes()) {
+                    n.acceptVisitor(new NodeVisitorAdapter() {
+                        @Override
+                        public void visitPatternOutputNode(PatternOutputNode node) {
+                            json.add(jsonConv.toJson(node.getAsPatternInputNode()));
+                        }
+                    });
+                }
+            }
+            
+            // return data
+            response.add("data", json); 
+            return response;
+        }
+    },
+    
     
     /**
      * GET route to list all sensors.
