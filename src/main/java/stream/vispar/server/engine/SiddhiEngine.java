@@ -28,7 +28,6 @@ import stream.vispar.model.nodes.outputs.SocketActionNode;
 import stream.vispar.server.core.ServerInstance;
 import stream.vispar.server.core.entities.Event;
 import stream.vispar.server.core.entities.adapters.NodeVisitorAdapter;
-import stream.vispar.server.engine.extensions.EventCounterExtension;
 import stream.vispar.server.engine.extensions.LogicalAndFunction;
 import stream.vispar.server.engine.extensions.StringAverage;
 import stream.vispar.server.engine.extensions.StringComparator;
@@ -69,7 +68,6 @@ public class SiddhiEngine implements IEngine {
 
         this.deploymentInstances = new ConcurrentHashMap<>();
         
-        manager.setExtension("vispar:count", EventCounterExtension.class);
         manager.setExtension("vispar:and", LogicalAndFunction.class);
         manager.setExtension("vispar:timeLength", TimeLengthWindow.class);
         manager.setExtension("vispar:stringcompare", StringComparator.class);

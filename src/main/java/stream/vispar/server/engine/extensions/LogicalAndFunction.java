@@ -40,7 +40,6 @@ public class LogicalAndFunction extends FunctionExecutor {
 		if (in1 > lastFirstInput && in2 > lastSecondInput) {
 			lastFirstInput = in1;
 			lastSecondInput = in2;
-			System.out.println();
 			return true;
 		}
 		
