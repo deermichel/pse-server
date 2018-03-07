@@ -202,6 +202,23 @@ Undeploys the pattern on the server.
 3003 Pattern not deployed.
 ```
 
+#### GET `/patterns/inputnodes`
+Returns a list of all pattern input nodes existing on the server.
+```json
+// no request parameters needed
+
+// response on success
+{
+    "data": [
+        "<patternInputNodeObject>",
+        "..."
+    ]
+}
+
+// errors
+1001 Not authorized.
+```
+
 ### Sensors
 
 #### GET `/sensors`
