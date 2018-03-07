@@ -180,8 +180,8 @@ public final class Sensor {
             // array or object?
             Matcher m = Pattern.compile(".*\\[(.*)\\]").matcher(key);
             if (m.matches()) {
-                int index = Integer.valueOf(m.group(1));
-                String arrayKey = key.substring(0, key.indexOf("["));
+                int index = Integer.parseInt(m.group(1));
+                String arrayKey = key.substring(0, key.indexOf('['));
                 return json.getAsJsonObject().get(arrayKey).getAsJsonArray()
                         .get(index).getAsJsonPrimitive().getAsString();
             } else {
@@ -196,8 +196,8 @@ public final class Sensor {
         // array or object?
         Matcher m = Pattern.compile(".*\\[(.*)\\]").matcher(levelKey);
         if (m.matches()) {
-            int index = Integer.valueOf(m.group(1));
-            String arrayKey = levelKey.substring(0, levelKey.indexOf("["));
+            int index = Integer.parseInt(m.group(1));
+            String arrayKey = levelKey.substring(0, levelKey.indexOf('['));
             return getValueRecursively(json.getAsJsonObject().get(arrayKey).getAsJsonArray()
                     .get(index), newKey);
         } else {

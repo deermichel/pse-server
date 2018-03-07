@@ -133,11 +133,11 @@ public final class SimulatedEvent {
     public Event createEvent(ServerInstance instance) {
         
         // get sensor and its attributes
-        Sensor sensor = instance.getSensorCtrl().getByName(this.sensor);
-        if (sensor == null) {
+        Sensor eventSensor = instance.getSensorCtrl().getByName(this.sensor);
+        if (eventSensor == null) {
             throw new IllegalStateException("Sensor '" + this.sensor + "' not registered");
         }
-        Collection<Attribute> attributes = sensor.getAttributes();
+        Collection<Attribute> attributes = eventSensor.getAttributes();
         
         // map data
         Map<Attribute, String> simulatedData = new HashMap<>();
@@ -169,7 +169,7 @@ public final class SimulatedEvent {
         }
         
         // create event
-        return new Event(System.currentTimeMillis(), simulatedData, sensor);
+        return new Event(System.currentTimeMillis(), simulatedData, eventSensor);
     }
     
     @Override
