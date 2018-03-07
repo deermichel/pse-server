@@ -21,6 +21,10 @@ import stream.vispar.jsonconverter.gson.typeadapters.GsonJsonObject;
 import stream.vispar.jsonconverter.types.IJsonArray;
 import stream.vispar.jsonconverter.types.IJsonObject;
 import stream.vispar.model.Pattern;
+import stream.vispar.model.nodes.Point;
+import stream.vispar.model.nodes.inputs.ConstantDoubleNode;
+import stream.vispar.model.nodes.inputs.ConstantIntegerNode;
+import stream.vispar.model.nodes.outputs.PatternOutputNode;
 
 /**
  * Tests for {@link ApiRoute}.
@@ -335,6 +339,51 @@ public class ApiRouteTest {
                 .get("data").getAsJsonObject();
         verify(ctrl, times(1)).undeploy("id1");
         assertThat(result, equalTo(new GsonConverter().toJson(undeployedPattern)));
+    }
+
+    /**
+     * Test for ApiRoute.GET_PATTERNS_INPUTNODES
+     * 
+     * @throws JsonException bad json.
+     */
+    @Test
+    public void testGetPatternsInputnodes() throws JsonException {
+        // basics
+        assertThat(ApiRoute.GET_PATTERNS_INPUTNODES.getEndpoint(), equalTo("/patterns/inputnodes"));
+        assertThat(ApiRoute.GET_PATTERNS_INPUTNODES.getType(), equalTo(RouteType.GET));
+        
+        // prepare mocked instance
+        ServerInstance inst = spy(new ServerInstanceMock());
+        PatternController ctrl = mock(PatternController.class);
+        Pattern pattern1 = new Pattern("id1", false, "my1stPattern");
+        ConstantIntegerNode ci = new ConstantIntegerNode("asd", new Point(0, 0), 23);
+        PatternOutputNode out = new PatternOutputNode("adw", new Point(0, 0));
+        ConstantDoubleNode cd = new ConstantDoubleNode("asd", new Point(0, 0), 2.3);
+        PatternOutputNode out2 = new PatternOutputNode("adw", new Point(0, 0));
+        out.addInput(ci);
+        out.setName("test123");
+        out2.addInput(cd);
+        out2.setName("test234");
+        pattern1.addInputNode(ci);
+        pattern1.addOutputNode(out);
+        pattern1.addInputNode(cd);
+        pattern1.addOutputNode(out2);
+        when(ctrl.getAll()).thenReturn(Arrays.asList(pattern1));
+        when(inst.getPatternCtrl()).thenReturn(ctrl);
+        
+        // create request
+        IJsonObject request = new GsonJsonObject();
+        request.add("user", "user123");
+        
+        // GET patterns/inputnodes
+        IJsonArray result = ApiRoute.GET_PATTERNS_INPUTNODES.execute(inst, request).getAsJsonObject()
+                .get("data").getAsJsonArray();
+        verify(ctrl, times(1)).getAll();
+        assertThat(result.size(), equalTo(2));
+        IJsonConverter jsonConv = new GsonConverter();
+        assertThat(result, containsInAnyOrder(
+                jsonConv.toJson(out.getAsPatternInputNode()), 
+                jsonConv.toJson(out2.getAsPatternInputNode())));
     }
 
     /**
