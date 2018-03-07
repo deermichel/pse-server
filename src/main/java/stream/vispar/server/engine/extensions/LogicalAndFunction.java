@@ -53,10 +53,12 @@ public class LogicalAndFunction extends FunctionExecutor {
 
 	@Override
 	public void start() {
+	    // nothing to do here
 	}
 
 	@Override
 	public void stop() {
+	    // nothing to do here
 	}
 
 	@Override

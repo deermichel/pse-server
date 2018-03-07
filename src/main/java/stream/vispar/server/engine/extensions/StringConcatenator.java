@@ -11,86 +11,86 @@ import org.wso2.siddhi.query.api.definition.Attribute;
 import org.wso2.siddhi.query.api.definition.Attribute.Type;
 
 public class StringConcatenator extends AttributeAggregator {
-	
-	private List<Object> objects = new ArrayList<>();
-	
-	
-	@Override
-	protected void init(ExpressionExecutor[] attributeExpressionExecutors, ExecutionPlanContext executionPlanContext) {
-	}
 
-	
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		
-		for (Object obj : objects) {
-			builder.append(obj.toString());
-		}
-		
-		return builder.toString();
-	}
-	
+    private List<Object> objects = new ArrayList<>();
 
-	@Override
-	public Type getReturnType() {
-		return Attribute.Type.STRING;
-	}
+    @Override
+    protected void init(ExpressionExecutor[] attributeExpressionExecutors, ExecutionPlanContext executionPlanContext) {
+        // nothing to do here
+    }
 
-	@Override
-	public Object processAdd(Object data) {
-		if (data != null) {
-			objects.add(data);
-		}
-		return toString();
-	}
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
 
-	@Override
-	public Object processAdd(Object[] data) {
-		for (Object obj : data) {
-			if (obj != null) {
-				objects.add(obj);
-			}
-		}
-		return toString();
-	}
+        for (Object obj : objects) {
+            builder.append(obj.toString());
+        }
 
-	@Override
-	public Object processRemove(Object data) {
-		objects.remove(data);
-		return toString();
-	}
+        return builder.toString();
+    }
 
-	@Override
-	public Object processRemove(Object[] data) {
-		for (Object obj : data) {
-			objects.remove(obj);
-		}
-		return toString();
-	}
+    @Override
+    public Type getReturnType() {
+        return Attribute.Type.STRING;
+    }
 
-	@Override
-	public Object reset() {
-		objects.clear();
-		return toString();
-	}
-	
-	@Override
-	public void start() {
-	}
-	
-	@Override
-	public void stop() {
-	}
-	
-	@Override
-	public Object[] currentState() {
-		return objects.toArray();
-	}
-	
-	@Override
-	public void restoreState(Object[] state) {
-		objects = new ArrayList<>(Arrays.asList(state));
-	}
-	
+    @Override
+    public Object processAdd(Object data) {
+        if (data != null) {
+            objects.add(data);
+        }
+        return toString();
+    }
+
+    @Override
+    public Object processAdd(Object[] data) {
+        for (Object obj : data) {
+            if (obj != null) {
+                objects.add(obj);
+            }
+        }
+        return toString();
+    }
+
+    @Override
+    public Object processRemove(Object data) {
+        objects.remove(data);
+        return toString();
+    }
+
+    @Override
+    public Object processRemove(Object[] data) {
+        for (Object obj : data) {
+            objects.remove(obj);
+        }
+        return toString();
+    }
+
+    @Override
+    public Object reset() {
+        objects.clear();
+        return toString();
+    }
+
+    @Override
+    public void start() {
+        // nothing to do here
+    }
+
+    @Override
+    public void stop() {
+        // nothing to do here
+    }
+
+    @Override
+    public Object[] currentState() {
+        return objects.toArray();
+    }
+
+    @Override
+    public void restoreState(Object[] state) {
+        objects = new ArrayList<>(Arrays.asList(state));
+    }
+
 }
