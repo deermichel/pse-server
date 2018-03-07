@@ -196,6 +196,7 @@ public class SiddhiEngine implements IEngine {
                         handler.send(event.getTimestamp(), data);
                     } catch (InterruptedException e) {
                         this.instance.getLogger().logError(e.toString());
+                        Thread.currentThread().interrupt();
                     }
                 });
             }
