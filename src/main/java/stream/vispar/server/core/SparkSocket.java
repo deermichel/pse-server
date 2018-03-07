@@ -66,7 +66,7 @@ public class SparkSocket implements ISocketHandler {
         http = Service.ignite().port(port);
         
         // register error callback
-        http.initExceptionHandler((exception) -> {
+        http.initExceptionHandler(exception -> {
             instance.getLogger().logError(String.format(
                     instance.getLocalizer().get(LocalizedString.CANNOT_START_SPARK), exception.toString()));
             instance.stop();

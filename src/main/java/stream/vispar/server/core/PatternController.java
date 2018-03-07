@@ -335,7 +335,7 @@ public class PatternController {
         
         // for all deployed patterns
         Collection<Pattern> deployedPatterns = getAll().stream()
-                .filter(pattern -> pattern.isDeployed()).collect(Collectors.toList());
+                .filter(Pattern::isDeployed).collect(Collectors.toList());
         for (Pattern pattern : deployedPatterns) {
             
             // reset deployment status in db
