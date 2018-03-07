@@ -28,7 +28,7 @@ public interface IEngine {
      * @throws IllegalArgumentException
      *          if the {@link Pattern} could not be compiled.
      */
-    void deploy(Pattern pattern) throws IllegalArgumentException;
+    void deploy(Pattern pattern);
     
     /**
      * Undeploys a pattern which will stop its detection.

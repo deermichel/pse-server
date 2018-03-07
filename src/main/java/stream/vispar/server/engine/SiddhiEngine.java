@@ -86,7 +86,7 @@ public class SiddhiEngine implements IEngine {
     public void stop() {
 
         // undeploy all patterns
-        instance.getPatternCtrl().getAll().forEach(pattern -> undeploy(pattern));
+        instance.getPatternCtrl().getAll().forEach(this::undeploy);
 
         instance.getLogger().log(instance.getLocalizer().get(LocalizedString.SIDDHI_ENGINE_STOPPED));
     }
@@ -148,14 +148,14 @@ public class SiddhiEngine implements IEngine {
         instance.getLogger()
                 .log(String.format(instance.getLocalizer().get(LocalizedString.RECEIVED_EVENT), event.toString()));
 
-        for (DeploymentInstance instance : deploymentInstances.values()) {
-            Collection<InputHandler> handlers = instance.sensorToHandler.get(event.getSensor().getName());
+        for (DeploymentInstance currentInstance : deploymentInstances.values()) {
+            Collection<InputHandler> handlers = currentInstance.sensorToHandler.get(event.getSensor().getName());
 
             if (Objects.nonNull(handlers)) {
                 // handlers for the given event were found
 
                 // this array represents the order of attributes expected by the handler
-                Attribute[] attributeOrder = instance.sensorToAttributeOrder.get(event.getSensor().getName());
+                Attribute[] attributeOrder = currentInstance.sensorToAttributeOrder.get(event.getSensor().getName());
 
                 // maps the attributes to the values of the current event
                 Map<String, String> dataMap = new HashMap<>();
