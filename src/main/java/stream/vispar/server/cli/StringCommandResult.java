@@ -5,7 +5,7 @@ package stream.vispar.server.cli;
  * 
  * @author Micha Hanselmann
  */
-public class StringCommandResult extends CommandResult {
+public class StringCommandResult implements CommandResult {
     
     /**
      * String message.

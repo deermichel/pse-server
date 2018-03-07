@@ -5,7 +5,7 @@ package stream.vispar.server.cli;
  * 
  * @author Micha Hanselmann
  */
-public abstract class CommandResult {
+public interface CommandResult {
 
     /**
      * Returns the result as a string message.
@@ -13,5 +13,5 @@ public abstract class CommandResult {
      * @return
      *          a stringual representation of the result.
      */
-    public abstract String getMessage();
+    String getMessage();
 }
