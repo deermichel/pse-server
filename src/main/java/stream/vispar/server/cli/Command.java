@@ -85,7 +85,7 @@ public enum Command {
                 
                 // get and concat all usernames
                 List<String> usernames = instance.getUserCtrl().getAll()
-                        .stream().map(user -> user.getName()).collect(Collectors.toList());
+                        .stream().map(User::getName).collect(Collectors.toList());
                 String result = String.format(instance.getLocalizer().get(LocalizedString.USERS), 
                         String.join(", ", usernames));
                 return new StringCommandResult(result);
@@ -108,12 +108,12 @@ public enum Command {
                 // get and concat all pattern names (with their deployment status)
                 List<String> patternnames = instance.getPatternCtrl().getAll().stream()
                         .sorted((p1, p2) -> p1.getName().compareToIgnoreCase(p2.getName()))
-                        .map(pattern -> {
-                            if (pattern.isDeployed()) {
-                                return pattern.getName() + " "
+                        .map(currentPattern -> {
+                            if (currentPattern.isDeployed()) {
+                                return currentPattern.getName() + " "
                                         + instance.getLocalizer().get(LocalizedString.DEPLOYED);
                             } else {
-                                return pattern.getName();
+                                return currentPattern.getName();
                             }
                         })
                         .collect(Collectors.toList());
@@ -186,7 +186,7 @@ public enum Command {
                 
                 // get and concat all commands
                 List<String> commands = Arrays.asList(Command.values()).stream()
-                        .map(c -> c.toString())
+                        .map(Command::toString)
                         .sorted((c1, c2) -> c1.compareToIgnoreCase(c2))
                         .collect(Collectors.toList());
                 return new StringCommandResult(String.format(

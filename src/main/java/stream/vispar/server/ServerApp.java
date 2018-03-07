@@ -110,7 +110,7 @@ public final class ServerApp {
             // try to parse and execute command (else log error)
             try {
                 Optional<CommandResult> result = Arrays.stream(Command.values())
-                        .map((command) -> command.handle(instance, userInput))
+                        .map(command -> command.handle(instance, userInput))
                         .filter(Objects::nonNull)
                         .findFirst();
                 if (result.isPresent()) {
