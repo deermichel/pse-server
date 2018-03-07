@@ -18,6 +18,8 @@ import stream.vispar.server.localization.LocalizedString;
  */
 public class UserController {
     
+    private static final String USERS_COLLECTION = "users";
+
     /**
      * Server instance the controller belongs to.
      */
@@ -59,7 +61,7 @@ public class UserController {
         }
         
         // create user
-        IJsonElement json = db.insert("users", jsonConv.toJson(user));
+        IJsonElement json = db.insert(USERS_COLLECTION, jsonConv.toJson(user));
         instance.getLogger().log(String.format(instance.getLocalizer().get(LocalizedString.USER_ADDED), 
                 user.getName()));
         
@@ -90,7 +92,7 @@ public class UserController {
         }
         
         // delete user
-        db.delete("users", "name", user.getName());
+        db.delete(USERS_COLLECTION, "name", user.getName());
         instance.getLogger().log(String.format(instance.getLocalizer().get(LocalizedString.USER_REMOVED), 
                 user.getName()));
         
@@ -107,7 +109,7 @@ public class UserController {
      *          the {@link User} or null if not found.
      */
     public User getByName(String name) {
-        IJsonElement json = instance.getDBConn().find("users", "name", name);
+        IJsonElement json = instance.getDBConn().find(USERS_COLLECTION, "name", name);
         if (json != null) {
             try {
                 return jsonConv.fromJson(json, User.class);
@@ -125,7 +127,7 @@ public class UserController {
      *          collection of all {@link User users}.
      */
     public Collection<User> getAll() {
-        Collection<IJsonElement> jsonCol = instance.getDBConn().getAll("users");
+        Collection<IJsonElement> jsonCol = instance.getDBConn().getAll(USERS_COLLECTION);
         Collection<User> users = new HashSet<>();
         try {
             for (IJsonElement json : jsonCol) {

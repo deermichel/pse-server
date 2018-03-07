@@ -23,6 +23,12 @@ import stream.vispar.server.localization.LocalizedString;
  */
 public class PatternController {
     
+    private static final String NONEXISTENT_PATTERN_MSG = "Pattern does not exist";
+
+    private static final String IS_DEPLOYED_KEY_NAME = "isDeployed";
+
+    private static final String PATTERNS_COLLECTION_NAME = "patterns";
+
     /**
      * Server instance the controller belongs to.
      */
@@ -68,7 +74,7 @@ public class PatternController {
             }
             
             // update pattern
-            IJsonElement json = db.update("patterns", "id", pattern.getId(), jsonConv.toJson(pattern));
+            IJsonElement json = db.update(PATTERNS_COLLECTION_NAME, "id", pattern.getId(), jsonConv.toJson(pattern));
             instance.getLogger().log(String.format(
                     instance.getLocalizer().get(LocalizedString.PATTERN_UPDATED), pattern.getName()));
             
@@ -82,7 +88,7 @@ public class PatternController {
         } else {
             
             // create pattern
-            IJsonElement json = db.insert("patterns", jsonConv.toJson(pattern));
+            IJsonElement json = db.insert(PATTERNS_COLLECTION_NAME, jsonConv.toJson(pattern));
             instance.getLogger().log(String.format(
                     instance.getLocalizer().get(LocalizedString.PATTERN_CREATED), pattern.getName()));
             
@@ -110,7 +116,7 @@ public class PatternController {
         // get pattern
         Pattern pattern = getById(id);
         if (pattern == null) {
-            throw new IllegalArgumentException("Pattern does not exist");
+            throw new IllegalArgumentException(NONEXISTENT_PATTERN_MSG);
         }
         
         // undeploy pattern if deployed
@@ -119,7 +125,7 @@ public class PatternController {
         }
         
         // delete pattern
-        db.delete("patterns", "id", pattern.getId());
+        db.delete(PATTERNS_COLLECTION_NAME, "id", pattern.getId());
         instance.getLogger().log(String.format(instance.getLocalizer().get(LocalizedString.PATTERN_DELETED),
                 pattern.getName()));
     }
@@ -142,17 +148,17 @@ public class PatternController {
         // get pattern
         Pattern pattern = getById(id);
         if (pattern == null) {
-            throw new IllegalArgumentException("Pattern does not exist");
+            throw new IllegalArgumentException(NONEXISTENT_PATTERN_MSG);
         }
         
         // rename pattern
-        IJsonElement json = db.find("patterns", "id", pattern.getId());
+        IJsonElement json = db.find(PATTERNS_COLLECTION_NAME, "id", pattern.getId());
         try {
             json.getAsJsonObject().add("name", newName);
         } catch (JsonParseException e) {
             instance.getLogger().logError(e.toString());
         }
-        db.update("patterns", "id", pattern.getId(), json);
+        db.update(PATTERNS_COLLECTION_NAME, "id", pattern.getId(), json);
         instance.getLogger().log(String.format(instance.getLocalizer().get(
                 LocalizedString.PATTERN_UPDATED), newName));
         
@@ -184,7 +190,7 @@ public class PatternController {
         // get pattern and check deployment status
         Pattern pattern = getById(id);
         if (pattern == null) {
-            throw new IllegalArgumentException("Pattern does not exist");
+            throw new IllegalArgumentException(NONEXISTENT_PATTERN_MSG);
         } else if (pattern.isDeployed()) {
             throw new IllegalStateException(String.valueOf(RouteError.PATTERN_ALREADY_DEPLOYED.getCode()));
         }
@@ -204,7 +210,6 @@ public class PatternController {
         }
         for (String sensor : usedSensors) {
             if (instance.getSensorCtrl().getByName(sensor) == null) {
-                // throw new IllegalStateException("Sensor '" + sensor + "' not registered on server");
                 throw new IllegalStateException(String.valueOf(RouteError.UNKNOWN_SENSORS.getCode()));
             }
         }
@@ -219,13 +224,13 @@ public class PatternController {
                 LocalizedString.PATTERN_DEPLOYED), pattern.getName()));
         
         // update deployment status in db
-        IJsonElement json = db.find("patterns", "id", pattern.getId());
+        IJsonElement json = db.find(PATTERNS_COLLECTION_NAME, "id", pattern.getId());
         try {
-            json.getAsJsonObject().add("isDeployed", true);
+            json.getAsJsonObject().add(IS_DEPLOYED_KEY_NAME, true);
         } catch (JsonParseException e) {
             instance.getLogger().logError(e.toString());
         }
-        db.update("patterns", "id", pattern.getId(), json);
+        db.update(PATTERNS_COLLECTION_NAME, "id", pattern.getId(), json);
         
         // return deployed pattern
         try {
@@ -254,7 +259,7 @@ public class PatternController {
         // get pattern and check deployment status
         Pattern pattern = getById(id);
         if (pattern == null) {
-            throw new IllegalArgumentException("Pattern does not exist");
+            throw new IllegalArgumentException(NONEXISTENT_PATTERN_MSG);
         } else if (!pattern.isDeployed()) {
             throw new IllegalStateException("Pattern is already undeployed");
         }
@@ -265,13 +270,13 @@ public class PatternController {
                 LocalizedString.PATTERN_UNDEPLOYED), pattern.getName()));
         
         // update deployment status in db
-        IJsonElement json = db.find("patterns", "id", pattern.getId());
+        IJsonElement json = db.find(PATTERNS_COLLECTION_NAME, "id", pattern.getId());
         try {
-            json.getAsJsonObject().add("isDeployed", false);
+            json.getAsJsonObject().add(IS_DEPLOYED_KEY_NAME, false);
         } catch (JsonParseException e) {
             instance.getLogger().logError(e.toString());
         }
-        db.update("patterns", "id", pattern.getId(), json);
+        db.update(PATTERNS_COLLECTION_NAME, "id", pattern.getId(), json);
         
         // return undeployed pattern
         try {
@@ -291,7 +296,7 @@ public class PatternController {
      *          the {@link Pattern} or null if not found.
      */
     public Pattern getById(String id) {
-        IJsonElement json = instance.getDBConn().find("patterns", "id", id);
+        IJsonElement json = instance.getDBConn().find(PATTERNS_COLLECTION_NAME, "id", id);
         if (json != null) {
             try {
                 return jsonConv.fromJson(json);
@@ -309,7 +314,7 @@ public class PatternController {
      *          collection of all {@link Pattern patterns}.
      */
     public Collection<Pattern> getAll() {
-        Collection<IJsonElement> jsonCol = instance.getDBConn().getAll("patterns");
+        Collection<IJsonElement> jsonCol = instance.getDBConn().getAll(PATTERNS_COLLECTION_NAME);
         Collection<Pattern> patterns = new ArrayList<>();
         try {
             for (IJsonElement json : jsonCol) {
@@ -334,13 +339,13 @@ public class PatternController {
         for (Pattern pattern : deployedPatterns) {
             
             // reset deployment status in db
-            IJsonElement json = db.find("patterns", "id", pattern.getId());
+            IJsonElement json = db.find(PATTERNS_COLLECTION_NAME, "id", pattern.getId());
             try {
-                json.getAsJsonObject().add("isDeployed", false);
+                json.getAsJsonObject().add(IS_DEPLOYED_KEY_NAME, false);
             } catch (JsonParseException e) {
                 instance.getLogger().logError(e.toString());
             }
-            db.update("patterns", "id", pattern.getId(), json);
+            db.update(PATTERNS_COLLECTION_NAME, "id", pattern.getId(), json);
         }
     }
 }

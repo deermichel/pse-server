@@ -43,10 +43,10 @@ public enum ApiRoute {
                 response.add("data", data);
                     
             } catch (IllegalArgumentException e) {
-                response.add("error", RouteError.UNKNOWN_CREDENTIALS.getCode());
+                response.add(ERROR_KEY_NAME, RouteError.UNKNOWN_CREDENTIALS.getCode());
             } catch (JsonParseException | NullPointerException e) {
                 instance.getLogger().logError(e.toString());
-                response.add("error", RouteError.INVALID_REQUEST.getCode());
+                response.add(ERROR_KEY_NAME, RouteError.INVALID_REQUEST.getCode());
             }
             return response;
         }
@@ -83,7 +83,7 @@ public enum ApiRoute {
             
             // authenticated?
             if (!isAuthenticated(instance, request)) {
-                response.add("error", RouteError.NOT_AUTHORIZED.getCode());
+                response.add(ERROR_KEY_NAME, RouteError.NOT_AUTHORIZED.getCode());
                 return response;
             }
             
@@ -109,7 +109,7 @@ public enum ApiRoute {
             
             // authenticated?
             if (!isAuthenticated(instance, request)) {
-                response.add("error", RouteError.NOT_AUTHORIZED.getCode());
+                response.add(ERROR_KEY_NAME, RouteError.NOT_AUTHORIZED.getCode());
                 return response;
             }
             
@@ -137,7 +137,7 @@ public enum ApiRoute {
             
             // authenticated?
             if (!isAuthenticated(instance, request)) {
-                response.add("error", RouteError.NOT_AUTHORIZED.getCode());
+                response.add(ERROR_KEY_NAME, RouteError.NOT_AUTHORIZED.getCode());
                 return response;
             }
             
@@ -152,12 +152,12 @@ public enum ApiRoute {
                 if (pattern != null) {
                     response.add("data", new GsonConverter().toJson(pattern));
                 } else {
-                    response.add("error", RouteError.UNKNOWN_PATTERN.getCode());
+                    response.add(ERROR_KEY_NAME, RouteError.UNKNOWN_PATTERN.getCode());
                 }
                 
             } catch (JsonParseException | NullPointerException e) {
                 instance.getLogger().logError(e.toString());
-                response.add("error", RouteError.INVALID_REQUEST.getCode());
+                response.add(ERROR_KEY_NAME, RouteError.INVALID_REQUEST.getCode());
             }
             return response;
         }
@@ -173,7 +173,7 @@ public enum ApiRoute {
             
             // authenticated?
             if (!isAuthenticated(instance, request)) {
-                response.add("error", RouteError.NOT_AUTHORIZED.getCode());
+                response.add(ERROR_KEY_NAME, RouteError.NOT_AUTHORIZED.getCode());
                 return response;
             }
             
@@ -188,10 +188,10 @@ public enum ApiRoute {
                 response.add("data", jsonConv.toJson(pattern));
                 
             } catch (IllegalArgumentException e) {
-                response.add("error", RouteError.PATTERN_EDITED.getCode());
+                response.add(ERROR_KEY_NAME, RouteError.PATTERN_EDITED.getCode());
             } catch (JsonException | NullPointerException | com.google.gson.JsonParseException e) {
                 instance.getLogger().logError(e.toString());
-                response.add("error", RouteError.INVALID_REQUEST.getCode());
+                response.add(ERROR_KEY_NAME, RouteError.INVALID_REQUEST.getCode());
             }
             return response;
         }
@@ -207,7 +207,7 @@ public enum ApiRoute {
             
             // authenticated?
             if (!isAuthenticated(instance, request)) {
-                response.add("error", RouteError.NOT_AUTHORIZED.getCode());
+                response.add(ERROR_KEY_NAME, RouteError.NOT_AUTHORIZED.getCode());
                 return response;
             }
             
@@ -221,10 +221,10 @@ public enum ApiRoute {
                 instance.getPatternCtrl().remove(patternId);
                 
             } catch (IllegalArgumentException e) {
-                response.add("error", RouteError.UNKNOWN_PATTERN.getCode());
+                response.add(ERROR_KEY_NAME, RouteError.UNKNOWN_PATTERN.getCode());
             } catch (JsonException | NullPointerException e) {
                 instance.getLogger().logError(e.toString());
-                response.add("error", RouteError.INVALID_REQUEST.getCode());
+                response.add(ERROR_KEY_NAME, RouteError.INVALID_REQUEST.getCode());
             }
             return response;
         }
@@ -240,7 +240,7 @@ public enum ApiRoute {
             
             // authenticated?
             if (!isAuthenticated(instance, request)) {
-                response.add("error", RouteError.NOT_AUTHORIZED.getCode());
+                response.add(ERROR_KEY_NAME, RouteError.NOT_AUTHORIZED.getCode());
                 return response;
             }
             
@@ -257,10 +257,10 @@ public enum ApiRoute {
                 response.add("data", new GsonConverter().toJson(pattern));
                 
             } catch (IllegalArgumentException e) {
-                response.add("error", RouteError.UNKNOWN_PATTERN.getCode());
+                response.add(ERROR_KEY_NAME, RouteError.UNKNOWN_PATTERN.getCode());
             } catch (JsonException | NullPointerException e) {
                 instance.getLogger().logError(e.toString());
-                response.add("error", RouteError.INVALID_REQUEST.getCode());
+                response.add(ERROR_KEY_NAME, RouteError.INVALID_REQUEST.getCode());
             }
             return response;
         }
@@ -276,7 +276,7 @@ public enum ApiRoute {
             
             // authenticated?
             if (!isAuthenticated(instance, request)) {
-                response.add("error", RouteError.NOT_AUTHORIZED.getCode());
+                response.add(ERROR_KEY_NAME, RouteError.NOT_AUTHORIZED.getCode());
                 return response;
             }
             
@@ -291,12 +291,12 @@ public enum ApiRoute {
                 response.add("data", new GsonConverter().toJson(pattern));
                 
             } catch (IllegalArgumentException e) {
-                response.add("error", RouteError.UNKNOWN_PATTERN.getCode());
+                response.add(ERROR_KEY_NAME, RouteError.UNKNOWN_PATTERN.getCode());
             } catch (IllegalStateException e) {
-                response.add("error", e.getMessage());
+                response.add(ERROR_KEY_NAME, e.getMessage());
             } catch (JsonException | NullPointerException e) {
                 instance.getLogger().logError(e.toString());
-                response.add("error", RouteError.INVALID_REQUEST.getCode());
+                response.add(ERROR_KEY_NAME, RouteError.INVALID_REQUEST.getCode());
             }
             return response;
         }
@@ -312,7 +312,7 @@ public enum ApiRoute {
             
             // authenticated?
             if (!isAuthenticated(instance, request)) {
-                response.add("error", RouteError.NOT_AUTHORIZED.getCode());
+                response.add(ERROR_KEY_NAME, RouteError.NOT_AUTHORIZED.getCode());
                 return response;
             }
             
@@ -327,12 +327,12 @@ public enum ApiRoute {
                 response.add("data", new GsonConverter().toJson(pattern));
                 
             } catch (IllegalArgumentException e) {
-                response.add("error", RouteError.UNKNOWN_PATTERN.getCode());
+                response.add(ERROR_KEY_NAME, RouteError.UNKNOWN_PATTERN.getCode());
             } catch (IllegalStateException e) {
-                response.add("error", RouteError.PATTERN_NOT_DEPLOYED.getCode());
+                response.add(ERROR_KEY_NAME, RouteError.PATTERN_NOT_DEPLOYED.getCode());
             } catch (JsonException | NullPointerException e) {
                 instance.getLogger().logError(e.toString());
-                response.add("error", RouteError.INVALID_REQUEST.getCode());
+                response.add(ERROR_KEY_NAME, RouteError.INVALID_REQUEST.getCode());
             }
             return response;
         }
@@ -348,7 +348,7 @@ public enum ApiRoute {
             
             // authenticated?
             if (!isAuthenticated(instance, request)) {
-                response.add("error", RouteError.NOT_AUTHORIZED.getCode());
+                response.add(ERROR_KEY_NAME, RouteError.NOT_AUTHORIZED.getCode());
                 return response;
             }
             
@@ -367,6 +367,8 @@ public enum ApiRoute {
     };
     
     
+    private static final String ERROR_KEY_NAME = "error";
+
     /**
      * Endpoint of the route.
      */
