@@ -7,7 +7,12 @@ import org.wso2.siddhi.query.api.definition.Attribute;
 import org.wso2.siddhi.query.api.definition.Attribute.Type;
 import org.wso2.siddhi.query.api.exception.ExecutionPlanValidationException;
 
-// NOTE: it seems like both inputs have different instances...
+/**
+ * A function that takes two integers and returns {@code true} if both have increased since
+ * the last time this function returned {@code true}.
+ * 
+ * @author Jonas
+ */
 public class LogicalAndFunction extends FunctionExecutor {
 	
 	private long lastFirstInput = -1;

@@ -23,6 +23,11 @@ import org.wso2.siddhi.core.util.collection.operator.Finder;
 import org.wso2.siddhi.query.api.definition.AbstractDefinition;
 import org.wso2.siddhi.query.api.expression.Expression;
 
+/**
+ * A window that limits the events by a given amount of time and length.
+ * 
+ * @author Jonas
+ */
 public class TimeLengthWindow extends WindowProcessor implements FindableProcessor {
 
     private LengthWindowProcessor lengthWindow = new LengthWindowProcessor();

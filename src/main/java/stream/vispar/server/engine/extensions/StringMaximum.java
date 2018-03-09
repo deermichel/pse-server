@@ -2,6 +2,11 @@ package stream.vispar.server.engine.extensions;
 
 import java.util.TreeSet;
 
+/**
+ * An aggregation that returns the lexicographically last string.
+ * 
+ * @author Jonas
+ */
 public class StringMaximum extends StringAggregation {
 	
 	private TreeSet<String> strings = new TreeSet<>();

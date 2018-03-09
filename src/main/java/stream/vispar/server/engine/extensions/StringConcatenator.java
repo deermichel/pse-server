@@ -10,6 +10,11 @@ import org.wso2.siddhi.core.query.selector.attribute.aggregator.AttributeAggrega
 import org.wso2.siddhi.query.api.definition.Attribute;
 import org.wso2.siddhi.query.api.definition.Attribute.Type;
 
+/**
+ * An aggregation that concatenates all given strings.
+ * 
+ * @author Jonas
+ */
 public class StringConcatenator extends AttributeAggregator {
 
     private List<Object> objects = new ArrayList<>();
