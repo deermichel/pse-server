@@ -357,9 +357,9 @@ public class ApiRouteTest {
         PatternController ctrl = mock(PatternController.class);
         Pattern pattern1 = new Pattern("id1", false, "my1stPattern");
         ConstantIntegerNode ci = new ConstantIntegerNode("asd", new Point(0, 0), 23);
-        PatternOutputNode out = new PatternOutputNode("adw", new Point(0, 0));
+        PatternOutputNode out = new PatternOutputNode("adw", new Point(0, 0), pattern1.getId());
         ConstantDoubleNode cd = new ConstantDoubleNode("asd", new Point(0, 0), 2.3);
-        PatternOutputNode out2 = new PatternOutputNode("adw", new Point(0, 0));
+        PatternOutputNode out2 = new PatternOutputNode("adw", new Point(0, 0), pattern1.getId());
         out.addInput(ci);
         out.setName("test123");
         out2.addInput(cd);

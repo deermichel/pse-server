@@ -2,6 +2,7 @@ package stream.vispar.server.engine;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.reset;
@@ -11,17 +12,26 @@ import java.util.Objects;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
+import stream.vispar.compiler.SiddhiCompiler;
+import stream.vispar.compiler.TreeCompiler;
 import stream.vispar.model.Pattern;
 import stream.vispar.model.nodes.Attribute;
 import stream.vispar.model.nodes.Operand;
 import stream.vispar.model.nodes.Point;
+import stream.vispar.model.nodes.inputs.PatternInputNode;
 import stream.vispar.model.nodes.inputs.SensorNode;
+import stream.vispar.model.nodes.outputs.PatternOutputNode;
 import stream.vispar.model.nodes.outputs.SocketActionNode;
 import stream.vispar.server.core.DBConnectorMock;
 import stream.vispar.server.core.ServerInstance;
 import stream.vispar.server.core.ServerInstanceMock;
+import stream.vispar.server.core.entities.Sensor;
 import stream.vispar.server.core.entities.Simulation;
 import stream.vispar.server.localization.LocalizedString;
 
@@ -214,5 +224,67 @@ public class SiddhiEngineTest {
 
         assertTrue(
                 subject.getDeploymentInstances().stream().noneMatch(instance -> instance.getPatternId().equals("id")));
+    }
+    
+    @Test
+    // @Ignore
+    public void testNestedPattern() {
+        Pattern child = new Pattern("childid", false, "Child Pattern");
+        Sensor s = mockedInstance.getSensorCtrl().getByName("temp1");
+        SensorNode sensor = new SensorNode("sensorid", new Point(0, 0), "temp1", s.getDescription(), new Operand(s.getAttributes().toArray(new Attribute[0])));
+        PatternOutputNode output = new PatternOutputNode("outputid", new Point(0, 0), child.getId());
+        child.addInputNode(sensor);
+        child.addOutputNode(output);
+        sensor.setOutput(output);
+        output.setName("outputname");
+        
+        SiddhiCompiler comp = new TreeCompiler();
+        
+        System.out.println("Child pattern:");
+        System.out.println(comp.compile(child).getAsString());
+        System.out.println("\n" + "Pattern output stream name: " + comp.getStreamName(output));
+        
+        Pattern parent = new Pattern("parentid", false, "Parent pattern");
+        PatternInputNode input = new PatternInputNode("inputid", new Point(0, 0), "outputname", "childid", new Operand(s.getAttributes().toArray(new Attribute[0])));
+        SocketActionNode action = new SocketActionNode("actionid", new Point(0, 0));
+        // second pattern input from same source
+        PatternInputNode input2 = new PatternInputNode("inputid2", new Point(0, 0), "outputname", "childid", new Operand(s.getAttributes().toArray(new Attribute[0])));
+        SocketActionNode action2 = new SocketActionNode("actionid2", new Point(0, 0));
+        parent.addInputNode(input);
+        parent.addOutputNode(action);
+        parent.addInputNode(input2);
+        parent.addOutputNode(action2);
+        input2.setOutput(action2);
+        action2.setMessage("message2");
+        action.addInput(input);
+        action.setMessage("action_message");
+        
+        System.out.println("\n\nParent pattern:");
+        System.out.println(comp.compile(parent).getAsString());
+        System.out.println("\n" + "Pattern input stream name: " + comp.getStreamName(input));
+        
+        // mock logger to print to console
+        Mockito.doAnswer(new Answer<Void>() {
+
+            @Override
+            public Void answer(InvocationOnMock invocation) throws Throwable {
+                System.out.println(invocation.getArgument(0).toString());
+                return null;
+            }
+            
+        }).when(mockedInstance.getLogger()).log(anyString());
+        
+        mockedInstance.getPatternCtrl().update(child);
+        mockedInstance.getPatternCtrl().update(parent);
+        mockedInstance.getPatternCtrl().deploy("childid");
+        mockedInstance.getPatternCtrl().deploy("parentid");
+        new Simulation("./simulations/temp.sim").simulate(mockedInstance);
+        
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 }
