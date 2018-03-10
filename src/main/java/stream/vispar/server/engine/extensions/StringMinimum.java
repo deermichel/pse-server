@@ -2,6 +2,11 @@ package stream.vispar.server.engine.extensions;
 
 import java.util.TreeSet;
 
+/**
+ * An aggregation that returns the lexicographically first string.
+ * 
+ * @author Jonas
+ */
 public class StringMinimum extends StringAggregation {
 	
 	private TreeSet<String> strings = new TreeSet<>();
@@ -33,6 +38,7 @@ public class StringMinimum extends StringAggregation {
 		return new Object[] {strings};
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void restoreState(Object[] state) {
 		strings = (TreeSet<String>) state[0];

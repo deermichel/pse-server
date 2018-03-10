@@ -6,7 +6,11 @@ import org.wso2.siddhi.core.query.selector.attribute.aggregator.AttributeAggrega
 import org.wso2.siddhi.query.api.definition.Attribute.Type;
 import org.wso2.siddhi.query.api.exception.ExecutionPlanValidationException;
 
-
+/**
+ * An aggregation that requires one {@link String} parameter and returns a String.
+ * 
+ * @author Jonas
+ */
 abstract class StringAggregation extends AttributeAggregator {
 
 	@Override

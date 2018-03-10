@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * An aggregation that returns the lexicographically median string.
+ * 
+ * @author Jonas
+ */
 public class StringAverage extends StringAggregation {
 	
 	private List<String> strings = new ArrayList<>();
@@ -34,6 +39,7 @@ public class StringAverage extends StringAggregation {
 		return new Object[] {strings};
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void restoreState(Object[] state) {
 		strings = (List<String>) state[0];

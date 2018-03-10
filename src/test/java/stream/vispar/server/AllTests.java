@@ -28,6 +28,12 @@ import stream.vispar.server.engine.EmailActionTest;
 import stream.vispar.server.engine.EventActionTest;
 import stream.vispar.server.engine.SiddhiEngineTest;
 import stream.vispar.server.engine.SocketActionTest;
+import stream.vispar.server.engine.extensions.LogicalAndFunctionTest;
+import stream.vispar.server.engine.extensions.StringAverageTest;
+import stream.vispar.server.engine.extensions.StringComparatorTest;
+import stream.vispar.server.engine.extensions.StringConcatenatorTest;
+import stream.vispar.server.engine.extensions.StringMaximumTest;
+import stream.vispar.server.engine.extensions.StringMinimumTest;
 import stream.vispar.server.localization.LocalizerTest;
 import stream.vispar.server.logger.ConsoleLoggerTest;
 import stream.vispar.server.logger.FileLoggerTest;
@@ -77,6 +83,14 @@ import stream.vispar.server.logger.MultiLoggerTest;
     EventActionTest.class,
     SiddhiEngineTest.class,
     SocketActionTest.class,
+    
+    // extensions
+    StringMinimumTest.class,
+    StringMaximumTest.class,
+    StringAverageTest.class,
+    StringConcatenatorTest.class,
+    StringComparatorTest.class,
+    LogicalAndFunctionTest.class,
     
     // localization
     LocalizerTest.class,
