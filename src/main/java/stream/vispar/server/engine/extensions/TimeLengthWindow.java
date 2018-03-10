@@ -74,8 +74,6 @@ public class TimeLengthWindow extends WindowProcessor implements SchedulingProce
 
     @Override
     protected synchronized void process(ComplexEventChunk<StreamEvent> streamEventChunk, Processor nextProcessor, StreamEventCloner streamEventCloner) {
-//    	System.out.println(streamEventChunk);
-    	
     	while (streamEventChunk.hasNext()) {
     		long currentTime = executionPlanContext.getTimestampGenerator().currentTime();
             StreamEvent streamEvent = streamEventChunk.next();
@@ -125,7 +123,6 @@ public class TimeLengthWindow extends WindowProcessor implements SchedulingProce
             expiredEventChunk.reset();
         }
     	
-//    	System.out.println(expiredEventChunk);
         nextProcessor.process(streamEventChunk);
     }
 

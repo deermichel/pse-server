@@ -15,8 +15,8 @@ import org.wso2.siddhi.query.api.exception.ExecutionPlanValidationException;
  */
 public class LogicalAndFunction extends FunctionExecutor {
 	
-	private long lastFirstInput = -1;
-	private long lastSecondInput = -1;
+	private long lastFirstInput = 0;
+	private long lastSecondInput = 0;
 
 	@Override
 	protected void init(ExpressionExecutor[] attributeExpressionExecutors, ExecutionPlanContext executionPlanContext) {
