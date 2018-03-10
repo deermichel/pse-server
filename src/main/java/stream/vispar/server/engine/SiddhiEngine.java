@@ -223,18 +223,21 @@ public class SiddhiEngine implements IEngine {
                 .log(String.format(instance.getLocalizer().get(LocalizedString.RECEIVED_EVENT), "pattern event"));
 
         for (DeploymentInstance currentInstance : deploymentInstances.values()) {
-            InputHandler handler =
+            Collection<InputHandler> handlers =
                     currentInstance.patternInputToHandler.get(sourcePattern.getId() + sourceNode.getName());
 
-            if (Objects.nonNull(handler)) {
-                // handler for the events was found
+            if (Objects.nonNull(handlers)) {
+                // handlers for the events were found
                 
-                try {
-                    handler.send(events);
-                } catch (InterruptedException e) {
-                    this.instance.getLogger().logError(e.toString());
-                    Thread.currentThread().interrupt();
-                }
+                // send events to all handlers
+                handlers.forEach(handler -> {
+                    try {
+                        handler.send(events);
+                    } catch (InterruptedException e) {
+                        this.instance.getLogger().logError(e.toString());
+                        Thread.currentThread().interrupt();
+                    }
+                });
             }
         }
     }
@@ -267,7 +270,7 @@ public class SiddhiEngine implements IEngine {
         private final Map<String, Collection<InputHandler>> sensorToHandler;
         private final Map<String, Attribute[]> sensorToAttributeOrder;
         
-        private final Map<String, InputHandler> patternInputToHandler;
+        private final Map<String, Collection<InputHandler>> patternInputToHandler;
 
         /**
          * Constructs a new instance of {@link DeploymentInstance} for the given
@@ -312,11 +315,14 @@ public class SiddhiEngine implements IEngine {
                     
                     @Override
                     public void visitPatternInputNode(PatternInputNode node) {
-
                         // obtain handler for this pattern input, add it to mapping
-                        // pattern inputs are identified by the id of the source pattern and the name of the output
-                        patternInputToHandler.put(pattern.getId() + node.getPatternOutputName(),
-                                runtime.getInputHandler(compiler.getStreamName(node)));
+
+                        // pattern inputs are identified by the id of the source pattern and the name of
+                        // the output
+                        patternInputToHandler.putIfAbsent(pattern.getId() + node.getPatternOutputName(),
+                                new LinkedList<>());
+                        patternInputToHandler.get(pattern.getId() + node.getPatternOutputName())
+                                .add(runtime.getInputHandler(compiler.getStreamName(node)));
                     }
                 });
             }
