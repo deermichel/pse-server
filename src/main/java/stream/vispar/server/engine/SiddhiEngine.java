@@ -14,6 +14,8 @@ import org.wso2.siddhi.core.SiddhiManager;
 import org.wso2.siddhi.core.stream.input.InputHandler;
 import org.wso2.siddhi.core.stream.output.StreamCallback;
 
+import com.google.common.base.Optional;
+
 import stream.vispar.compiler.CompileException;
 import stream.vispar.compiler.SiddhiCode;
 import stream.vispar.compiler.SiddhiCompiler;
@@ -223,8 +225,10 @@ public class SiddhiEngine implements IEngine {
                 .log(String.format(instance.getLocalizer().get(LocalizedString.RECEIVED_EVENT), "pattern event"));
 
         for (DeploymentInstance currentInstance : deploymentInstances.values()) {
+            // to calculate the correct key, by convention we have to use the node id if the name is null
             Collection<InputHandler> handlers =
-                    currentInstance.patternInputToHandler.get(sourcePattern.getId() + sourceNode.getName());
+                    currentInstance.patternInputToHandler.get(
+                            sourcePattern.getId() + Optional.fromNullable(sourceNode.getName()).or(sourceNode.getId()));
 
             if (Objects.nonNull(handlers)) {
                 // handlers for the events were found
