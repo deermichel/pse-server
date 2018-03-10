@@ -227,12 +227,12 @@ public class SiddhiEngineTest {
     }
     
     @Test
-    @Ignore
+    // @Ignore
     public void testNestedPattern() {
         Pattern child = new Pattern("childid", false, "Child Pattern");
         Sensor s = mockedInstance.getSensorCtrl().getByName("temp1");
         SensorNode sensor = new SensorNode("sensorid", new Point(0, 0), "temp1", s.getDescription(), new Operand(s.getAttributes().toArray(new Attribute[0])));
-        PatternOutputNode output = new PatternOutputNode("outputid", new Point(0, 0));
+        PatternOutputNode output = new PatternOutputNode("outputid", new Point(0, 0), child.getId());
         child.addInputNode(sensor);
         child.addOutputNode(output);
         sensor.setOutput(output);
@@ -245,10 +245,10 @@ public class SiddhiEngineTest {
         System.out.println("\n" + "Pattern output stream name: " + comp.getStreamName(output));
         
         Pattern parent = new Pattern("parentid", false, "Parent pattern");
-        PatternInputNode input = new PatternInputNode("inputid", new Point(0, 0), "outputname", new Operand(s.getAttributes().toArray(new Attribute[0])));
+        PatternInputNode input = new PatternInputNode("inputid", new Point(0, 0), "outputname", "childid", new Operand(s.getAttributes().toArray(new Attribute[0])));
         SocketActionNode action = new SocketActionNode("actionid", new Point(0, 0));
         // second pattern input from same source
-        PatternInputNode input2 = new PatternInputNode("inputid2", new Point(0, 0), "outputname", new Operand(s.getAttributes().toArray(new Attribute[0])));
+        PatternInputNode input2 = new PatternInputNode("inputid2", new Point(0, 0), "outputname", "childid", new Operand(s.getAttributes().toArray(new Attribute[0])));
         SocketActionNode action2 = new SocketActionNode("actionid2", new Point(0, 0));
         parent.addInputNode(input);
         parent.addOutputNode(action);

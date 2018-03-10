@@ -223,9 +223,8 @@ public class SiddhiEngine implements IEngine {
                 .log(String.format(instance.getLocalizer().get(LocalizedString.RECEIVED_EVENT), "pattern event"));
 
         for (DeploymentInstance currentInstance : deploymentInstances.values()) {
-            // TODO update key to include source id
             Collection<InputHandler> handlers =
-                    currentInstance.patternInputToHandler.get(sourceNode.getName());
+                    currentInstance.patternInputToHandler.get(sourcePattern.getId() + sourceNode.getName());
 
             if (Objects.nonNull(handlers)) {
                 // handlers for the events were found
@@ -320,11 +319,9 @@ public class SiddhiEngine implements IEngine {
 
                         // pattern inputs are identified by the id of the source pattern and the name of
                         // the output
-                        // TODO update model so that the ID of the source pattern can be extracted from the PatternInputNode
-                        // TODO change key to include ID of the source pattern
-                        patternInputToHandler.putIfAbsent(node.getPatternOutputName(),
+                        patternInputToHandler.putIfAbsent(node.getSourcePatternId() + node.getPatternOutputName(),
                                 new LinkedList<>());
-                        patternInputToHandler.get(node.getPatternOutputName())
+                        patternInputToHandler.get(node.getSourcePatternId() + node.getPatternOutputName())
                                 .add(runtime.getInputHandler(compiler.getStreamName(node)));
                     }
                 });
