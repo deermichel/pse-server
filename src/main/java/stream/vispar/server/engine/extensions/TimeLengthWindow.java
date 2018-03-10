@@ -91,7 +91,6 @@ public class TimeLengthWindow extends WindowProcessor implements SchedulingProce
                 if (timeDiff <= 0) {
                     expiredEventChunk.remove();
                     count--;
-                    System.out.println(count);
                     streamEventChunk.insertBeforeCurrent(expiredEvent);
                 } else {
                     scheduler.notifyAt(expiredEvent.getTimestamp());
@@ -104,7 +103,6 @@ public class TimeLengthWindow extends WindowProcessor implements SchedulingProce
             if (streamEvent.getType() == StreamEvent.Type.CURRENT) {
             	if (count < length) {
 	            	count++;
-	            	System.out.println(count);
 	                this.expiredEventChunk.add(clonedEvent);
             	} else {
                     StreamEvent firstEvent = this.expiredEventChunk.poll();
@@ -151,7 +149,8 @@ public class TimeLengthWindow extends WindowProcessor implements SchedulingProce
         return new Object[]{expiredEventChunk, count};
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public void restoreState(Object[] state) {
         expiredEventChunk = (ComplexEventChunk<StreamEvent>) state[0];
         count = (Integer) state[1];

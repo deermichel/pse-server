@@ -38,6 +38,7 @@ public class StringMaximum extends StringAggregation {
 		return new Object[] {strings};
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void restoreState(Object[] state) {
 		strings = (TreeSet<String>) state[0];

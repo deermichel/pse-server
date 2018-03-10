@@ -39,6 +39,7 @@ public class StringAverage extends StringAggregation {
 		return new Object[] {strings};
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void restoreState(Object[] state) {
 		strings = (List<String>) state[0];
