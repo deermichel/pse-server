@@ -1,6 +1,7 @@
 package stream.vispar.server.core;
 
 import java.util.Collection;
+import java.util.Objects;
 
 import stream.vispar.jsonconverter.IJsonConverter;
 import stream.vispar.jsonconverter.exceptions.JsonException;
@@ -13,6 +14,7 @@ import stream.vispar.jsonconverter.types.IJsonElement;
 import stream.vispar.jsonconverter.types.IJsonObject;
 import stream.vispar.model.Pattern;
 import stream.vispar.model.nodes.Node;
+import stream.vispar.model.nodes.inputs.PatternInputNode;
 import stream.vispar.model.nodes.outputs.PatternOutputNode;
 import stream.vispar.server.core.entities.Sensor;
 import stream.vispar.server.core.entities.adapters.NodeVisitorAdapter;
@@ -364,7 +366,10 @@ public enum ApiRoute {
                     n.acceptVisitor(new NodeVisitorAdapter() {
                         @Override
                         public void visitPatternOutputNode(PatternOutputNode node) {
-                            json.add(jsonConv.toJson(node.getAsPatternInputNode()));
+                            PatternInputNode current = node.getAsPatternInputNode();
+                            if (Objects.nonNull(current)) {
+                                json.add(jsonConv.toJson(node.getAsPatternInputNode()));
+                            }
                         }
                     });
                 }
